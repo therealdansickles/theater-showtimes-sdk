@@ -203,7 +203,7 @@ export const TheaterListingsNative: React.FC<TheaterListingsNativeProps> = ({
           onPress={() => setShowFilters(!showFilters)}
         >
           <Text style={[styles.filterButtonText, showFilters && styles.filterButtonTextActive]}>
-            🎬 Formats ({selectedFormats.length})
+            🎬 Filters ({selectedFormats.length + selectedTimeCategories.length})
           </Text>
         </TouchableOpacity>
       </View>
