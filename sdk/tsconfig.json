@@ -20,8 +20,21 @@
     "noEmit": false,
     "declaration": true,
     "declarationMap": true,
+    "sourceMap": true,
     "outDir": "dist",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/types": ["src/types"],
+      "@/utils": ["src/utils"],
+      "@/constants": ["src/constants"],
+      "@/react": ["src/react"],
+      "@/react-native": ["src/react-native"],
+      "@/core": ["src/core"]
+    },
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo"
   },
   "include": [
     "src/**/*"
@@ -30,6 +43,8 @@
     "node_modules",
     "dist",
     "**/*.test.*",
-    "**/*.stories.*"
+    "**/*.stories.*",
+    "**/examples/**",
+    "coverage"
   ]
 }
