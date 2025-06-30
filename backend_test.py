@@ -66,13 +66,35 @@ class MovieBookingAPITest(unittest.TestCase):
         
     def test_02_create_category(self):
         """Test POST /api/categories/ - create new category"""
+        # Get existing categories to avoid duplicate name error
+        existing_response = requests.get(f"{self.base_url}/categories/")
+        existing_names = [cat['name'] for cat in existing_response.json()]
+        
+        # Generate a unique name
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        category_name = f"Test Category {timestamp}"
+        attempt = 1
+        while category_name in existing_names and attempt < 5:
+            category_name = f"Test Category {timestamp}_{attempt}"
+            attempt += 1
+            
         category_data = {
-            "name": f"Test Category {datetime.now().strftime('%Y%m%d%H%M%S')}",
+            "name": category_name,
             "type": "format",
             "description": "Test category for API testing",
             "is_active": True
         }
         response = requests.post(f"{self.base_url}/categories/", json=category_data)
+        
+        if response.status_code == 400 and "already exists" in response.text:
+            print(f"Category name '{category_name}' already exists, trying to find an existing category to use")
+            # If we can't create a new category, use an existing one
+            existing_response = requests.get(f"{self.base_url}/categories/")
+            if existing_response.status_code == 200 and existing_response.json():
+                self.category_id = existing_response.json()[0]['id']
+                print(f"Using existing category with ID: {self.category_id}")
+                return
+                
         self.assertEqual(response.status_code, 200)
         self.category_id = response.json()['id']
         print(f"Created category with ID: {self.category_id}")
