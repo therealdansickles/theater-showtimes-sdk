@@ -254,7 +254,7 @@ export const TheaterListings: React.FC<TheaterListingsProps> = ({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            🎬 Formats ({selectedFormats.length})
+            🎬 Filters ({selectedFormats.length + selectedTimeCategories.length})
           </motion.button>
         </motion.div>
 
