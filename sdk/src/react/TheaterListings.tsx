@@ -624,7 +624,7 @@ const TheaterCard: React.FC<TheaterCardProps> = ({
                   fontWeight: '600',
                   color: '#ffffff'
                 }}>
-                  {format.type}
+                  {formatName}
                 </span>
                 <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
                   {format.times.map((time, timeIndex) => (
