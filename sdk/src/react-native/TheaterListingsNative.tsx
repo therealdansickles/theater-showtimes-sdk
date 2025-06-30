@@ -397,34 +397,52 @@ const TheaterCard: React.FC<TheaterCardProps> = ({
 
         {/* Formats and Showtimes */}
         <View style={styles.formatsContainer}>
-          {theater.formats.map((format, formatIndex) => (
-            <View key={formatIndex} style={styles.formatSection}>
-              <View style={styles.formatHeader}>
-                <View style={styles.formatBadge}>
-                  <Text style={styles.formatBadgeText}>{format.type}</Text>
+          {theater.formats.map((format, formatIndex) => {
+            // Handle both new ScreeningFormat and legacy TheaterFormat structures
+            const formatName = 'category_name' in format ? format.category_name : (format as any).type;
+            const times = 'times' in format ? format.times : [];
+            
+            return (
+              <View key={formatIndex} style={styles.formatSection}>
+                <View style={styles.formatHeader}>
+                  <View style={styles.formatBadge}>
+                    <Text style={styles.formatBadgeText}>{formatName}</Text>
+                  </View>
+                </View>
+                <View style={styles.timesContainer}>
+                  {times.slice(0, 3).map((time, timeIndex) => {
+                    const timeStr = typeof time === 'string' ? time : time.time;
+                    const timeCategory = typeof time === 'object' && 'category' in time 
+                      ? time.category 
+                      : categorizeTime(timeStr);
+                    
+                    return (
+                      <TouchableOpacity
+                        key={timeIndex}
+                        style={styles.timeButton}
+                        onPress={onSelect}
+                        activeOpacity={0.7}
+                      >
+                        <View style={styles.timeButtonContent}>
+                          <Text style={styles.timeCategoryIcon}>
+                            {getTimeCategoryIcon(timeCategory)}
+                          </Text>
+                          <Text style={styles.timeButtonText}>
+                            {formatShowtime(timeStr)}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  })}
+                  {times.length > 3 && (
+                    <TouchableOpacity style={styles.moreButton} onPress={onSelect}>
+                      <Text style={styles.moreButtonText}>+{times.length - 3}</Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
               </View>
-              <View style={styles.timesContainer}>
-                {format.times.slice(0, 3).map((time, timeIndex) => (
-                  <TouchableOpacity
-                    key={timeIndex}
-                    style={styles.timeButton}
-                    onPress={onSelect}
-                    activeOpacity={0.7}
-                  >
-                    <Text style={styles.timeButtonText}>
-                      {formatShowtime(time)}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-                {format.times.length > 3 && (
-                  <TouchableOpacity style={styles.moreButton} onPress={onSelect}>
-                    <Text style={styles.moreButtonText}>+{format.times.length - 3}</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
-          ))}
+            );
+          })}
         </View>
 
         {/* Action Buttons */}
