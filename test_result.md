@@ -190,17 +190,17 @@ frontend:
         agent: "main"
         comment: "Updated TheaterListings component with tabbed filtering (formats/time), time category icons, enhanced mobile UI, and support for both new and legacy data structures."
 
-  - task: "Frontend Legacy Components Fix"
+  - task: "Enhanced TheaterListings React Native Component"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/components.js"
+    file: "/app/sdk/src/react-native/TheaterListingsNative.tsx"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Fixed TheaterCard component to handle both legacy string times and new time objects with category information. Added time category icons and tooltips for enhanced UX."
+        comment: "Updated React Native TheaterListings component with tabbed filtering (formats/time), time category icons, enhanced mobile UI optimized for iOS/Android, and support for both new and legacy data structures. Added swipe gestures and native mobile interactions."
 
 metadata:
   created_by: "main_agent"
