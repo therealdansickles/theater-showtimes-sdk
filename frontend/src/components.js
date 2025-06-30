@@ -72,15 +72,47 @@ export const Header = ({ movieConfig }) => {
 };
 
 // Hero Section with Movie Poster
-export const HeroSection = () => {
+export const HeroSection = ({ movieConfig }) => {
+  const heroImage = movieConfig?.hero_image 
+    ? process.env.REACT_APP_BACKEND_URL + movieConfig.hero_image
+    : 'https://images.pexels.com/photos/19263380/pexels-photo-19263380.jpeg';
+  
+  const posterImage = movieConfig?.poster_image
+    ? process.env.REACT_APP_BACKEND_URL + movieConfig.poster_image
+    : 'https://images.pexels.com/photos/30619403/pexels-photo-30619403.jpeg';
+
+  const primaryGradient = movieConfig?.primary_gradient || { type: 'linear', direction: '135deg', colors: ['#ef4444', '#dc2626'] };
+  const accentColor = movieConfig?.accent_color || '#ef4444';
+  const primaryButton = movieConfig?.primary_button || { background_color: '#ef4444', text_color: '#ffffff', border_radius: 8, emoji: '🎬', emoji_position: 'left' };
+
+  const renderButton = (buttonConfig, text, bgClass = '') => {
+    const buttonStyle = {
+      backgroundColor: buttonConfig.background_color,
+      color: buttonConfig.text_color,
+      borderRadius: `${buttonConfig.border_radius}px`
+    };
+
+    const emojiElement = buttonConfig.emoji && (
+      <span className={`${buttonConfig.emoji_position === 'right' ? 'ml-2' : 'mr-2'}`}>
+        {buttonConfig.emoji}
+      </span>
+    );
+
+    return (
+      <span style={buttonStyle} className={`px-4 py-2 rounded font-semibold ${bgClass}`}>
+        {buttonConfig.emoji_position === 'left' && emojiElement}
+        {text}
+        {buttonConfig.emoji_position === 'right' && emojiElement}
+      </span>
+    );
+  };
+
   return (
-    <div className="relative bg-black text-white overflow-hidden">
+    <div className="relative text-white overflow-hidden" style={{ backgroundColor: movieConfig?.background_color || '#000000' }}>
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-30"
-        style={{
-          backgroundImage: `url('https://images.pexels.com/photos/19263380/pexels-photo-19263380.jpeg')`
-        }}
+        style={{ backgroundImage: `url('${heroImage}')` }}
       />
       
       {/* Content */}
@@ -88,23 +120,26 @@ export const HeroSection = () => {
         {/* Left Side - Movie Info */}
         <div className="flex-1 max-w-2xl">
           <div className="mb-6">
-            <img 
-              src="https://images.pexels.com/photos/9843280/pexels-photo-9843280.jpeg" 
-              alt="F1 Logo" 
-              className="w-32 h-32 object-contain"
-            />
+            {movieConfig?.logo_image && (
+              <img 
+                src={process.env.REACT_APP_BACKEND_URL + movieConfig.logo_image} 
+                alt="Movie Logo" 
+                className="w-32 h-32 object-contain"
+              />
+            )}
           </div>
-          <h1 className="text-6xl font-bold mb-4">
-            <span className="text-red-500">F1</span>
-            <span className="ml-4">THE MOVIE</span>
+          <h1 className="text-6xl font-bold mb-4" style={{ color: movieConfig?.text_color || '#ffffff' }}>
+            <span style={{ color: accentColor }}>{movieConfig?.movie_title || 'F1'}</span>
+            {movieConfig?.movie_subtitle && (
+              <span className="ml-4">{movieConfig.movie_subtitle}</span>
+            )}
           </h1>
-          <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-            From the director of Top Gun: Maverick comes an adrenaline-fueled experience starring Brad Pitt. 
-            Witness the high-octane world of Formula 1 racing like never before.
+          <p className="text-lg mb-8 leading-relaxed" style={{ color: movieConfig?.text_color || '#ffffff', opacity: 0.8 }}>
+            {movieConfig?.description || 'From the director of Top Gun: Maverick comes an adrenaline-fueled experience starring Brad Pitt. Witness the high-octane world of Formula 1 racing like never before.'}
           </p>
           <div className="flex flex-col space-y-4">
             <div className="text-2xl font-semibold">
-              <span className="bg-red-600 px-4 py-2 rounded">NOW PLAYING</span>
+              {renderButton(primaryButton, 'NOW PLAYING')}
             </div>
             <div className="text-lg">
               <span className="bg-gray-800 px-4 py-2 rounded">ONLY IN THEATERS</span>
@@ -121,8 +156,8 @@ export const HeroSection = () => {
         <div className="flex-1 flex justify-center">
           <div className="relative">
             <img 
-              src="https://images.pexels.com/photos/30619403/pexels-photo-30619403.jpeg" 
-              alt="F1 Movie Poster" 
+              src={posterImage}
+              alt="Movie Poster" 
               className="w-96 h-auto rounded-lg shadow-2xl"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent rounded-lg"/>
