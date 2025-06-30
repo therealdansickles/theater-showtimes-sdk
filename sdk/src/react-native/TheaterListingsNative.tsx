@@ -34,16 +34,20 @@ interface TheaterListingsNativeProps extends Omit<TheaterListingsProps, 'classNa
 export const TheaterListingsNative: React.FC<TheaterListingsNativeProps> = ({
   theaters,
   selectedFormats = [],
+  selectedTimeCategories = [],
   onTheaterSelect,
   onFormatFilter,
+  onTimeCategoryFilter,
   theme,
   loading = false,
   mobileOptimized = true,
-  containerStyle = {}
+  containerStyle = {},
+  availableScreeningCategories = []
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'distance' | 'name'>('distance');
   const [showFilters, setShowFilters] = useState(false);
+  const [activeFilterTab, setActiveFilterTab] = useState<'formats' | 'time'>('formats');
   const [refreshing, setRefreshing] = useState(false);
 
   // Filter and sort theaters
