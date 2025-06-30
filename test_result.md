@@ -190,17 +190,17 @@ frontend:
         agent: "main"
         comment: "Updated TheaterListings component with tabbed filtering (formats/time), time category icons, enhanced mobile UI, and support for both new and legacy data structures."
 
-  - task: "Utility Functions for Time/Categories"
+  - task: "Frontend Legacy Components Fix"
     implemented: true
     working: "NA"
-    file: "/app/sdk/src/utils/index.ts"
+    file: "/app/frontend/src/components.js"
     stuck_count: 0
-    priority: "medium"
+    priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Added utility functions for time categorization, category grouping, icon/label helpers, and filtering functions to support the enhanced search features."
+        comment: "Fixed TheaterCard component to handle both legacy string times and new time objects with category information. Added time category icons and tooltips for enhanced UX."
 
 metadata:
   created_by: "main_agent"
