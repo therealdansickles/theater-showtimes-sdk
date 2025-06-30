@@ -172,6 +172,19 @@ class ClientCreate(BaseModel):
     company: str
     subscription_tier: str = "basic"
 
+class TimeSlotCreate(BaseModel):
+    time: str
+    category: str = "evening"  # Default to evening
+    available_seats: Optional[int] = None
+    price_modifier: Optional[float] = 1.0
+
+class ScreeningFormatCreate(BaseModel):
+    category_id: str
+    category_name: str
+    times: List[TimeSlotCreate] = []
+    price: Optional[float] = None
+    special_notes: Optional[str] = None
+
 class TheaterLocationCreate(BaseModel):
     name: str
     chain: str
@@ -179,8 +192,20 @@ class TheaterLocationCreate(BaseModel):
     city: str
     state: str
     zip_code: str
-    formats: List[Dict[str, Any]] = []
+    formats: List[ScreeningFormatCreate] = []
     showtimes: List[str] = []
+
+class ScreeningCategoryCreate(BaseModel):
+    name: str
+    type: str = "format"
+    description: Optional[str] = None
+    is_active: bool = True
+
+class ScreeningCategoryUpdate(BaseModel):
+    name: Optional[str] = None
+    type: Optional[str] = None
+    description: Optional[str] = None
+    is_active: Optional[bool] = None
 
 class ImageUploadResponse(BaseModel):
     id: str
