@@ -1,0 +1,93 @@
+.App {
+  text-align: center;
+  background-color: #0a0a0a;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+.App-header {
+  background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+  padding: 40px 20px;
+  margin-bottom: 40px;
+}
+
+.App-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.App-header p {
+  font-size: 1.2rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.App-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.demo-section {
+  margin-bottom: 60px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.demo-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #ef4444;
+  text-align: left;
+}
+
+.App-footer {
+  background: #1a1a1a;
+  padding: 40px 20px;
+  margin-top: 60px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.App-footer p {
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.links a {
+  color: #ef4444;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.links a:hover {
+  color: #f97316;
+}
+
+@media (max-width: 768px) {
+  .App-header h1 {
+    font-size: 2rem;
+  }
+  
+  .demo-section {
+    padding: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .links {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

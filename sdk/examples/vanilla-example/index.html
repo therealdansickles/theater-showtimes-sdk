@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Booking SDK - Vanilla JS Example</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 0;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            margin-bottom: 40px;
+            border-radius: 12px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        .demo-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .demo-section h2 {
+            color: #ef4444;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        button.secondary {
+            background: transparent;
+            border: 2px solid #ef4444;
+            color: #ef4444;
+        }
+        
+        button.secondary:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        .widget-container {
+            min-height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .code-block {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .code-block pre {
+            color: #e5e5e5;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .highlight {
+            color: #fbbf24;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .links a {
+            color: #ef4444;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        
+        .links a:hover {
+            color: #f97316;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .demo-section {
+                padding: 20px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Movie Booking SDK</h1>
+            <p class="subtitle">Vanilla JavaScript Integration Example</p>
+        </header>
+
+        <div class="demo-section">
+            <h2>🎬 Basic Integration</h2>
+            <p>Simple movie booking widget with default settings.</p>
+            
+            <div class="code-block">
+                <pre><code><span class="highlight">// Basic JavaScript Integration</span>
+const booking = MovieBookingSDK.createIntegration({
+  movieId: 'f1-movie-2025',
+  apiKey: 'demo-api-key',
+  containerId: 'basic-widget',
+  theme: 'action-hero'
+});
+</code></pre>
+            </div>
+            
+            <div class="controls">
+                <button onclick="loadBasicWidget()">Load Basic Widget</button>
+                <button class="secondary" onclick="clearWidget('basic-widget')">Clear</button>
+            </div>
+            
+            <div id="basic-widget" class="widget-container"></div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🎭 Theme Variations</h2>
+            <p>Experience different pre-built themes for various movie genres.</p>
+            
+            <div class="controls">
+                <button onclick="loadThemedWidget('action-hero')">🎬 Action Hero</button>
+                <button onclick="loadThemedWidget('horror-dark')">💀 Horror Dark</button>
+                <button onclick="loadThemedWidget('romantic-blush')">💕 Romantic</button>
+                <button onclick="loadThemedWidget('sci-fi-neon')">🚀 Sci-Fi</button>
+                <button class="secondary" onclick="clearWidget('themed-widget')">Clear</button>
+            </div>
+            
+            <div id="themed-widget" class="widget-container"></div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🎨 Custom Theme</h2>
+            <p>Create your own custom theme with personalized colors and styling.</p>
+            
+            <div class="code-block">
+                <pre><code><span class="highlight">// Custom Theme Example</span>
+const customBooking = MovieBookingSDK.createIntegration({
+  movieId: 'custom-movie',
+  apiKey: 'demo-api-key',
+  containerId: 'custom-widget',
+  theme: {
+    colors: {
+      primary: '#8b5cf6',
+      secondary: '#a855f7',
+      background: '#1e1b4b',
+      text: '#e0e7ff',
+      accent: '#8b5cf6'
+    },
+    gradients: {
+      primary: {
+        type: 'linear',
+        direction: '135deg',
+        colors: ['#8b5cf6', '#7c3aed']
+      }
+    }
+  }
+});
+</code></pre>
+            </div>
+            
+            <div class="controls">
+                <button onclick="loadCustomWidget()">Load Custom Theme</button>
+                <button class="secondary" onclick="clearWidget('custom-widget')">Clear</button>
+            </div>
+            
+            <div id="custom-widget" class="widget-container"></div>
+        </div>
+
+        <div class="demo-section">
+            <h2>📱 Mobile Optimized</h2>
+            <p>Experience the mobile-first design with touch-friendly interactions.</p>
+            
+            <div class="controls">
+                <button onclick="loadMobileWidget()">Load Mobile Widget</button>
+                <button class="secondary" onclick="clearWidget('mobile-widget')">Clear</button>
+            </div>
+            
+            <div id="mobile-widget" class="widget-container"></div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🔗 Iframe Embed</h2>
+            <p>Easy iframe integration for any website.</p>
+            
+            <div class="code-block">
+                <pre><code><span class="highlight">// Iframe Embed</span>
+&lt;iframe 
+  src="https://embed.your-platform.com/movie?movieId=f1-movie&theme=action-hero"
+  width="100%"
+  height="600px"
+  frameborder="0"
+  allowfullscreen&gt;
+&lt;/iframe&gt;
+</code></pre>
+            </div>
+            
+            <div class="controls">
+                <button onclick="loadIframeEmbed()">Load Iframe</button>
+                <button class="secondary" onclick="clearWidget('iframe-widget')">Clear</button>
+            </div>
+            
+            <div id="iframe-widget" class="widget-container"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Powered by Movie Booking SDK v1.0.0-beta.1</p>
+        <div class="links">
+            <a href="https://github.com/your-platform/movie-booking-sdk">GitHub</a>
+            <a href="https://docs.your-platform.com">Documentation</a>
+            <a href="https://npmjs.com/package/@your-platform/movie-booking-sdk">NPM</a>
+        </div>
+    </footer>
+
+    <!-- SDK Script -->
+    <script src="https://cdn.your-platform.com/movie-booking-sdk.js"></script>
+    
+    <!-- Demo Scripts -->
+    <script>
+        // Global widget instances
+        let widgets = {};
+
+        // Event handlers
+        function handleBookingComplete(booking) {
+            console.log('Booking completed:', booking);
+            alert(`Booking completed! Confirmation: #${booking.id || 'MV' + Date.now().toString().slice(-6)}`);
+        }
+
+        function handleError(error) {
+            console.error('Widget error:', error);
+            alert('An error occurred. Please try again.');
+        }
+
+        // Widget loaders
+        function loadBasicWidget() {
+            clearWidget('basic-widget');
+            
+            widgets.basic = MovieBookingSDK.createIntegration({
+                movieId: 'f1-movie-2025',
+                apiKey: 'demo-api-key',
+                containerId: 'basic-widget',
+                theme: 'action-hero',
+                mobileOptimized: true,
+                onBookingComplete: handleBookingComplete,
+                onError: handleError
+            });
+        }
+
+        function loadThemedWidget(theme) {
+            clearWidget('themed-widget');
+            
+            widgets.themed = MovieBookingSDK.createIntegration({
+                movieId: `${theme}-movie`,
+                apiKey: 'demo-api-key',
+                containerId: 'themed-widget',
+                theme: theme,
+                mobileOptimized: true,
+                onBookingComplete: handleBookingComplete,
+                onError: handleError
+            });
+        }
+
+        function loadCustomWidget() {
+            clearWidget('custom-widget');
+            
+            widgets.custom = MovieBookingSDK.createIntegration({
+                movieId: 'custom-movie',
+                apiKey: 'demo-api-key',
+                containerId: 'custom-widget',
+                theme: {
+                    colors: {
+                        primary: '#8b5cf6',
+                        secondary: '#a855f7',
+                        background: '#1e1b4b',
+                        text: '#e0e7ff',
+                        accent: '#8b5cf6'
+                    },
+                    gradients: {
+                        primary: {
+                            type: 'linear',
+                            direction: '135deg',
+                            colors: ['#8b5cf6', '#7c3aed'],
+                            stops: [0, 100]
+                        }
+                    }
+                },
+                mobileOptimized: true,
+                onBookingComplete: handleBookingComplete,
+                onError: handleError
+            });
+        }
+
+        function loadMobileWidget() {
+            clearWidget('mobile-widget');
+            
+            widgets.mobile = MovieBookingSDK.createIntegration({
+                movieId: 'mobile-movie',
+                apiKey: 'demo-api-key',
+                containerId: 'mobile-widget',
+                theme: 'sci-fi-neon',
+                mobileOptimized: true,
+                responsive: true,
+                onBookingComplete: handleBookingComplete,
+                onError: handleError
+            });
+        }
+
+        function loadIframeEmbed() {
+            clearWidget('iframe-widget');
+            
+            const iframe = document.createElement('iframe');
+            iframe.src = 'https://embed.your-platform.com/movie?movieId=f1-movie&theme=action-hero';
+            iframe.width = '100%';
+            iframe.height = '600px';
+            iframe.frameBorder = '0';
+            iframe.allowFullscreen = true;
+            iframe.style.borderRadius = '8px';
+            
+            document.getElementById('iframe-widget').appendChild(iframe);
+        }
+
+        function clearWidget(containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            // Clean up widget instances
+            Object.keys(widgets).forEach(key => {
+                if (widgets[key] && widgets[key].container && widgets[key].container.id === containerId) {
+                    if (widgets[key].destroy) {
+                        widgets[key].destroy();
+                    }
+                    delete widgets[key];
+                }
+            });
+        }
+
+        // Auto-load basic widget on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(loadBasicWidget, 1000);
+        });
+
+        // Mobile detection and optimization
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            document.body.classList.add('mobile-device');
+        }
+    </script>
+</body>
+</html>
