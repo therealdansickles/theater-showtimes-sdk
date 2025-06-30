@@ -222,3 +222,163 @@ async def get_customization_presets(category: Optional[str] = Query(None)):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to retrieve presets: {str(e)}")
+
+@router.post("/{movie_id}/categories")
+async def add_screening_category_to_movie(movie_id: str, category_id: str):
+    """Add a screening category to a movie"""
+    try:
+        # Check if movie exists
+        movie = await find_document("movie_configurations", {"id": movie_id})
+        if not movie:
+            raise HTTPException(status_code=404, detail="Movie configuration not found")
+        
+        # Check if category exists
+        category = await find_document("screening_categories", {"id": category_id})
+        if not category:
+            raise HTTPException(status_code=404, detail="Screening category not found")
+        
+        # Check if category is already added to movie
+        movie_categories = movie.get("screening_categories", [])
+        if any(cat.get("id") == category_id for cat in movie_categories):
+            raise HTTPException(status_code=400, detail="Category already added to movie")
+        
+        # Add category to movie
+        category_obj = ScreeningCategory(**category)
+        movie_categories.append(category_obj.dict())
+        
+        success = await update_document("movie_configurations", {"id": movie_id}, 
+                                      {"screening_categories": movie_categories})
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to add category to movie")
+        
+        return {"message": "Screening category added to movie successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to add category to movie: {str(e)}")
+
+@router.delete("/{movie_id}/categories/{category_id}")
+async def remove_screening_category_from_movie(movie_id: str, category_id: str):
+    """Remove a screening category from a movie"""
+    try:
+        # Check if movie exists
+        movie = await find_document("movie_configurations", {"id": movie_id})
+        if not movie:
+            raise HTTPException(status_code=404, detail="Movie configuration not found")
+        
+        # Remove category from movie
+        movie_categories = movie.get("screening_categories", [])
+        updated_categories = [cat for cat in movie_categories if cat.get("id") != category_id]
+        
+        if len(updated_categories) == len(movie_categories):
+            raise HTTPException(status_code=404, detail="Category not found in movie")
+        
+        success = await update_document("movie_configurations", {"id": movie_id}, 
+                                      {"screening_categories": updated_categories})
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to remove category from movie")
+        
+        return {"message": "Screening category removed from movie successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to remove category from movie: {str(e)}")
+
+@router.get("/{movie_id}/categories", response_model=List[ScreeningCategory])
+async def get_movie_screening_categories(movie_id: str):
+    """Get all screening categories for a movie"""
+    try:
+        movie = await find_document("movie_configurations", {"id": movie_id})
+        if not movie:
+            raise HTTPException(status_code=404, detail="Movie configuration not found")
+        
+        categories = movie.get("screening_categories", [])
+        return [ScreeningCategory(**category) for category in categories]
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve movie categories: {str(e)}")
+
+@router.get("/{movie_id}/showtimes/categorized")
+async def get_categorized_showtimes(
+    movie_id: str,
+    time_category: Optional[str] = Query(None, description="Filter by time category: morning, afternoon, evening, late_night"),
+    screening_category: Optional[str] = Query(None, description="Filter by screening category name")
+):
+    """Get categorized showtimes for a movie with filtering options"""
+    try:
+        movie = await find_document("movie_configurations", {"id": movie_id})
+        if not movie:
+            raise HTTPException(status_code=404, detail="Movie configuration not found")
+        
+        theaters = movie.get("theaters", [])
+        categorized_data = []
+        
+        for theater in theaters:
+            theater_data = {
+                "theater_id": theater.get("id"),
+                "theater_name": theater.get("name"),
+                "theater_address": theater.get("address"),
+                "screening_formats": []
+            }
+            
+            for format_info in theater.get("formats", []):
+                format_data = {
+                    "category_name": format_info.get("category_name", "Unknown"),
+                    "category_id": format_info.get("category_id"),
+                    "times_by_category": {
+                        "morning": [],
+                        "afternoon": [], 
+                        "evening": [],
+                        "late_night": []
+                    }
+                }
+                
+                # Filter by screening category if specified
+                if screening_category and format_info.get("category_name") != screening_category:
+                    continue
+                
+                # Categorize times
+                for time_slot in format_info.get("times", []):
+                    time_str = time_slot.get("time") if isinstance(time_slot, dict) else str(time_slot)
+                    time_cat = categorize_time(time_str)
+                    
+                    # Filter by time category if specified
+                    if time_category and time_cat != time_category:
+                        continue
+                    
+                    time_info = {
+                        "time": time_str,
+                        "category": time_cat,
+                        "available_seats": time_slot.get("available_seats") if isinstance(time_slot, dict) else None,
+                        "price_modifier": time_slot.get("price_modifier", 1.0) if isinstance(time_slot, dict) else 1.0
+                    }
+                    
+                    format_data["times_by_category"][time_cat].append(time_info)
+                
+                # Only include formats that have times after filtering
+                if any(format_data["times_by_category"].values()):
+                    theater_data["screening_formats"].append(format_data)
+            
+            # Only include theaters that have formats after filtering
+            if theater_data["screening_formats"]:
+                categorized_data.append(theater_data)
+        
+        return {
+            "movie_id": movie_id,
+            "movie_title": movie.get("movie_title"),
+            "total_theaters": len(categorized_data),
+            "theaters": categorized_data,
+            "filters_applied": {
+                "time_category": time_category,
+                "screening_category": screening_category
+            }
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve categorized showtimes: {str(e)}")
