@@ -161,6 +161,32 @@ export interface TheaterLocation {
   website?: string;
 }
 
+// Screening Categories
+export interface ScreeningCategory {
+  id: string;
+  name: string;
+  type: 'format' | 'experience' | 'special_event';
+  description?: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface TimeSlot {
+  time: string;
+  category: 'morning' | 'afternoon' | 'evening' | 'late_night';
+  available_seats?: number;
+  price_modifier?: number;
+}
+
+export interface ScreeningFormat {
+  category_id: string;
+  category_name: string;
+  times: TimeSlot[];
+  price?: number;
+  special_notes?: string;
+}
+
+// Theater Format (Legacy - for backwards compatibility)
 export interface TheaterFormat {
   type: string;
   times: string[];
