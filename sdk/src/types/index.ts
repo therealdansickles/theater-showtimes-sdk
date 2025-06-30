@@ -48,7 +48,8 @@ export interface MovieConfig {
   cast: string[];
   
   // Booking Configuration
-  available_formats: string[];
+  available_formats: string[]; // Legacy field
+  screening_categories: ScreeningCategory[]; // New dynamic categories
   theaters: TheaterLocation[];
   
   // Status
