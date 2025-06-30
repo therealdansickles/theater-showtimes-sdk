@@ -288,11 +288,29 @@ export const SearchFilter = ({ selectedLocation, setSelectedLocation, selectedFo
 };
 
 // Theater Card Component
-export const TheaterCard = ({ theater, onSelectTheater }) => {
+export const TheaterCard = ({ theater, onSelectTheater, movieConfig }) => {
+  const primaryGradient = movieConfig?.primary_gradient || { type: 'linear', direction: '135deg', colors: ['#ef4444', '#dc2626'] };
+  const secondaryGradient = movieConfig?.secondary_gradient || { type: 'linear', direction: '135deg', colors: ['#f97316', '#ea580c'] };
+  
+  const gradientStyle = {
+    background: `${primaryGradient.type}-gradient(${primaryGradient.type === 'linear' ? primaryGradient.direction + ', ' : ''}${primaryGradient.colors.join(', ')})`
+  };
+
+  const hoverGradientStyle = {
+    background: `${secondaryGradient.type}-gradient(${secondaryGradient.type === 'linear' ? secondaryGradient.direction + ', ' : ''}${secondaryGradient.colors.join(', ')})`
+  };
+
   return (
     <div 
-      className="bg-gradient-to-r from-orange-500 to-red-600 text-white p-6 rounded-lg cursor-pointer hover:from-orange-600 hover:to-red-700 transition-all duration-300 shadow-lg"
+      className="text-white p-6 rounded-lg cursor-pointer transition-all duration-300 shadow-lg theater-card"
+      style={gradientStyle}
       onClick={onSelectTheater}
+      onMouseEnter={(e) => {
+        Object.assign(e.currentTarget.style, hoverGradientStyle);
+      }}
+      onMouseLeave={(e) => {
+        Object.assign(e.currentTarget.style, gradientStyle);
+      }}
     >
       <div className="flex items-center justify-between">
         <div className="flex-1">
