@@ -263,11 +263,14 @@ export interface MovieHeroProps {
 export interface TheaterListingsProps {
   theaters: TheaterLocation[];
   selectedFormats?: string[];
+  selectedTimeCategories?: string[]; // New time-based filtering
   onTheaterSelect: (theater: TheaterLocation) => void;
   onFormatFilter?: (formats: string[]) => void;
+  onTimeCategoryFilter?: (categories: string[]) => void; // New time filtering callback
   theme?: Partial<ThemeConfig>;
   loading?: boolean;
   mobileOptimized?: boolean;
+  availableScreeningCategories?: ScreeningCategory[]; // Available categories for filtering
 }
 
 // API Response Types
