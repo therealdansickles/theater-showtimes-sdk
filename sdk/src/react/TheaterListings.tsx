@@ -258,7 +258,7 @@ export const TheaterListings: React.FC<TheaterListingsProps> = ({
           </motion.button>
         </motion.div>
 
-        {/* Format Filters */}
+        {/* Format and Time Filters */}
         <AnimatePresence>
           {showFilters && (
             <motion.div
@@ -273,25 +273,167 @@ export const TheaterListings: React.FC<TheaterListingsProps> = ({
                 border: `1px solid ${theme?.accent_color || '#ef4444'}30`
               }}
             >
+              {/* Filter Tabs */}
               <div style={{
-                display: 'grid',
-                gridTemplateColumns: mobileOptimized ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(120px, 1fr))',
-                gap: '8px'
+                display: 'flex',
+                gap: '8px',
+                marginBottom: '16px',
+                borderBottom: `1px solid ${theme?.accent_color || '#ef4444'}30`,
+                paddingBottom: '8px'
               }}>
-                {availableFormats.map(format => (
+                <motion.button
+                  onClick={() => setActiveFilterTab('formats')}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '6px',
+                    border: 'none',
+                    backgroundColor: activeFilterTab === 'formats' 
+                      ? theme?.accent_color || '#ef4444' 
+                      : 'transparent',
+                    color: activeFilterTab === 'formats' 
+                      ? '#ffffff' 
+                      : theme?.text_color || '#ffffff',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  🎬 Formats
+                </motion.button>
+                <motion.button
+                  onClick={() => setActiveFilterTab('time')}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '6px',
+                    border: 'none',
+                    backgroundColor: activeFilterTab === 'time' 
+                      ? theme?.accent_color || '#ef4444' 
+                      : 'transparent',
+                    color: activeFilterTab === 'time' 
+                      ? '#ffffff' 
+                      : theme?.text_color || '#ffffff',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  🕐 Time
+                </motion.button>
+              </div>
+
+              {/* Format Filters */}
+              {activeFilterTab === 'formats' && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: mobileOptimized ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(120px, 1fr))',
+                    gap: '8px'
+                  }}
+                >
+                  {availableFormats.map(format => (
+                    <motion.button
+                      key={format}
+                      onClick={() => handleFormatToggle(format)}
+                      style={{
+                        padding: '8px 12px',
+                        borderRadius: '6px',
+                        border: `1px solid ${theme?.accent_color || '#ef4444'}30`,
+                        backgroundColor: selectedFormats.includes(format) 
+                          ? theme?.accent_color || '#ef4444' 
+                          : 'transparent',
+                        color: selectedFormats.includes(format) 
+                          ? '#ffffff' 
+                          : theme?.text_color || '#ffffff',
+                        fontSize: '12px',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        textAlign: 'center'
+                      }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {format}
+                    </motion.button>
+                  ))}
+                </motion.div>
+              )}
+
+              {/* Time Category Filters */}
+              {activeFilterTab === 'time' && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: mobileOptimized ? '1fr' : 'repeat(2, 1fr)',
+                    gap: '8px'
+                  }}
+                >
+                  {availableTimeCategories.map(category => (
+                    <motion.button
+                      key={category}
+                      onClick={() => handleTimeCategoryToggle(category)}
+                      style={{
+                        padding: '12px 16px',
+                        borderRadius: '8px',
+                        border: `1px solid ${theme?.accent_color || '#ef4444'}30`,
+                        backgroundColor: selectedTimeCategories.includes(category) 
+                          ? theme?.accent_color || '#ef4444' 
+                          : 'transparent',
+                        color: selectedTimeCategories.includes(category) 
+                          ? '#ffffff' 
+                          : theme?.text_color || '#ffffff',
+                        fontSize: '14px',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        textAlign: 'left',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
+                      }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span style={{ fontSize: '16px' }}>{getTimeCategoryIcon(category)}</span>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontWeight: '600', textTransform: 'capitalize' }}>
+                          {category.replace('_', ' ')}
+                        </span>
+                        <span style={{ fontSize: '12px', opacity: 0.8 }}>
+                          {getTimeCategoryLabel(category)}
+                        </span>
+                      </div>
+                    </motion.button>
+                  ))}
+                </motion.div>
+              )}
+
+              {/* Clear Filters */}
+              {(selectedFormats.length > 0 || selectedTimeCategories.length > 0) && (
+                <motion.div
+                  style={{ marginTop: '16px', textAlign: 'center' }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
                   <motion.button
-                    key={format}
-                    onClick={() => handleFormatToggle(format)}
+                    onClick={() => {
+                      onFormatFilter?.([]);
+                      onTimeCategoryFilter?.([]);
+                    }}
                     style={{
-                      padding: '8px 12px',
+                      padding: '8px 16px',
                       borderRadius: '6px',
-                      border: `1px solid ${theme?.accent_color || '#ef4444'}30`,
-                      backgroundColor: selectedFormats.includes(format) 
-                        ? theme?.accent_color || '#ef4444' 
-                        : 'transparent',
-                      color: selectedFormats.includes(format) 
-                        ? '#ffffff' 
-                        : theme?.text_color || '#ffffff',
+                      border: `1px solid ${theme?.accent_color || '#ef4444'}`,
+                      backgroundColor: 'transparent',
+                      color: theme?.accent_color || '#ef4444',
                       fontSize: '12px',
                       cursor: 'pointer',
                       transition: 'all 0.3s ease'
@@ -299,10 +441,10 @@ export const TheaterListings: React.FC<TheaterListingsProps> = ({
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    {format}
+                    Clear All Filters
                   </motion.button>
-                ))}
-              </div>
+                </motion.div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
