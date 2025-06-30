@@ -154,11 +154,13 @@ export interface TheaterLocation {
   state: string;
   zip_code: string;
   distance?: number;
-  formats: TheaterFormat[];
-  showtimes: string[];
+  formats: ScreeningFormat[]; // Updated to use new ScreeningFormat
+  showtimes: string[]; // Legacy field for backwards compatibility
   amenities?: string[];
   phone?: string;
   website?: string;
+  // Legacy formats for backwards compatibility
+  legacy_formats?: TheaterFormat[];
 }
 
 // Screening Categories
