@@ -26,6 +26,9 @@ const { width: screenWidth } = Dimensions.get('window');
 
 interface TheaterListingsNativeProps extends Omit<TheaterListingsProps, 'className'> {
   containerStyle?: any;
+  selectedTimeCategories?: string[];
+  onTimeCategoryFilter?: (categories: string[]) => void;
+  availableScreeningCategories?: ScreeningCategory[];
 }
 
 export const TheaterListingsNative: React.FC<TheaterListingsNativeProps> = ({
