@@ -669,11 +669,13 @@ const TheaterCard: React.FC<TheaterCardProps> = ({
                         >
                           <span style={{ fontSize: '10px' }}>{getTimeCategoryIcon(timeCategory)}</span>
                           {formatShowtime(timeStr)}
-                    </button>
-                  ))}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
