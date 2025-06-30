@@ -593,6 +593,91 @@ const createStyles = (theme?: any) => StyleSheet.create({
     color: '#ffffff',
     fontWeight: '600',
   },
+  filterTabs: {
+    flexDirection: 'row',
+    marginBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: theme?.accent_color ? `${theme.accent_color}30` : '#ef444430',
+    paddingBottom: 8,
+  },
+  filterTab: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 6,
+    marginRight: 8,
+  },
+  filterTabActive: {
+    backgroundColor: theme?.accent_color || '#ef4444',
+  },
+  filterTabText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: theme?.text_color || '#ffffff',
+  },
+  filterTabTextActive: {
+    color: '#ffffff',
+    fontWeight: '600',
+  },
+  timeGrid: {
+    gap: 8,
+  },
+  timeButton: {
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: theme?.accent_color ? `${theme.accent_color}30` : '#ef444430',
+    backgroundColor: 'transparent',
+    marginBottom: 8,
+  },
+  timeButtonActive: {
+    backgroundColor: theme?.accent_color || '#ef4444',
+    borderColor: theme?.accent_color || '#ef4444',
+  },
+  timeButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  timeButtonIcon: {
+    fontSize: 16,
+    marginRight: 8,
+  },
+  timeButtonTextContainer: {
+    flex: 1,
+  },
+  timeButtonTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: theme?.text_color || '#ffffff',
+  },
+  timeButtonTitleActive: {
+    color: '#ffffff',
+  },
+  timeButtonDescription: {
+    fontSize: 12,
+    color: theme?.text_color || '#ffffff',
+    opacity: 0.8,
+    marginTop: 2,
+  },
+  timeButtonDescriptionActive: {
+    color: '#ffffff',
+    opacity: 1,
+  },
+  clearFiltersButton: {
+    marginTop: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: theme?.accent_color || '#ef4444',
+    backgroundColor: 'transparent',
+    alignSelf: 'center',
+  },
+  clearFiltersText: {
+    fontSize: 12,
+    color: theme?.accent_color || '#ef4444',
+    fontWeight: '500',
+    textAlign: 'center',
+  },
   separator: {
     height: 12,
   },
