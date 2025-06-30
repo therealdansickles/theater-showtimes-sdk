@@ -1,11 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, time
 import uuid
 
 from ..models import (
     MovieConfiguration, MovieConfigurationCreate, MovieConfigurationUpdate,
-    TheaterLocation, TheaterLocationCreate, CustomizationPreset
+    TheaterLocation, TheaterLocationCreate, CustomizationPreset,
+    ScreeningCategory, ScreeningFormat, TimeSlot
 )
 from ..database import (
     get_database, insert_document, find_document, find_documents,
