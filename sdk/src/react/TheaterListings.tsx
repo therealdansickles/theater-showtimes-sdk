@@ -606,7 +606,12 @@ const TheaterCard: React.FC<TheaterCardProps> = ({
 
           {/* Formats and Showtimes */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {theater.formats.map((format, formatIndex) => (
+            {theater.formats.map((format, formatIndex) => {
+              // Handle both new ScreeningFormat and legacy TheaterFormat structures
+              const formatName = 'category_name' in format ? format.category_name : (format as any).type;
+              const times = 'times' in format ? format.times : [];
+              
+              return (
               <div 
                 key={formatIndex}
                 style={{ 
