@@ -1,7 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TheaterLocation, TheaterListingsProps } from '../types';
-import { generateGradientCSS, formatShowtime } from '../utils';
+import { TheaterLocation, TheaterListingsProps, ScreeningCategory } from '../types';
+import { 
+  generateGradientCSS, 
+  formatShowtime, 
+  categorizeTime, 
+  getTimeCategoryLabel, 
+  getTimeCategoryIcon,
+  groupScreeningCategoriesByType,
+  getScreeningCategoryTypeLabel,
+  filterTimeSlotsByCategory
+} from '../utils';
 import { ANIMATION_PRESETS } from '../constants';
 
 export const TheaterListings: React.FC<TheaterListingsProps> = ({
