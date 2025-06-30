@@ -15,6 +15,40 @@ from ..database import (
 
 router = APIRouter(prefix="/movies", tags=["movies"])
 
+def categorize_time(time_str: str) -> str:
+    """Automatically categorize a time string into morning, afternoon, evening, or late_night"""
+    try:
+        # Parse various time formats
+        time_str = time_str.strip().upper()
+        
+        # Handle common formats
+        if 'PM' in time_str or 'AM' in time_str:
+            # 12-hour format
+            time_part = time_str.replace('AM', '').replace('PM', '').strip()
+            hour = int(time_part.split(':')[0])
+            
+            if 'PM' in time_str and hour != 12:
+                hour += 12
+            elif 'AM' in time_str and hour == 12:
+                hour = 0
+        else:
+            # 24-hour format or just hour
+            hour = int(time_str.split(':')[0])
+        
+        # Categorize based on hour
+        if 6 <= hour < 12:
+            return "morning"
+        elif 12 <= hour < 17:
+            return "afternoon"
+        elif 17 <= hour < 22:
+            return "evening"
+        else:
+            return "late_night"
+            
+    except (ValueError, IndexError):
+        # Default to evening if parsing fails
+        return "evening"
+
 @router.post("/", response_model=MovieConfiguration)
 async def create_movie_configuration(movie_config: MovieConfigurationCreate):
     """Create a new movie configuration"""
