@@ -1,31 +1,66 @@
 import React, { useState } from 'react';
 
 // Main Header Component
-export const Header = () => {
+export const Header = ({ movieConfig }) => {
+  const accentColor = movieConfig?.accent_color || '#ef4444';
+  
   return (
     <header className="bg-black text-white">
       <div className="flex items-center justify-between px-6 py-4">
         <div className="flex items-center space-x-8">
-          <div className="text-2xl font-bold text-red-500">F1</div>
+          <div className="flex items-center space-x-2">
+            {movieConfig?.logo_image && (
+              <img 
+                src={process.env.REACT_APP_BACKEND_URL + movieConfig.logo_image} 
+                alt="Logo" 
+                className="h-8 w-auto"
+              />
+            )}
+            <div className="text-2xl font-bold" style={{ color: accentColor }}>
+              {movieConfig?.movie_title || 'F1'}
+            </div>
+          </div>
           <nav className="hidden md:flex space-x-6">
-            <a href="#" className="hover:text-red-500 transition-colors">Home</a>
-            <a href="#" className="hover:text-red-500 transition-colors">Videos</a>
-            <a href="#" className="hover:text-red-500 transition-colors">Get Tickets</a>
-            <a href="#" className="hover:text-red-500 transition-colors">F1® The Album</a>
+            <a href="#" className="transition-colors" style={{ color: 'white' }} 
+               onMouseEnter={(e) => e.target.style.color = accentColor}
+               onMouseLeave={(e) => e.target.style.color = 'white'}>
+              Home
+            </a>
+            <a href="#" className="transition-colors" style={{ color: 'white' }}
+               onMouseEnter={(e) => e.target.style.color = accentColor}
+               onMouseLeave={(e) => e.target.style.color = 'white'}>
+              Videos
+            </a>
+            <a href="#" className="transition-colors" style={{ color: 'white' }}
+               onMouseEnter={(e) => e.target.style.color = accentColor}
+               onMouseLeave={(e) => e.target.style.color = 'white'}>
+              Get Tickets
+            </a>
+            <a href="/admin" className="transition-colors" style={{ color: 'white' }}
+               onMouseEnter={(e) => e.target.style.color = accentColor}
+               onMouseLeave={(e) => e.target.style.color = 'white'}>
+              Admin
+            </a>
           </nav>
         </div>
         <div className="flex items-center space-x-4">
-          <button className="p-2 hover:text-red-500 transition-colors">
+          <button className="p-2 transition-colors" style={{ color: 'white' }}
+                  onMouseEnter={(e) => e.target.style.color = accentColor}
+                  onMouseLeave={(e) => e.target.style.color = 'white'}>
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/>
             </svg>
           </button>
-          <button className="p-2 hover:text-red-500 transition-colors">
+          <button className="p-2 transition-colors" style={{ color: 'white' }}
+                  onMouseEnter={(e) => e.target.style.color = accentColor}
+                  onMouseLeave={(e) => e.target.style.color = 'white'}>
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
             </svg>
           </button>
-          <button className="p-2 hover:text-red-500 transition-colors">
+          <button className="p-2 transition-colors" style={{ color: 'white' }}
+                  onMouseEnter={(e) => e.target.style.color = accentColor}
+                  onMouseLeave={(e) => e.target.style.color = 'white'}>
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
