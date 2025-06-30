@@ -53,14 +53,43 @@ export const TheaterListingsNative: React.FC<TheaterListingsNativeProps> = ({
   // Filter and sort theaters
   const filteredTheaters = useMemo(() => {
     let filtered = theaters.filter(theater => {
+      // Search filter
       const matchesSearch = theater.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            theater.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            theater.city.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesFormat = selectedFormats.length === 0 || 
-                           theater.formats.some(format => selectedFormats.includes(format.type));
+      // Format filter - handle both new and legacy format structures
+      let matchesFormat = true;
+      if (selectedFormats.length > 0) {
+        matchesFormat = theater.formats.some(format => {
+          // New structure: ScreeningFormat with category_name
+          if ('category_name' in format) {
+            return selectedFormats.includes(format.category_name);
+          }
+          // Legacy structure: TheaterFormat with type
+          if ('type' in format) {
+            return selectedFormats.includes((format as any).type);
+          }
+          return false;
+        });
+      }
 
-      return matchesSearch && matchesFormat;
+      // Time category filter
+      let matchesTimeCategory = true;
+      if (selectedTimeCategories.length > 0) {
+        matchesTimeCategory = theater.formats.some(format => {
+          const times = 'times' in format ? format.times : [];
+          return times.some(timeSlot => {
+            const timeStr = typeof timeSlot === 'string' ? timeSlot : timeSlot.time;
+            const timeCategory = typeof timeSlot === 'object' && 'category' in timeSlot 
+              ? timeSlot.category 
+              : categorizeTime(timeStr);
+            return selectedTimeCategories.includes(timeCategory);
+          });
+        });
+      }
+
+      return matchesSearch && matchesFormat && matchesTimeCategory;
     });
 
     filtered.sort((a, b) => {
@@ -72,7 +101,7 @@ export const TheaterListingsNative: React.FC<TheaterListingsNativeProps> = ({
     });
 
     return filtered;
-  }, [theaters, searchTerm, selectedFormats, sortBy]);
+  }, [theaters, searchTerm, selectedFormats, selectedTimeCategories, sortBy]);
 
   // Available formats from all theaters
   const availableFormats = useMemo(() => {
