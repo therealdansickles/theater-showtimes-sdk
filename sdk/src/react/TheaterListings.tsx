@@ -127,6 +127,13 @@ export const TheaterListings: React.FC<TheaterListingsProps> = ({
     onFormatFilter?.(newFormats);
   };
 
+  const handleTimeCategoryToggle = (category: string) => {
+    const newCategories = selectedTimeCategories.includes(category)
+      ? selectedTimeCategories.filter(c => c !== category)
+      : [...selectedTimeCategories, category];
+    onTimeCategoryFilter?.(newCategories);
+  };
+
   const containerStyle = {
     padding: mobileOptimized ? '16px' : '24px',
     backgroundColor: theme?.background_color || '#000000',
