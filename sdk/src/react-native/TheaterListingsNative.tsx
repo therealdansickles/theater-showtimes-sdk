@@ -804,6 +804,15 @@ const createTheaterCardStyles = (theme?: any) => StyleSheet.create({
     minHeight: 28,
     justifyContent: 'center',
   },
+  timeButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  timeCategoryIcon: {
+    fontSize: 10,
+    marginRight: 4,
+  },
   timeButtonText: {
     fontSize: 12,
     fontWeight: '500',
