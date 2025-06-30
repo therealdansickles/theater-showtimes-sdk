@@ -12,7 +12,7 @@ from datetime import datetime
 
 # Import our custom modules
 from .database import connect_to_mongo, close_mongo_connection
-from .routes import movies, clients, uploads
+from .routes import movies, clients, uploads, categories
 from .models import CustomizationPreset, GradientConfig, ButtonStyle, TypographyConfig
 
 ROOT_DIR = Path(__file__).parent
