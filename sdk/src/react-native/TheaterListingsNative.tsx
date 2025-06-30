@@ -208,28 +208,98 @@ export const TheaterListingsNative: React.FC<TheaterListingsNativeProps> = ({
         </TouchableOpacity>
       </View>
 
-      {/* Format Filters */}
+      {/* Enhanced Filters with Tabs */}
       {showFilters && (
         <View style={styles.formatsContainer}>
-          <View style={styles.formatsGrid}>
-            {availableFormats.map(format => (
-              <TouchableOpacity
-                key={format}
-                style={[
-                  styles.formatButton,
-                  selectedFormats.includes(format) && styles.formatButtonActive
-                ]}
-                onPress={() => handleFormatToggle(format)}
-              >
-                <Text style={[
-                  styles.formatButtonText,
-                  selectedFormats.includes(format) && styles.formatButtonTextActive
-                ]}>
-                  {format}
-                </Text>
-              </TouchableOpacity>
-            ))}
+          {/* Filter Tabs */}
+          <View style={styles.filterTabs}>
+            <TouchableOpacity
+              style={[styles.filterTab, activeFilterTab === 'formats' && styles.filterTabActive]}
+              onPress={() => setActiveFilterTab('formats')}
+            >
+              <Text style={[styles.filterTabText, activeFilterTab === 'formats' && styles.filterTabTextActive]}>
+                🎬 Formats
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.filterTab, activeFilterTab === 'time' && styles.filterTabActive]}
+              onPress={() => setActiveFilterTab('time')}
+            >
+              <Text style={[styles.filterTabText, activeFilterTab === 'time' && styles.filterTabTextActive]}>
+                🕐 Time
+              </Text>
+            </TouchableOpacity>
           </View>
+
+          {/* Format Filters */}
+          {activeFilterTab === 'formats' && (
+            <View style={styles.formatsGrid}>
+              {availableFormats.map(format => (
+                <TouchableOpacity
+                  key={format}
+                  style={[
+                    styles.formatButton,
+                    selectedFormats.includes(format) && styles.formatButtonActive
+                  ]}
+                  onPress={() => handleFormatToggle(format)}
+                >
+                  <Text style={[
+                    styles.formatButtonText,
+                    selectedFormats.includes(format) && styles.formatButtonTextActive
+                  ]}>
+                    {format}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+
+          {/* Time Category Filters */}
+          {activeFilterTab === 'time' && (
+            <View style={styles.timeGrid}>
+              {availableTimeCategories.map(category => (
+                <TouchableOpacity
+                  key={category}
+                  style={[
+                    styles.timeButton,
+                    selectedTimeCategories.includes(category) && styles.timeButtonActive
+                  ]}
+                  onPress={() => handleTimeCategoryToggle(category)}
+                >
+                  <View style={styles.timeButtonContent}>
+                    <Text style={styles.timeButtonIcon}>{getTimeCategoryIcon(category)}</Text>
+                    <View style={styles.timeButtonTextContainer}>
+                      <Text style={[
+                        styles.timeButtonTitle,
+                        selectedTimeCategories.includes(category) && styles.timeButtonTitleActive
+                      ]}>
+                        {category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      </Text>
+                      <Text style={[
+                        styles.timeButtonDescription,
+                        selectedTimeCategories.includes(category) && styles.timeButtonDescriptionActive
+                      ]}>
+                        {getTimeCategoryLabel(category)}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+
+          {/* Clear Filters */}
+          {(selectedFormats.length > 0 || selectedTimeCategories.length > 0) && (
+            <TouchableOpacity
+              style={styles.clearFiltersButton}
+              onPress={() => {
+                onFormatFilter?.([]);
+                onTimeCategoryFilter?.([]);
+              }}
+            >
+              <Text style={styles.clearFiltersText}>Clear All Filters</Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
     </View>
