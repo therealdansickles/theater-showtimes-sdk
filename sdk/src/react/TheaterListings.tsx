@@ -16,15 +16,19 @@ import { ANIMATION_PRESETS } from '../constants';
 export const TheaterListings: React.FC<TheaterListingsProps> = ({
   theaters,
   selectedFormats = [],
+  selectedTimeCategories = [],
   onTheaterSelect,
   onFormatFilter,
+  onTimeCategoryFilter,
   theme,
   loading = false,
-  mobileOptimized = true
+  mobileOptimized = true,
+  availableScreeningCategories = []
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'distance' | 'name'>('distance');
   const [showFilters, setShowFilters] = useState(false);
+  const [activeFilterTab, setActiveFilterTab] = useState<'formats' | 'time'>('formats');
 
   // Filter and sort theaters
   const filteredTheaters = useMemo(() => {
