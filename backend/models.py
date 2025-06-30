@@ -41,6 +41,27 @@ class ImageAsset(BaseModel):
     category: str  # hero, poster, background, logo, etc.
     uploaded_at: datetime = Field(default_factory=datetime.utcnow)
 
+class ScreeningCategory(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str  # e.g., "IMAX", "Live Q&A", "Live Activations", "Premium"
+    type: str  # e.g., "format", "experience", "special_event"
+    description: Optional[str] = None
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class TimeSlot(BaseModel):
+    time: str  # e.g., "7:00 PM"
+    category: str  # "morning", "afternoon", "evening", "late_night"
+    available_seats: Optional[int] = None
+    price_modifier: Optional[float] = 1.0  # Price multiplier for this time slot
+
+class ScreeningFormat(BaseModel):
+    category_id: str
+    category_name: str
+    times: List[TimeSlot] = []
+    price: Optional[float] = None
+    special_notes: Optional[str] = None
+
 class TheaterLocation(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
@@ -50,8 +71,11 @@ class TheaterLocation(BaseModel):
     state: str
     zip_code: str
     distance: Optional[float] = None
-    formats: List[Dict[str, Any]] = []
-    showtimes: List[str] = []
+    formats: List[ScreeningFormat] = []  # Updated to use new ScreeningFormat
+    showtimes: List[str] = []  # Legacy field for backwards compatibility
+    amenities: List[str] = []
+    phone: Optional[str] = None
+    website: Optional[str] = None
 
 class MovieConfiguration(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
