@@ -3,8 +3,9 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import terser from '@rollup/plugin-terser';
+import { readFileSync } from 'fs';
 
-const packageJson = require('./package.json');
+const packageJson = JSON.parse(readFileSync('./package.json', 'utf8'));
 
 // Determine environment
 const isProduction = process.env.NODE_ENV === 'production';
