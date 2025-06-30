@@ -269,6 +269,7 @@ app.include_router(api_router)
 app.include_router(movies.router, prefix="/api")
 app.include_router(clients.router, prefix="/api")
 app.include_router(uploads.router, prefix="/api")
+app.include_router(categories.router, prefix="/api")
 
 # Mount static files for uploads
 uploads_dir = Path("/app/uploads")
