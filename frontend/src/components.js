@@ -327,17 +327,32 @@ export const TheaterCard = ({ theater, onSelectTheater, movieConfig }) => {
             {theater.formats.map((format, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <span className="bg-black bg-opacity-30 px-2 py-1 rounded text-xs font-semibold">
-                  {format.type}
+                  {format.type || format.category_name}
                 </span>
                 <div className="flex space-x-2">
-                  {format.times.map((time, timeIndex) => (
-                    <button 
-                      key={timeIndex}
-                      className="bg-black bg-opacity-30 hover:bg-black hover:bg-opacity-50 px-3 py-1 rounded text-sm font-semibold transition-colors"
-                    >
-                      {time}
-                    </button>
-                  ))}
+                  {(format.times || []).map((time, timeIndex) => {
+                    // Handle both string times (legacy) and time objects (new format)
+                    const timeStr = typeof time === 'string' ? time : time.time;
+                    const timeCategory = typeof time === 'object' && time.category ? time.category : null;
+                    
+                    return (
+                      <button 
+                        key={timeIndex}
+                        className="bg-black bg-opacity-30 hover:bg-black hover:bg-opacity-50 px-3 py-1 rounded text-sm font-semibold transition-colors"
+                        title={timeCategory ? `${timeStr} (${timeCategory})` : timeStr}
+                      >
+                        {timeCategory && (
+                          <span className="mr-1 text-xs">
+                            {timeCategory === 'morning' ? '🌅' : 
+                             timeCategory === 'afternoon' ? '☀️' : 
+                             timeCategory === 'evening' ? '🌆' : 
+                             timeCategory === 'late_night' ? '🌙' : '🕐'}
+                          </span>
+                        )}
+                        {timeStr}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ))}
