@@ -146,6 +146,13 @@ export const TheaterListingsNative: React.FC<TheaterListingsNativeProps> = ({
     onFormatFilter?.(newFormats);
   };
 
+  const handleTimeCategoryToggle = (category: string) => {
+    const newCategories = selectedTimeCategories.includes(category)
+      ? selectedTimeCategories.filter(c => c !== category)
+      : [...selectedTimeCategories, category];
+    onTimeCategoryFilter?.(newCategories);
+  };
+
   const handleRefresh = async () => {
     setRefreshing(true);
     // Simulate refresh
