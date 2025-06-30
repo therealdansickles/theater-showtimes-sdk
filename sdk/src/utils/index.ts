@@ -281,3 +281,115 @@ export const isImageFile = (filename: string): boolean => {
   const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
   return imageExtensions.includes(getFileExtension(filename));
 };
+
+// Time categorization utilities
+export const categorizeTime = (timeStr: string): 'morning' | 'afternoon' | 'evening' | 'late_night' => {
+  try {
+    // Parse various time formats
+    const cleanTime = timeStr.trim().toUpperCase();
+    
+    let hour: number;
+    
+    // Handle common formats
+    if (cleanTime.includes('PM') || cleanTime.includes('AM')) {
+      // 12-hour format
+      const timePart = cleanTime.replace(/[AP]M/, '').trim();
+      const hourPart = parseInt(timePart.split(':')[0]);
+      
+      if (cleanTime.includes('PM') && hourPart !== 12) {
+        hour = hourPart + 12;
+      } else if (cleanTime.includes('AM') && hourPart === 12) {
+        hour = 0;
+      } else {
+        hour = hourPart;
+      }
+    } else {
+      // 24-hour format or just hour
+      hour = parseInt(cleanTime.split(':')[0]);
+    }
+    
+    // Categorize based on hour
+    if (hour >= 6 && hour < 12) {
+      return 'morning';
+    } else if (hour >= 12 && hour < 17) {
+      return 'afternoon';
+    } else if (hour >= 17 && hour < 22) {
+      return 'evening';
+    } else {
+      return 'late_night';
+    }
+    
+  } catch (error) {
+    // Default to evening if parsing fails
+    return 'evening';
+  }
+};
+
+export const getTimeCategoryLabel = (category: string): string => {
+  const labels = {
+    morning: 'Morning (6AM - 12PM)',
+    afternoon: 'Afternoon (12PM - 5PM)',
+    evening: 'Evening (5PM - 10PM)',
+    late_night: 'Late Night (10PM - 6AM)'
+  };
+  return labels[category as keyof typeof labels] || 'Unknown';
+};
+
+export const getTimeCategoryIcon = (category: string): string => {
+  const icons = {
+    morning: '🌅',
+    afternoon: '☀️',
+    evening: '🌆',
+    late_night: '🌙'
+  };
+  return icons[category as keyof typeof icons] || '🕐';
+};
+
+export const filterTimeSlotsByCategory = (
+  timeSlots: Array<{ time: string; category?: string }>,
+  selectedCategories: string[]
+): Array<{ time: string; category: string }> => {
+  if (selectedCategories.length === 0) {
+    return timeSlots.map(slot => ({
+      ...slot,
+      category: slot.category || categorizeTime(slot.time)
+    }));
+  }
+  
+  return timeSlots
+    .map(slot => ({
+      ...slot,
+      category: slot.category || categorizeTime(slot.time)
+    }))
+    .filter(slot => selectedCategories.includes(slot.category));
+};
+
+// Screening category utilities
+export const groupScreeningCategoriesByType = (categories: Array<{ type: string; name: string; id: string }>) => {
+  return categories.reduce((groups, category) => {
+    const type = category.type;
+    if (!groups[type]) {
+      groups[type] = [];
+    }
+    groups[type].push(category);
+    return groups;
+  }, {} as Record<string, Array<{ type: string; name: string; id: string }>>);
+};
+
+export const getScreeningCategoryTypeLabel = (type: string): string => {
+  const labels = {
+    format: 'Formats',
+    experience: 'Experiences', 
+    special_event: 'Special Events'
+  };
+  return labels[type as keyof typeof labels] || type;
+};
+
+export const getScreeningCategoryTypeIcon = (type: string): string => {
+  const icons = {
+    format: '🎬',
+    experience: '⭐',
+    special_event: '🎉'
+  };
+  return icons[type as keyof typeof icons] || '📽️';
+};
