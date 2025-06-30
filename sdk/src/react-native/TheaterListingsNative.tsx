@@ -103,15 +103,40 @@ export const TheaterListingsNative: React.FC<TheaterListingsNativeProps> = ({
     return filtered;
   }, [theaters, searchTerm, selectedFormats, selectedTimeCategories, sortBy]);
 
-  // Available formats from all theaters
+  // Available formats from all theaters - handle both new and legacy structures
   const availableFormats = useMemo(() => {
     const formats = new Set<string>();
     theaters.forEach(theater => {
       theater.formats.forEach(format => {
-        formats.add(format.type);
+        // New structure: ScreeningFormat with category_name
+        if ('category_name' in format) {
+          formats.add(format.category_name);
+        }
+        // Legacy structure: TheaterFormat with type
+        else if ('type' in format) {
+          formats.add((format as any).type);
+        }
       });
     });
     return Array.from(formats).sort();
+  }, [theaters]);
+
+  // Available time categories from all theaters
+  const availableTimeCategories = useMemo(() => {
+    const categories = new Set<string>();
+    theaters.forEach(theater => {
+      theater.formats.forEach(format => {
+        const times = 'times' in format ? format.times : [];
+        times.forEach(timeSlot => {
+          const timeStr = typeof timeSlot === 'string' ? timeSlot : timeSlot.time;
+          const timeCategory = typeof timeSlot === 'object' && 'category' in timeSlot 
+            ? timeSlot.category 
+            : categorizeTime(timeStr);
+          categories.add(timeCategory);
+        });
+      });
+    });
+    return Array.from(categories).sort();
   }, [theaters]);
 
   const handleFormatToggle = (format: string) => {
