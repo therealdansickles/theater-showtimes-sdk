@@ -113,7 +113,8 @@ class MovieConfiguration(BaseModel):
     cast: List[str] = []
     
     # Booking Configuration
-    available_formats: List[str] = ["2D", "IMAX", "DOLBY", "4DX"]
+    available_formats: List[str] = ["2D", "IMAX", "DOLBY", "4DX"]  # Legacy field
+    screening_categories: List[ScreeningCategory] = []  # New dynamic categories
     theaters: List[TheaterLocation] = []
     
     # Status
