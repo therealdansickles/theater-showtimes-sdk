@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import axios from 'axios';
 import { Header, HeroSection, SearchFilter, TheaterListings, Footer } from './components';
+import { AdminDashboard } from './admin-components';
 
-// Mock theater data
+const API_BASE = process.env.REACT_APP_BACKEND_URL + '/api';
+
+// Mock theater data (will be replaced with dynamic data)
 const mockTheaters = [
   {
     name: "AMC COUNCIL BLUFFS 17",
@@ -98,28 +103,11 @@ const mockTheaters = [
     formats: [
       { type: "2D", times: ["9:40PM"] }
     ]
-  },
-  {
-    name: "MARCUS EAST PARK CINEMA",
-    chain: "MARCUS",
-    address: "225 N. 66TH ST, LINCOLN, NE, 68510",
-    distance: 62,
-    formats: [
-      { type: "DOLBY", times: ["10:10PM"] }
-    ]
-  },
-  {
-    name: "MARCUS LINCOLN GRAND CINEMA",
-    chain: "MARCUS",
-    address: "1203 P STREET, LINCOLN, NE, 68508",
-    distance: 65,
-    formats: [
-      { type: "2D", times: ["9:10PM", "10:30PM"] }
-    ]
   }
 ];
 
-function App() {
+// Movie Booking Page Component (Dynamic)
+const MovieBookingPage = ({ movieConfig }) => {
   const [selectedLocation, setSelectedLocation] = useState("COUNCIL BLUFFS, IA");
   const [selectedFormats, setSelectedFormats] = useState([]);
   const [selectedDay, setSelectedDay] = useState({ day: 'SAT', date: 'JUN', num: '28' });
@@ -128,12 +116,11 @@ function App() {
 
   const handleSelectTheater = (theater) => {
     setSelectedTheater(theater);
-    // Here you would typically navigate to a seat selection page
     alert(`Selected ${theater.name}. Proceeding to seat selection...`);
   };
 
   // Filter theaters based on selected formats
-  const filteredTheaters = mockTheaters.filter(theater => {
+  const filteredTheaters = (movieConfig?.theaters || mockTheaters).filter(theater => {
     if (selectedFormats.length === 0) return true;
     return theater.formats.some(format => 
       selectedFormats.includes(format.type)
@@ -141,9 +128,12 @@ function App() {
   });
 
   return (
-    <div className="App">
-      <Header />
-      <HeroSection />
+    <div className="App" style={{ 
+      backgroundColor: movieConfig?.background_color || '#000000',
+      color: movieConfig?.text_color || '#ffffff'
+    }}>
+      <Header movieConfig={movieConfig} />
+      <HeroSection movieConfig={movieConfig} />
       <SearchFilter 
         selectedLocation={selectedLocation}
         setSelectedLocation={setSelectedLocation}
@@ -153,13 +143,206 @@ function App() {
         setSelectedDay={setSelectedDay}
         selectedTime={selectedTime}
         setSelectedTime={setSelectedTime}
+        movieConfig={movieConfig}
       />
       <TheaterListings 
         theaters={filteredTheaters}
         onSelectTheater={handleSelectTheater}
+        movieConfig={movieConfig}
       />
-      <Footer />
+      <Footer movieConfig={movieConfig} />
     </div>
+  );
+};
+
+// Admin Route Component
+const AdminRoute = () => {
+  const [movieConfig, setMovieConfig] = useState(null);
+  const [client, setClient] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    initializeData();
+  }, []);
+
+  const initializeData = async () => {
+    try {
+      // Initialize presets first
+      await axios.post(`${API_BASE}/initialize-presets`);
+      
+      // Check if we have a demo client, if not create one
+      let demoClient = null;
+      try {
+        const clientsResponse = await axios.get(`${API_BASE}/clients/`);
+        demoClient = clientsResponse.data.find(c => c.email === 'demo@movie-saas.com');
+      } catch (error) {
+        console.log('No existing clients found');
+      }
+
+      if (!demoClient) {
+        const clientResponse = await axios.post(`${API_BASE}/clients/`, {
+          name: 'Demo Client',
+          email: 'demo@movie-saas.com',
+          company: 'Movie SaaS Demo',
+          subscription_tier: 'premium'
+        });
+        demoClient = clientResponse.data;
+      }
+
+      setClient(demoClient);
+
+      // Check if we have a demo movie config
+      const moviesResponse = await axios.get(`${API_BASE}/movies/?client_id=${demoClient.id}`);
+      let demoMovie = moviesResponse.data[0];
+
+      if (!demoMovie) {
+        // Create demo movie configuration
+        const movieResponse = await axios.post(`${API_BASE}/movies/`, {
+          client_id: demoClient.id,
+          movie_title: 'F1',
+          movie_subtitle: 'THE MOVIE',
+          description: 'From the director of Top Gun: Maverick comes an adrenaline-fueled experience starring Brad Pitt. Witness the high-octane world of Formula 1 racing like never before.',
+          release_date: new Date('2025-06-27').toISOString(),
+          director: 'Joseph Kosinski',
+          cast: ['Brad Pitt', 'Damson Idris', 'Kerry Condon', 'Javier Bardem'],
+          rating: 'PG-13',
+          runtime: '150 min',
+          genre: ['Action', 'Drama', 'Sports']
+        });
+        demoMovie = movieResponse.data;
+      }
+
+      setMovieConfig(demoMovie);
+    } catch (error) {
+      console.error('Initialization failed:', error);
+      // Set default config if API fails
+      setMovieConfig({
+        id: 'demo',
+        client_id: 'demo',
+        movie_title: 'F1',
+        movie_subtitle: 'THE MOVIE',
+        description: 'From the director of Top Gun: Maverick comes an adrenaline-fueled experience starring Brad Pitt.',
+        primary_gradient: { type: 'linear', direction: '135deg', colors: ['#ef4444', '#dc2626'], stops: [0, 100] },
+        secondary_gradient: { type: 'linear', direction: '135deg', colors: ['#f97316', '#ea580c'], stops: [0, 100] },
+        background_color: '#000000',
+        text_color: '#ffffff',
+        accent_color: '#ef4444',
+        primary_button: { background_color: '#ef4444', text_color: '#ffffff', border_radius: 8, emoji: '🎬', emoji_position: 'left' },
+        secondary_button: { background_color: '#374151', text_color: '#ffffff', border_radius: 8, emoji: '🎫', emoji_position: 'left' }
+      });
+      setClient({ id: 'demo', name: 'Demo Client' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdateConfig = async (updatedConfig) => {
+    try {
+      if (updatedConfig.id && updatedConfig.id !== 'demo') {
+        await axios.put(`${API_BASE}/movies/${updatedConfig.id}`, updatedConfig);
+      }
+      setMovieConfig(updatedConfig);
+    } catch (error) {
+      console.error('Failed to update config:', error);
+      throw error;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p>Loading admin dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <AdminDashboard
+      movieConfig={movieConfig}
+      onUpdateConfig={handleUpdateConfig}
+      clientId={client?.id}
+    />
+  );
+};
+
+// Main App Component
+function App() {
+  const [movieConfig, setMovieConfig] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // For the public view, we'll use the demo movie config
+    fetchPublicConfig();
+  }, []);
+
+  const fetchPublicConfig = async () => {
+    try {
+      // Try to get the first available movie config
+      const response = await axios.get(`${API_BASE}/movies/?limit=1`);
+      if (response.data && response.data.length > 0) {
+        setMovieConfig(response.data[0]);
+      } else {
+        // Use default config if no movies found
+        setMovieConfig({
+          movie_title: 'F1',
+          movie_subtitle: 'THE MOVIE',
+          description: 'From the director of Top Gun: Maverick comes an adrenaline-fueled experience starring Brad Pitt.',
+          primary_gradient: { type: 'linear', direction: '135deg', colors: ['#ef4444', '#dc2626'], stops: [0, 100] },
+          secondary_gradient: { type: 'linear', direction: '135deg', colors: ['#f97316', '#ea580c'], stops: [0, 100] },
+          background_color: '#000000',
+          text_color: '#ffffff',
+          accent_color: '#ef4444',
+          primary_button: { background_color: '#ef4444', text_color: '#ffffff', border_radius: 8, emoji: '🎬', emoji_position: 'left' },
+          secondary_button: { background_color: '#374151', text_color: '#ffffff', border_radius: 8, emoji: '🎫', emoji_position: 'left' }
+        });
+      }
+    } catch (error) {
+      console.error('Failed to fetch config:', error);
+      // Use default config
+      setMovieConfig({
+        movie_title: 'F1',
+        movie_subtitle: 'THE MOVIE',
+        description: 'From the director of Top Gun: Maverick comes an adrenaline-fueled experience starring Brad Pitt.',
+        primary_gradient: { type: 'linear', direction: '135deg', colors: ['#ef4444', '#dc2626'], stops: [0, 100] },
+        secondary_gradient: { type: 'linear', direction: '135deg', colors: ['#f97316', '#ea580c'], stops: [0, 100] },
+        background_color: '#000000',
+        text_color: '#ffffff',
+        accent_color: '#ef4444',
+        primary_button: { background_color: '#ef4444', text_color: '#ffffff', border_radius: 8, emoji: '🎬', emoji_position: 'left' },
+        secondary_button: { background_color: '#374151', text_color: '#ffffff', border_radius: 8, emoji: '🎫', emoji_position: 'left' }
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
+          <p>Loading movie experience...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route 
+          path="/" 
+          element={<MovieBookingPage movieConfig={movieConfig} />} 
+        />
+        <Route 
+          path="/admin" 
+          element={<AdminRoute />} 
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
