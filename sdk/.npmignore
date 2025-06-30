@@ -1,0 +1,17 @@
+dist/
+coverage/
+node_modules/
+examples/
+*.test.*
+*.spec.*
+*.stories.*
+.storybook/
+docs/
+.github/
+rollup.config.js
+jest.config.js
+.eslintrc.js
+.prettierrc
+tsconfig.json
+yarn.lock
+package-lock.json
