@@ -361,9 +361,9 @@ export const TheaterCard = ({ theater, onSelectTheater, movieConfig }) => {
 };
 
 // Theater Listings Component
-export const TheaterListings = ({ theaters, onSelectTheater }) => {
+export const TheaterListings = ({ theaters, onSelectTheater, movieConfig }) => {
   return (
-    <div className="bg-black text-white py-8">
+    <div className="text-white py-8" style={{ backgroundColor: movieConfig?.background_color || '#000000' }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="space-y-4">
           {theaters.map((theater, index) => (
@@ -371,6 +371,7 @@ export const TheaterListings = ({ theaters, onSelectTheater }) => {
               key={index} 
               theater={theater} 
               onSelectTheater={() => onSelectTheater(theater)}
+              movieConfig={movieConfig}
             />
           ))}
         </div>
