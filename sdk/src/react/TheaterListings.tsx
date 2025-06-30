@@ -632,7 +632,13 @@ const TheaterCard: React.FC<TheaterCardProps> = ({
                   {formatName}
                 </span>
                 <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-                  {format.times.map((time, timeIndex) => (
+                  {times.map((time, timeIndex) => {
+                      const timeStr = typeof time === 'string' ? time : time.time;
+                      const timeCategory = typeof time === 'object' && 'category' in time 
+                        ? time.category 
+                        : categorizeTime(timeStr);
+                      
+                      return (
                     <motion.button
                       key={timeIndex}
                       style={{
