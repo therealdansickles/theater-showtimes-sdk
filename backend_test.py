@@ -7,7 +7,7 @@ from datetime import datetime
 class MovieBookingAPITest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(MovieBookingAPITest, self).__init__(*args, **kwargs)
-        self.base_url = "https://d666dfcf-24bd-4d94-b419-fad30e2c7ed3.preview.emergentagent.com/api"
+        self.base_url = "https://f89fb794-9619-4452-9198-7d7904651861.preview.emergentagent.com/api"
         self.movie_id = None
         self.category_id = None
 
