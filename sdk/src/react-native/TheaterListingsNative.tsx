@@ -9,10 +9,18 @@ import {
   Dimensions,
   ActivityIndicator,
   RefreshControl,
-  Platform
+  Platform,
+  ScrollView
 } from 'react-native';
-import { TheaterLocation, TheaterListingsProps } from '../types';
-import { formatShowtime } from '../utils';
+import { TheaterLocation, TheaterListingsProps, ScreeningCategory } from '../types';
+import { 
+  formatShowtime,
+  categorizeTime,
+  getTimeCategoryLabel,
+  getTimeCategoryIcon,
+  groupScreeningCategoriesByType,
+  getScreeningCategoryTypeLabel
+} from '../utils';
 
 const { width: screenWidth } = Dimensions.get('window');
 
