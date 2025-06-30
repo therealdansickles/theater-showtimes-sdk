@@ -222,9 +222,10 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Build System and SDK Distribution"
     - "Enhanced TheaterListings React Native Component"
-    - "Frontend Legacy Components Fix"
-    - "Build System Setup"
+    - "Enhanced TheaterListings Component"
+    - "SDK Types Updated"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
