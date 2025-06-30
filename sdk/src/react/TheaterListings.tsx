@@ -639,31 +639,36 @@ const TheaterCard: React.FC<TheaterCardProps> = ({
                         : categorizeTime(timeStr);
                       
                       return (
-                    <motion.button
-                      key={timeIndex}
-                      style={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                        color: '#ffffff',
-                        border: 'none',
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        fontSize: '12px',
-                        fontWeight: '500',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease',
-                        minHeight: '28px'
-                      }}
-                      whileHover={{ 
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        scale: 1.05
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelect();
-                      }}
-                    >
-                      {formatShowtime(time)}
+                        <motion.button
+                          key={timeIndex}
+                          style={{
+                            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                            color: '#ffffff',
+                            border: 'none',
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                            fontSize: '12px',
+                            fontWeight: '500',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            minHeight: '28px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}
+                          whileHover={{ 
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            scale: 1.05
+                          }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelect();
+                          }}
+                          title={`${formatShowtime(timeStr)} - ${getTimeCategoryLabel(timeCategory)}`}
+                        >
+                          <span style={{ fontSize: '10px' }}>{getTimeCategoryIcon(timeCategory)}</span>
+                          {formatShowtime(timeStr)}
                     </button>
                   ))}
                 </div>
