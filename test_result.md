@@ -246,9 +246,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Build System and SDK Distribution"
-    - "Enhanced TheaterListings React Native Component"
+    - "Frontend Filter Integration Fix"
     - "Enhanced TheaterListings Component"
+    - "Enhanced TheaterListings React Native Component"
     - "SDK Types Updated"
   stuck_tasks: []
   test_all: false
