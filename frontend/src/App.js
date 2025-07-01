@@ -188,10 +188,17 @@ const MovieBookingPage = ({ movieConfig }) => {
           distance: theater.distance || 0,
           formats: theater.screening_formats?.map(format => ({
             type: format.category_name,
-            times: format.showtimes?.map(showtime => ({
-              time: showtime.time,
-              category: showtime.time_category
-            })) || []
+            times: format.times_by_category ? 
+              // Flatten times_by_category into a single array
+              Object.values(format.times_by_category).flat().map(timeObj => ({
+                time: timeObj.time,
+                category: timeObj.category
+              })) :
+              // Fallback to showtimes if available
+              format.showtimes?.map(showtime => ({
+                time: showtime.time,
+                category: showtime.time_category
+              })) || []
           })) || []
         }));
         
