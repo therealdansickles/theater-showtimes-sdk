@@ -192,6 +192,9 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Updated TypeScript interfaces to support new ScreeningCategory, TimeSlot, ScreeningFormat types with backwards compatibility for legacy TheaterFormat."
+      - working: "NA"
+        agent: "main"
+        comment: "Backend APIs confirmed working. Ready for frontend testing to verify TypeScript types integrate correctly with working backend APIs."
 
   - task: "Enhanced TheaterListings Component"
     implemented: true
@@ -204,6 +207,9 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Updated TheaterListings component with tabbed filtering (formats/time), time category icons, enhanced mobile UI, and support for both new and legacy data structures."
+      - working: "NA"
+        agent: "main"
+        comment: "Backend APIs confirmed working. Issue identified: theaters not displaying after applying filters. Need to investigate frontend-backend integration issue."
 
   - task: "Enhanced TheaterListings React Native Component"
     implemented: true
@@ -216,6 +222,21 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Updated React Native TheaterListings component with tabbed filtering (formats/time), time category icons, enhanced mobile UI optimized for iOS/Android, and support for both new and legacy data structures. Added swipe gestures and native mobile interactions."
+      - working: "NA"
+        agent: "main"
+        comment: "Backend APIs confirmed working. Need to test React Native component integration with working backend APIs and verify mobile-optimized filtering works correctly."
+
+  - task: "Frontend Filter Integration Fix"
+    implemented: false
+    working: "NA"
+    file: "/app/frontend/src/components.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Testing identified issue where theaters aren't displaying after applying filters. Backend APIs work correctly, so this is a frontend integration issue that needs investigation and fixing."
 
 metadata:
   created_by: "main_agent"
