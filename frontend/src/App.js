@@ -113,19 +113,87 @@ const MovieBookingPage = ({ movieConfig }) => {
   const [selectedDay, setSelectedDay] = useState({ day: 'SAT', date: 'JUN', num: '28' });
   const [selectedTime, setSelectedTime] = useState('EVENING');
   const [selectedTheater, setSelectedTheater] = useState(null);
+  const [theaters, setTheaters] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [timeCategories, setTimeCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleSelectTheater = (theater) => {
     setSelectedTheater(theater);
     alert(`Selected ${theater.name}. Proceeding to seat selection...`);
   };
 
-  // Filter theaters based on selected formats
-  const filteredTheaters = (movieConfig?.theaters || mockTheaters).filter(theater => {
-    if (selectedFormats.length === 0) return true;
-    return theater.formats.some(format => 
-      selectedFormats.includes(format.type)
-    );
-  });
+  // Fetch categories and time categories on component mount
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        // Fetch screening categories
+        const categoriesResponse = await axios.get(`${API_BASE}/categories/`);
+        setCategories(categoriesResponse.data);
+
+        // Fetch time categories
+        const timeCategoriesResponse = await axios.get(`${API_BASE}/categories/time-categories/available`);
+        setTimeCategories(timeCategoriesResponse.data.time_categories);
+      } catch (error) {
+        console.error('Error fetching filter options:', error);
+      }
+    };
+
+    fetchFilters();
+  }, []);
+
+  // Fetch theaters based on filters
+  useEffect(() => {
+    const fetchTheaters = async () => {
+      if (!movieConfig?.id) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        
+        // Build query parameters for filtering
+        const params = new URLSearchParams();
+        
+        // Map selectedTime to backend time categories
+        const timeMapping = {
+          'MORNING': 'morning',
+          'AFTERNOON': 'afternoon', 
+          'EVENING': 'evening',
+          'LATE_NIGHT': 'late_night'
+        };
+        
+        if (selectedTime && timeMapping[selectedTime]) {
+          params.append('time_category', timeMapping[selectedTime]);
+        }
+
+        // Add screening category filters
+        if (selectedFormats.length > 0) {
+          selectedFormats.forEach(format => {
+            params.append('screening_category', format);
+          });
+        }
+
+        const response = await axios.get(
+          `${API_BASE}/movies/${movieConfig.id}/showtimes/categorized?${params.toString()}`
+        );
+        
+        setTheaters(response.data.theaters || []);
+      } catch (error) {
+        console.error('Error fetching theaters:', error);
+        // Fall back to mock data if API fails
+        setTheaters(mockTheaters);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTheaters();
+  }, [movieConfig?.id, selectedFormats, selectedTime]);
+
+  // Use fetched theaters instead of filtered mock data
+  const filteredTheaters = theaters;
 
   return (
     <div className="App" style={{ 
