@@ -227,9 +227,9 @@ frontend:
         comment: "Backend APIs confirmed working. Need to test React Native component integration with working backend APIs and verify mobile-optimized filtering works correctly."
 
   - task: "Frontend Filter Integration Fix"
-    implemented: false
-    working: false
-    file: "/app/frontend/src/components.js"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
@@ -240,6 +240,12 @@ frontend:
       - working: false
         agent: "testing"
         comment: "CRITICAL ISSUE IDENTIFIED: Frontend is using mock data instead of making API calls to backend. When filters are applied, no API requests are made. The filteredTheaters function filters mock data client-side rather than calling backend APIs with filter parameters. Frontend needs to be updated to fetch theater data from working backend APIs."
+      - working: false
+        agent: "testing"
+        comment: "ROOT CAUSE FOUND: TheaterCard component expects different data structure than API provides. API returns 'theater_name' but component expects 'name'. Error: Cannot read properties of undefined. Data transformation needed between API response and component expectations."
+      - working: "NA"
+        agent: "main"
+        comment: "FIXED: Added data transformation in frontend to convert API response structure to match component expectations. API 'theater_name' -> 'name', 'theater_address' -> 'address', 'screening_formats' -> 'formats' with proper time mapping. Frontend now makes API calls with correct filters and transforms response correctly."
 
 metadata:
   created_by: "main_agent"
