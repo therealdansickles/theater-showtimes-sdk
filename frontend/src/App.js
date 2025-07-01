@@ -179,7 +179,23 @@ const MovieBookingPage = ({ movieConfig }) => {
           `${API_BASE}/movies/${movieConfig.id}/showtimes/categorized?${params.toString()}`
         );
         
-        setTheaters(response.data.theaters || []);
+        // Transform API response to match frontend component expectations
+        const apiTheaters = response.data.theaters || [];
+        const transformedTheaters = apiTheaters.map(theater => ({
+          name: theater.theater_name,
+          chain: theater.theater_chain || 'THEATER',
+          address: theater.theater_address,
+          distance: theater.distance || 0,
+          formats: theater.screening_formats?.map(format => ({
+            type: format.category_name,
+            times: format.showtimes?.map(showtime => ({
+              time: showtime.time,
+              category: showtime.time_category
+            })) || []
+          })) || []
+        }));
+        
+        setTheaters(transformedTheaters);
       } catch (error) {
         console.error('Error fetching theaters:', error);
         // Fall back to mock data if API fails
