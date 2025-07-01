@@ -212,11 +212,14 @@ const MovieBookingPage = ({ movieConfig }) => {
         selectedTime={selectedTime}
         setSelectedTime={setSelectedTime}
         movieConfig={movieConfig}
+        categories={categories}
+        timeCategories={timeCategories}
       />
       <TheaterListings 
         theaters={filteredTheaters}
         onSelectTheater={handleSelectTheater}
         movieConfig={movieConfig}
+        loading={loading}
       />
       <Footer movieConfig={movieConfig} />
     </div>
