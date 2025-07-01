@@ -169,8 +169,30 @@ export const HeroSection = ({ movieConfig }) => {
 };
 
 // Search and Filter Component
-export const SearchFilter = ({ selectedLocation, setSelectedLocation, selectedFormats, setSelectedFormats, selectedDay, setSelectedDay, selectedTime, setSelectedTime }) => {
-  const formats = ['IMAX 2D', 'AMC PRIME', '2D', 'DOLBY', 'MX4D', 'SCREENX'];
+export const SearchFilter = ({ 
+  selectedLocation, 
+  setSelectedLocation, 
+  selectedFormats, 
+  setSelectedFormats, 
+  selectedDay, 
+  setSelectedDay, 
+  selectedTime, 
+  setSelectedTime, 
+  movieConfig,
+  categories = [],
+  timeCategories = []
+}) => {
+  // Use dynamic categories from backend instead of hardcoded formats
+  const formats = categories.map(cat => cat.name);
+  
+  // Map time categories to display-friendly names
+  const timeOptions = [
+    { value: 'MORNING', label: 'Morning', description: 'Before 12 PM' },
+    { value: 'AFTERNOON', label: 'Afternoon', description: '12 PM - 6 PM' },
+    { value: 'EVENING', label: 'Evening', description: '6 PM - 10 PM' },
+    { value: 'LATE_NIGHT', label: 'Late Night', description: 'After 10 PM' }
+  ];
+  
   const days = [
     { day: 'SAT', date: 'JUN', num: '28' },
     { day: 'SUN', date: 'JUN', num: '29' },
@@ -179,12 +201,18 @@ export const SearchFilter = ({ selectedLocation, setSelectedLocation, selectedFo
     { day: 'WED', date: 'JUL', num: '3' }
   ];
 
+  const accentColor = movieConfig?.accent_color || '#ef4444';
+
   const handleFormatChange = (format) => {
     setSelectedFormats(prev => 
       prev.includes(format) 
         ? prev.filter(f => f !== format)
         : [...prev, format]
     );
+  };
+
+  const handleTimeChange = (time) => {
+    setSelectedTime(time);
   };
 
   return (
