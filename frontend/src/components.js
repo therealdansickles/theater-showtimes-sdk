@@ -537,13 +537,42 @@ export const Footer = ({ movieConfig }) => {
                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947C23.728 2.695 21.31.273 16.948.073 15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
                 </svg>
               </a>
-              {/* Litebeem Logo - placeholder for now */}
+              {/* Litebeem Logo */}
               <a href="#" className="transition-colors" style={{ color: textColor, opacity: 0.7 }}
                  onMouseEnter={(e) => e.target.style.color = accentColor}
                  onMouseLeave={(e) => { e.target.style.color = textColor; e.target.style.opacity = 0.7; }}>
-                {/* Temporary placeholder - will be replaced with actual Litebeem logo */}
+                {/* Litebeem Logo - Stippled sphere design */}
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 9.74s9-4.19 9-9.74V7l-10-5z"/>
+                  <defs>
+                    <radialGradient id="litebeem-gradient" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stopColor="currentColor" stopOpacity="0.9"/>
+                      <stop offset="50%" stopColor="currentColor" stopOpacity="0.6"/>
+                      <stop offset="100%" stopColor="currentColor" stopOpacity="0.3"/>
+                    </radialGradient>
+                  </defs>
+                  {/* Central sphere */}
+                  <circle cx="12" cy="12" r="6" fill="url(#litebeem-gradient)"/>
+                  {/* Radiating dots pattern */}
+                  <circle cx="12" cy="6" r="0.5" fill="currentColor" opacity="0.8"/>
+                  <circle cx="12" cy="18" r="0.5" fill="currentColor" opacity="0.8"/>
+                  <circle cx="6" cy="12" r="0.5" fill="currentColor" opacity="0.8"/>
+                  <circle cx="18" cy="12" r="0.5" fill="currentColor" opacity="0.8"/>
+                  <circle cx="8.5" cy="8.5" r="0.4" fill="currentColor" opacity="0.7"/>
+                  <circle cx="15.5" cy="15.5" r="0.4" fill="currentColor" opacity="0.7"/>
+                  <circle cx="8.5" cy="15.5" r="0.4" fill="currentColor" opacity="0.7"/>
+                  <circle cx="15.5" cy="8.5" r="0.4" fill="currentColor" opacity="0.7"/>
+                  <circle cx="12" cy="4" r="0.3" fill="currentColor" opacity="0.6"/>
+                  <circle cx="12" cy="20" r="0.3" fill="currentColor" opacity="0.6"/>
+                  <circle cx="4" cy="12" r="0.3" fill="currentColor" opacity="0.6"/>
+                  <circle cx="20" cy="12" r="0.3" fill="currentColor" opacity="0.6"/>
+                  <circle cx="7" cy="7" r="0.3" fill="currentColor" opacity="0.5"/>
+                  <circle cx="17" cy="17" r="0.3" fill="currentColor" opacity="0.5"/>
+                  <circle cx="7" cy="17" r="0.3" fill="currentColor" opacity="0.5"/>
+                  <circle cx="17" cy="7" r="0.3" fill="currentColor" opacity="0.5"/>
+                  <circle cx="10" cy="3" r="0.2" fill="currentColor" opacity="0.4"/>
+                  <circle cx="14" cy="21" r="0.2" fill="currentColor" opacity="0.4"/>
+                  <circle cx="3" cy="10" r="0.2" fill="currentColor" opacity="0.4"/>
+                  <circle cx="21" cy="14" r="0.2" fill="currentColor" opacity="0.4"/>
                 </svg>
               </a>
             </div>
