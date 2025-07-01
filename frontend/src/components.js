@@ -411,10 +411,39 @@ export const TheaterCard = ({ theater, onSelectTheater, movieConfig }) => {
 };
 
 // Theater Listings Component
-export const TheaterListings = ({ theaters, onSelectTheater, movieConfig }) => {
+export const TheaterListings = ({ theaters, onSelectTheater, movieConfig, loading = false }) => {
+  if (loading) {
+    return (
+      <div className="text-white py-8" style={{ backgroundColor: movieConfig?.background_color || '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+            <p className="mt-4 text-lg">Loading theaters...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!theaters || theaters.length === 0) {
+    return (
+      <div className="text-white py-8" style={{ backgroundColor: movieConfig?.background_color || '#000000' }}>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center py-12">
+            <p className="text-lg opacity-75">No theaters found matching your criteria.</p>
+            <p className="text-sm opacity-50 mt-2">Try adjusting your filters or location.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="text-white py-8" style={{ backgroundColor: movieConfig?.background_color || '#000000' }}>
       <div className="max-w-7xl mx-auto px-6">
+        <div className="mb-4">
+          <p className="text-sm opacity-75">Found {theaters.length} theater{theaters.length !== 1 ? 's' : ''}</p>
+        </div>
         <div className="space-y-4">
           {theaters.map((theater, index) => (
             <TheaterCard 
