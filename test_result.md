@@ -228,7 +228,7 @@ frontend:
 
   - task: "Frontend Filter Integration Fix"
     implemented: false
-    working: "NA"
+    working: false
     file: "/app/frontend/src/components.js"
     stuck_count: 0
     priority: "high"
@@ -237,6 +237,9 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Testing identified issue where theaters aren't displaying after applying filters. Backend APIs work correctly, so this is a frontend integration issue that needs investigation and fixing."
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL ISSUE IDENTIFIED: Frontend is using mock data instead of making API calls to backend. When filters are applied, no API requests are made. The filteredTheaters function filters mock data client-side rather than calling backend APIs with filter parameters. Frontend needs to be updated to fetch theater data from working backend APIs."
 
 metadata:
   created_by: "main_agent"
