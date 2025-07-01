@@ -280,15 +280,22 @@ export const SearchFilter = ({
           <div>
             <h3 className="text-lg font-semibold mb-3">SELECT TIME OF DAY</h3>
             <div className="space-y-2">
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input 
-                  type="checkbox" 
-                  checked={selectedTime === 'EVENING'}
-                  onChange={() => setSelectedTime(selectedTime === 'EVENING' ? '' : 'EVENING')}
-                  className="form-checkbox text-red-500"
-                />
-                <span className="text-sm">EVENING</span>
-              </label>
+              {timeOptions.map((timeOption) => (
+                <label key={timeOption.value} className="flex items-center space-x-2 cursor-pointer">
+                  <input 
+                    type="radio" 
+                    name="timeSelection"
+                    checked={selectedTime === timeOption.value}
+                    onChange={() => handleTimeChange(timeOption.value)}
+                    className="form-radio text-red-500"
+                    style={{ accentColor }}
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium">{timeOption.label}</span>
+                    <span className="text-xs text-gray-400">{timeOption.description}</span>
+                  </div>
+                </label>
+              ))}
             </div>
           </div>
         </div>
