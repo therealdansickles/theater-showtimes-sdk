@@ -248,6 +248,11 @@ class MovieConfigurationCreate(BaseModel):
     runtime: str = "120 min"
     genre: List[str] = ["Action", "Drama"]
     
+    # Optional enhanced film information
+    film_details: Optional[FilmDetails] = None
+    film_assets: Optional[FilmAssets] = None
+    social_links: Optional[SocialLinks] = None
+    
     @validator('movie_title', 'director')
     def validate_required_strings(cls, v):
         if not v or not v.strip():
