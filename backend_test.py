@@ -477,12 +477,48 @@ class MovieConfigTester:
         if success and "id" in response:
             # Verify badge_images is in the response
             has_badge_images = "film_assets" in response and "badge_images" in response["film_assets"]
+            has_video_gallery = "film_assets" in response and "video_gallery" in response["film_assets"]
             
             return {
                 "public_endpoint_working": True,
                 "has_badge_images": has_badge_images,
+                "has_video_gallery": has_video_gallery,
                 "film_details_included": "film_details" in response,
                 "social_links_included": "social_links" in response
+            }
+        return False
+        
+    def test_video_gallery_json_serialization(self):
+        """Test proper JSON serialization of video_gallery field"""
+        if not self.movie_id:
+            return {"error": "No movie ID available for testing"}
+            
+        success, response = self.make_request(
+            "GET",
+            f"movies/{self.movie_id}",
+            auth_type="jwt",
+            expected_status=200
+        )
+        
+        if success and "id" in response:
+            # Convert response to JSON string and back to verify serialization
+            import json
+            json_str = json.dumps(response)
+            parsed_response = json.loads(json_str)
+            
+            # Check if video_gallery is properly serialized
+            has_video_gallery = ("film_assets" in parsed_response and 
+                               "video_gallery" in parsed_response["film_assets"] and 
+                               isinstance(parsed_response["film_assets"]["video_gallery"], list))
+            
+            # Check if all URLs in video_gallery are strings
+            all_strings = all(isinstance(url, str) for url in parsed_response["film_assets"]["video_gallery"]) if has_video_gallery else False
+            
+            return {
+                "serialization_test": True,
+                "has_video_gallery": has_video_gallery,
+                "all_urls_are_strings": all_strings,
+                "video_count": len(parsed_response["film_assets"]["video_gallery"]) if has_video_gallery else 0
             }
         return False
     
