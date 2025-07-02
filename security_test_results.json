@@ -20,7 +20,7 @@
     "status": "\u2705 PASSED",
     "details": {
       "token_valid": true,
-      "username": "admin_1751470735"
+      "username": "admin_1751471634"
     }
   },
   {
@@ -36,7 +36,7 @@
     "status": "\u2705 PASSED",
     "details": {
       "access_granted": true,
-      "username": "admin_1751470735"
+      "username": "admin_1751471634"
     }
   },
   {
@@ -51,7 +51,7 @@
     "status": "\u2705 PASSED",
     "details": {
       "client_created": true,
-      "client_id": "5e5fc1bf-e580-4516-a475-c5e29b529b10"
+      "client_id": "958895db-9ba3-4e7d-ac0d-0051ec8e1460"
     }
   },
   {
@@ -59,7 +59,7 @@
     "status": "\u2705 PASSED",
     "details": {
       "api_key_created": true,
-      "key_prefix": "sk_live_2cef..."
+      "key_prefix": "sk_live_96ef..."
     }
   },
   {
@@ -82,7 +82,7 @@
     "status": "\u2705 PASSED",
     "details": {
       "key_revoked": true,
-      "key_id": "676da2cc-0c94-497a-9724-6de7e766e710"
+      "key_id": "f60861ca-90e7-487a-acd3-05da64d52f08"
     }
   },
   {
