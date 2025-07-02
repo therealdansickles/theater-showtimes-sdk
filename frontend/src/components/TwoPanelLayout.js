@@ -451,10 +451,19 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
               <img
                 src={movieConfig?.film_assets?.poster_image ? 
                   process.env.REACT_APP_BACKEND_URL + movieConfig.film_assets.poster_image :
-                  'https://images.pexels.com/photos/30619403/pexels-photo-30619403.jpeg'
+                  'https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop'
                 }
-                alt="Movie Poster"
+                alt={`${movieConfig?.movie_title || 'Movie'} Poster`}
                 className="w-full h-full object-cover rounded-2xl"
+                onError={(e) => {
+                  // Fallback to a different high-quality image if the first one fails
+                  e.target.src = 'https://images.pexels.com/photos/7991225/pexels-photo-7991225.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop';
+                }}
+                loading="lazy"
+                style={{
+                  backgroundImage: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                  backgroundSize: 'cover'
+                }}
               />
             </div>
           </div>
