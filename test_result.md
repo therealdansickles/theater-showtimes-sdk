@@ -312,6 +312,51 @@ frontend:
       - working: true
         agent: "testing"
         comment: "INTEGRATION SUCCESSFUL! All tests passed. Frontend correctly fetches dynamic categories from backend, makes API calls with proper filters, displays theaters correctly (showing 12 theaters instead of 0), and all theater data displays properly. Time category filtering works with proper icons. No JavaScript errors. The theaters not displaying after filtering issue is completely resolved."
+        
+  - task: "Error Handling & Stability Improvements"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/ErrorBoundary.js, /app/frontend/src/index.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented comprehensive error handling with ErrorBoundary component to catch and gracefully handle React errors. Added error suppression for common browser extension errors in index.js."
+      - working: true
+        agent: "testing"
+        comment: "Error handling is working correctly. ErrorBoundary successfully contains errors without crashing the page. Browser extension error suppression is working - no errors from extensions appear in console. Tested by triggering a controlled error which was properly logged to console while the page remained functional."
+        
+  - task: "ImageWithFallback Component"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/ImageWithFallback.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created ImageWithFallback component for robust image loading with loading states, error handling, and fallback images."
+      - working: true
+        agent: "testing"
+        comment: "ImageWithFallback component works correctly. Loading state shows proper animation, error handling works by falling back to alternative image when primary image fails to load, and final fallback to styled placeholder works when all images fail. Tested by deliberately triggering image loading errors."
+        
+  - task: "Hero Image & Poster Display Enhancements"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/TwoPanelLayout.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Enhanced poster display with proper 2:3 aspect ratio, drop shadow, and integration with ImageWithFallback component."
+      - working: true
+        agent: "testing"
+        comment: "Poster image displays with correct 2:3 aspect ratio (measured at 0.67). Enhanced styling with drop shadow is applied correctly. Poster container has proper dimensions and responsive behavior. Badge display works with correct styling (height: 56px, maxWidth: 140px)."
 
 metadata:
   created_by: "main_agent"
