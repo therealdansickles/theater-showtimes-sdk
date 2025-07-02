@@ -24,21 +24,33 @@
   },
   {
     "name": "Create Movie with Badge Images",
-    "status": "\u274c FAILED",
-    "details": null
+    "status": "\u2705 PASSED",
+    "details": {
+      "movie_created": true,
+      "movie_id": "2605127f-555f-4a2d-899a-86e8d77a92d2",
+      "has_badge_images": true,
+      "badge_count": 1,
+      "badge_images_match": true
+    }
   },
   {
     "name": "Get Movie with Badge Images",
     "status": "\u2705 PASSED",
     "details": {
-      "error": "No movie ID available for testing"
+      "movie_retrieved": true,
+      "has_badge_images": true,
+      "badge_count": 1,
+      "badge_images_match": true
     }
   },
   {
     "name": "Update Movie Badge Images",
     "status": "\u2705 PASSED",
     "details": {
-      "error": "No movie ID available for testing"
+      "movie_updated": true,
+      "has_badge_images": true,
+      "badge_count": 1,
+      "badge_images_updated": true
     }
   },
   {
@@ -50,7 +62,10 @@
     "name": "Public Movie Endpoint",
     "status": "\u2705 PASSED",
     "details": {
-      "error": "No movie ID available for testing"
+      "public_endpoint_working": true,
+      "has_badge_images": true,
+      "film_details_included": true,
+      "social_links_included": true
     }
   }
 ]
