@@ -149,7 +149,14 @@ export const FilmSetupWizard = ({ onComplete }) => {
         }
       });
       
-      updateFilmData(`film_assets.${field}`, response.data.url);
+      // Handle badge images differently (array)
+      if (field === 'badge_image') {
+        const currentBadges = filmData.film_assets.badge_images || [];
+        updateFilmData('film_assets.badge_images', [...currentBadges, response.data.url]);
+      } else {
+        updateFilmData(`film_assets.${field}`, response.data.url);
+      }
+      
       setErrors({ ...errors, [field]: null });
     } catch (error) {
       setErrors({ ...errors, [field]: 'Upload failed. Please try again.' });
