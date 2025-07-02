@@ -226,6 +226,36 @@ frontend:
         agent: "main"
         comment: "Backend APIs confirmed working. Need to test React Native component integration with working backend APIs and verify mobile-optimized filtering works correctly."
 
+  - task: "Film Landing Page Design Revision"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components.js, /app/backend/models.py, /app/frontend/src/FilmSetupWizard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "DESIGN REVISION DIRECTIVE IMPLEMENTED: 1) Simplified header navigation (removed Admin/Login buttons, kept Home/Videos/Get Tickets/Search), 2) Fixed poster display to 2:3 aspect ratio with drop shadow, 3) Created dynamic badge system with badge_images array in FilmAssets model, 4) Redesigned hero layout to three-column structure (Poster left, Film Info middle, Showtimes Panel right), 5) Enhanced mobile experience with accordion theater listings, 6) Added badge upload functionality to FilmSetupWizard."
+      - working: true
+        agent: "testing"
+        comment: "FRONTEND TESTING COMPLETE: All design revision elements working correctly. Header shows simplified navigation, three-column hero layout renders properly, poster follows 2:3 aspect ratio with drop shadow, dynamic badge system displays fallback badges correctly, showtimes panel appears on right with backdrop blur, mobile responsiveness confirmed with proper stacking."
+
+  - task: "Backend Badge Images Support"
+    implemented: true
+    working: true
+    file: "/app/backend/models.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added badge_images: List[str] field to FilmAssets model. Enhanced MovieConfigurationCreate to support optional film_details, film_assets, social_links fields. Updated FilmSetupWizard handleImageUpload to handle badge images as array."
+      - working: true
+        agent: "testing"
+        comment: "BACKEND TESTING COMPLETE: Badge images functionality working correctly. Core badge_images field properly implemented in FilmAssets model, creating and retrieving movie configurations with badge_images works, field stored as array and serialized correctly in JSON responses, updating movie configurations with badge_images works as expected."
+
   - task: "Admin Authentication & Setup Film Page Access"
     implemented: true
     working: true
