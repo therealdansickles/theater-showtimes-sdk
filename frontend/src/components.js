@@ -4,13 +4,7 @@ import { useAuth } from './AuthContext';
 // Main Header Component
 export const Header = ({ movieConfig }) => {
   const accentColor = movieConfig?.accent_color || '#ef4444';
-  const { isAuthenticated, isAdmin, user, logout } = useAuth();
-  
-  const handleLogout = () => {
-    logout();
-    // Redirect to home page after logout
-    window.location.href = '/';
-  };
+  const { isAuthenticated, isAdmin } = useAuth();
   
   return (
     <header className="bg-black text-white">
@@ -44,7 +38,7 @@ export const Header = ({ movieConfig }) => {
                onMouseLeave={(e) => e.target.style.color = 'white'}>
               Get Tickets
             </a>
-            {/* Setup wizard for film teams */}
+            {/* Setup wizard for film teams - only show for authenticated admins */}
             {isAuthenticated() && isAdmin() && (
               <a href="/setup" className="transition-colors" style={{ color: 'white' }}
                  onMouseEnter={(e) => e.target.style.color = accentColor}
@@ -55,29 +49,28 @@ export const Header = ({ movieConfig }) => {
                 </span>
               </a>
             )}
-            {/* Admin link - now properly secured */}
-            <a href="/admin" className="transition-colors" style={{ color: 'white' }}
-               onMouseEnter={(e) => e.target.style.color = accentColor}
-               onMouseLeave={(e) => e.target.style.color = 'white'}>
-              {isAuthenticated() && isAdmin() ? (
-                <span className="flex items-center">
-                  <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                  Admin
-                </span>
-              ) : (
-                'Admin'
-              )}
-            </a>
           </nav>
         </div>
         <div className="flex items-center space-x-4">
-          {/* Authentication Status */}
-          {isAuthenticated() ? (
-            <div className="flex items-center space-x-3">
-              <div className="text-sm">
-                <span className="text-gray-300">Welcome, </span>
-                <span className="font-semibold" style={{ color: accentColor }}>
-                  {user?.username}
+          {/* Search button */}
+          <button className="p-2 transition-colors" style={{ color: 'white' }}
+                  onMouseEnter={(e) => e.target.style.color = accentColor}
+                  onMouseLeave={(e) => e.target.style.color = 'white'}>
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/>
+            </svg>
+          </button>
+          {/* Hidden admin access for development */}
+          {isAuthenticated() && isAdmin() && (
+            <a href="/admin" className="opacity-30 hover:opacity-100 transition-opacity text-xs">
+              Admin
+            </a>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+};
                 </span>
                 {isAdmin() && (
                   <span className="ml-2 px-2 py-1 bg-red-600 text-white text-xs rounded-full">
