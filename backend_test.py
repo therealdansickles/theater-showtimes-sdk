@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """
-Movie Configuration System Testing with Badge Images Support
-This script tests the updated movie configuration system with new badge_images support:
+Movie Configuration System Testing with Enhanced FilmAssets Support
+This script tests the updated movie configuration system with new badge_images and video_gallery support:
 
 1. Enhanced FilmAssets Model Testing
+   - badge_images array support
+   - video_gallery array support
 2. API Endpoint Validation
 3. Data Model Integrity
+4. Integration Testing
 """
 
 import requests
