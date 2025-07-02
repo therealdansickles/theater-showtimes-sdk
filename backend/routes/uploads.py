@@ -10,6 +10,7 @@ import logging
 
 from ..models import ImageAsset, ImageUploadResponse
 from ..database import insert_document, find_document, find_documents, delete_document
+from ..security import get_admin_user
 
 logger = logging.getLogger(__name__)
 
