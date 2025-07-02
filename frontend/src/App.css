@@ -178,6 +178,31 @@ body {
 }
 
 /* Mobile Responsive Enhancements */
+@media (max-width: 1024px) {
+  /* Two-panel layout becomes single column on tablet/mobile */
+  .two-panel-layout {
+    flex-direction: column;
+  }
+  
+  .left-panel {
+    width: 100%;
+    order: 2; /* Filters and showtimes go below poster on mobile */
+  }
+  
+  .right-panel {
+    width: 100%;
+    order: 1; /* Poster goes to top on mobile */
+    position: relative;
+    height: auto;
+    padding: 2rem 1.5rem;
+  }
+  
+  .poster-container {
+    max-width: 300px;
+    margin: 0 auto 2rem;
+  }
+}
+
 @media (max-width: 768px) {
   /* Ensure badges don't overflow on mobile */
   .badge-container {
@@ -193,19 +218,7 @@ body {
     font-size: 0.875rem;
     max-width: 100%;
     text-align: center;
-  }
-  
-  /* Stack poster above filters on mobile */
-  .mobile-stack {
-    flex-direction: column;
-  }
-  
-  .mobile-stack > div:first-child {
-    order: 1; /* Poster first */
-  }
-  
-  .mobile-stack > div:last-child {
-    order: 2; /* Filters and showtimes second */
+    width: 100%;
   }
   
   /* Enhanced touch targets for mobile */
@@ -223,6 +236,37 @@ body {
   .mobile-subtitle {
     font-size: 1.5rem;
     line-height: 1.2;
+  }
+  
+  /* Ensure showtimes buttons don't overflow */
+  .showtime-button {
+    min-width: 80px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  /* Improve hamburger menu touch target */
+  .hamburger-button {
+    padding: 12px;
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  /* Better spacing for mobile filters */
+  .filter-section {
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Grid adjustments for mobile */
+  .mobile-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .mobile-grid-1 {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
 }
 
