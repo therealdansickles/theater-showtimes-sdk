@@ -315,13 +315,20 @@ class APIKeyResponse(BaseModel):
     permissions: List[str]
     rate_limit: int
 
-class ImageUploadResponse(BaseModel):
-    """Response model for image upload"""
-    id: str
+class ScreeningCategoryCreate(BaseModel):
     name: str
-    url: str
-    alt_text: str
-    category: str
-    uploaded_at: datetime
-    file_size: int
-    file_type: str
+    type: str = "format"  # format, experience, special_event
+    description: Optional[str] = None
+    is_active: bool = True
+    
+    @validator('name')
+    def validate_name(cls, v):
+        if not v or len(v.strip()) < 1:
+            raise ValueError('Category name cannot be empty')
+        return v.strip()
+
+class ScreeningCategoryUpdate(BaseModel):
+    name: Optional[str] = None
+    type: Optional[str] = None
+    description: Optional[str] = None
+    is_active: Optional[bool] = None
