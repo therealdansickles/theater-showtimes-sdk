@@ -34,7 +34,8 @@ export const FilmSetupWizard = ({ onComplete }) => {
       backdrop_image: null,
       trailer_url: '',
       gallery_images: [],
-      press_kit_url: ''
+      press_kit_url: '',
+      badge_images: []
     },
     
     // Social Links
