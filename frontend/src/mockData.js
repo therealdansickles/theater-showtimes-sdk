@@ -225,7 +225,7 @@ export const mockMovieConfig = {
     subtitles: ['English', 'Spanish', 'French', 'German', 'Italian']
   },
   film_assets: {
-    poster_image: '/uploads/f1-poster.jpg',
+    poster_image: null, // Will use fallback image
     backdrop_image: '/uploads/f1-backdrop.jpg',
     trailer_url: '/uploads/f1-trailer.mp4',
     badge_images: [
