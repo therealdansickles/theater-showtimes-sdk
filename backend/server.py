@@ -27,6 +27,35 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Security Middleware
+class SecurityMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        # Apply rate limiting
+        try:
+            await rate_limit_middleware(request)
+        except HTTPException as e:
+            from fastapi.responses import JSONResponse
+            return JSONResponse(
+                status_code=e.status_code,
+                content={"detail": e.detail},
+                headers=getattr(e, 'headers', {})
+            )
+        
+        # Process request
+        response = await call_next(request)
+        
+        # Add security headers
+        response = add_security_headers(response)
+        
+        # Add rate limit headers if available
+        if hasattr(request.state, 'rate_limit_headers'):
+            for key, value in request.state.rate_limit_headers.items():
+                response.headers[key] = value
+        
+        return response
+
+app.add_middleware(SecurityMiddleware)
+
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
