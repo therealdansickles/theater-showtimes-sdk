@@ -226,6 +226,24 @@ frontend:
         agent: "main"
         comment: "Backend APIs confirmed working. Need to test React Native component integration with working backend APIs and verify mobile-optimized filtering works correctly."
 
+  - task: "Admin Authentication & Setup Film Page Access"
+    implemented: true
+    working: true
+    file: "/app/backend/.env, /app/frontend/src/AuthContext.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User reported: Cannot access 'Setup film page' after admin login. After clicking 'Sign In' with proper credentials, no new page appears. No specific error messages showing."
+      - working: false
+        agent: "main"
+        comment: "ROOT CAUSE IDENTIFIED: JWT_SECRET_KEY missing from backend environment variables. Backend was generating random secret keys on restart, invalidating existing tokens. Login would succeed but subsequent token verification would fail."
+      - working: true
+        agent: "main"
+        comment: "FIXED: Added JWT_SECRET_KEY to backend/.env file and restarted backend. Direct API testing confirms: login successful (returns valid token), token verification successful (returns user info). Admin user 'admin' exists with demo credentials. Authentication flow now working end-to-end."
+
   - task: "Frontend Filter Integration Fix"
     implemented: true
     working: true
