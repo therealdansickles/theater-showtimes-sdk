@@ -308,13 +308,29 @@ uploads_dir = Path("/app/uploads")
 uploads_dir.mkdir(exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
 
-# CORS middleware
+# CORS middleware - Enhanced security configuration
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3001", 
+        "https://*.emergentagent.com",
+        "https://*.litebeem.com"
+    ],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=[
+        "Authorization", 
+        "Content-Type", 
+        "X-API-Key",
+        "X-Requested-With",
+        "X-CSRF-Token"
+    ],
+    expose_headers=[
+        "X-RateLimit-Limit",
+        "X-RateLimit-Remaining", 
+        "X-RateLimit-Reset"
+    ]
 )
 
 # Configure logging
