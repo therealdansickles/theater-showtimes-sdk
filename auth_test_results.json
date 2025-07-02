@@ -27,8 +27,11 @@
   },
   {
     "name": "Invalid Credentials",
-    "status": "\u274c FAILED",
-    "details": null
+    "status": "\u2705 PASSED",
+    "details": {
+      "security_working": true,
+      "status_code": 401
+    }
   },
   {
     "name": "Invalid Token",
