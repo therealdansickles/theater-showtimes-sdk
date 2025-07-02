@@ -7,6 +7,7 @@ from ..database import (
     get_database, insert_document, find_document, find_documents,
     update_document, delete_document, count_documents
 )
+from ..security import get_admin_user, validate_string_input, validate_email_format
 
 router = APIRouter(prefix="/clients", tags=["clients"])
 
