@@ -314,3 +314,14 @@ class APIKeyResponse(BaseModel):
     expires_at: Optional[datetime]
     permissions: List[str]
     rate_limit: int
+
+class ImageUploadResponse(BaseModel):
+    """Response model for image upload"""
+    id: str
+    name: str
+    url: str
+    alt_text: str
+    category: str
+    uploaded_at: datetime
+    file_size: int
+    file_type: str
