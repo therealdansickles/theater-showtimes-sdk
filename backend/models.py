@@ -332,3 +332,14 @@ class ScreeningCategoryUpdate(BaseModel):
     type: Optional[str] = None
     description: Optional[str] = None
     is_active: Optional[bool] = None
+
+class ImageUploadResponse(BaseModel):
+    """Response model for image upload"""
+    id: str
+    name: str
+    url: str
+    alt_text: str
+    category: str
+    uploaded_at: datetime
+    file_size: int
+    file_type: str
