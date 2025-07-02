@@ -83,6 +83,7 @@ class FilmAssets(BaseModel):
     trailer_url: Optional[str] = None  # YouTube or Vimeo URL
     gallery_images: List[str] = []  # Additional promotional images
     press_kit_url: Optional[str] = None  # Press kit download link
+    badge_images: List[str] = []  # URLs of uploaded badge graphics (SVG/PNG) - festival laurels, logos, taglines
     
 class FilmDetails(BaseModel):
     """Extended film information"""
