@@ -37,6 +37,11 @@ class MovieConfigTester:
         self.client_id = None
         self.movie_id = None
         self.badge_image_ids = []
+        self.video_urls = [
+            "https://example.com/videos/trailer1.mp4",
+            "https://example.com/videos/behind_scenes.mp4",
+            "https://example.com/videos/interview.mp4"
+        ]
         
     def run_test(self, name, func, *args, **kwargs):
         """Run a test and record results"""
