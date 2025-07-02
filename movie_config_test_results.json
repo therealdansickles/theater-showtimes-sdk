@@ -23,24 +23,30 @@
     "details": null
   },
   {
-    "name": "Create Movie with Badge Images",
+    "name": "Create Movie with Badge Images and Video Gallery",
     "status": "\u2705 PASSED",
     "details": {
       "movie_created": true,
-      "movie_id": "2605127f-555f-4a2d-899a-86e8d77a92d2",
+      "movie_id": "803aebfd-8aa9-411b-88ef-7e36a3d7e6eb",
       "has_badge_images": true,
       "badge_count": 1,
-      "badge_images_match": true
+      "badge_images_match": true,
+      "has_video_gallery": true,
+      "video_count": 1,
+      "video_gallery_match": true
     }
   },
   {
-    "name": "Get Movie with Badge Images",
+    "name": "Get Movie with Badge Images and Video Gallery",
     "status": "\u2705 PASSED",
     "details": {
       "movie_retrieved": true,
       "has_badge_images": true,
       "badge_count": 1,
-      "badge_images_match": true
+      "badge_images_match": true,
+      "has_video_gallery": true,
+      "video_count": 1,
+      "video_gallery_match": true
     }
   },
   {
@@ -54,6 +60,11 @@
     }
   },
   {
+    "name": "Update Movie Video Gallery",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
     "name": "Backward Compatibility",
     "status": "\u274c FAILED",
     "details": null
@@ -64,8 +75,19 @@
     "details": {
       "public_endpoint_working": true,
       "has_badge_images": true,
+      "has_video_gallery": true,
       "film_details_included": true,
       "social_links_included": true
+    }
+  },
+  {
+    "name": "Video Gallery JSON Serialization",
+    "status": "\u2705 PASSED",
+    "details": {
+      "serialization_test": true,
+      "has_video_gallery": true,
+      "all_urls_are_strings": true,
+      "video_count": 1
     }
   }
 ]
