@@ -44,6 +44,17 @@ export const Header = ({ movieConfig }) => {
                onMouseLeave={(e) => e.target.style.color = 'white'}>
               Get Tickets
             </a>
+            {/* Setup wizard for film teams */}
+            {isAuthenticated() && isAdmin() && (
+              <a href="/setup" className="transition-colors" style={{ color: 'white' }}
+                 onMouseEnter={(e) => e.target.style.color = accentColor}
+                 onMouseLeave={(e) => e.target.style.color = 'white'}>
+                <span className="flex items-center">
+                  <span className="mr-1">🎬</span>
+                  Setup Film
+                </span>
+              </a>
+            )}
             {/* Admin link - now properly secured */}
             <a href="/admin" className="transition-colors" style={{ color: 'white' }}
                onMouseEnter={(e) => e.target.style.color = accentColor}
