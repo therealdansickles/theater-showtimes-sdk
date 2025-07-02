@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { mockTheaterData, mockCategories } from '../mockData';
+import ImageWithFallback from './ImageWithFallback';
 
 // Two-Panel Layout: Left (Showtimes & Filters) + Right (Hero Panel)
 const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => {
