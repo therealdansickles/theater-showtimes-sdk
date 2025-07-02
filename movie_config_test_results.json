@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Admin Login",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_received": true,
+      "token_length": 211
+    }
+  },
+  {
+    "name": "Create Test Client",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Upload Badge Image",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Upload Multiple Badge Images",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Create Movie with Badge Images",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Get Movie with Badge Images",
+    "status": "\u2705 PASSED",
+    "details": {
+      "error": "No movie ID available for testing"
+    }
+  },
+  {
+    "name": "Update Movie Badge Images",
+    "status": "\u2705 PASSED",
+    "details": {
+      "error": "No movie ID available for testing"
+    }
+  },
+  {
+    "name": "Backward Compatibility",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Public Movie Endpoint",
+    "status": "\u2705 PASSED",
+    "details": {
+      "error": "No movie ID available for testing"
+    }
+  }
+]
