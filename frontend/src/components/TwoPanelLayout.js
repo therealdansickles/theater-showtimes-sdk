@@ -449,22 +449,15 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
           {/* Poster with exact 2:3 ratio and enhanced shadow */}
           <div className="flex-shrink-0 mb-8 poster-container">
             <div className="aspect-[2/3] max-w-sm mx-auto poster-enhanced">
-              <img
+              <ImageWithFallback
                 src={movieConfig?.film_assets?.poster_image ? 
                   process.env.REACT_APP_BACKEND_URL + movieConfig.film_assets.poster_image :
                   'https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop'
                 }
+                fallbackSrc="https://images.pexels.com/photos/7991225/pexels-photo-7991225.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
                 alt={`${movieConfig?.movie_title || 'Movie'} Poster`}
                 className="w-full h-full object-cover rounded-2xl"
-                onError={(e) => {
-                  // Fallback to a different high-quality image if the first one fails
-                  e.target.src = 'https://images.pexels.com/photos/7991225/pexels-photo-7991225.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop';
-                }}
-                loading="lazy"
-                style={{
-                  backgroundImage: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-                  backgroundSize: 'cover'
-                }}
+                movieConfig={movieConfig}
               />
             </div>
           </div>
