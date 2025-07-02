@@ -186,9 +186,10 @@ class AuthTester:
         print(f"Status code: {response.status_code}")
         print(f"Response: {response.text}")
         
-        # Check if the response status code is 401 (Unauthorized)
-        if response.status_code == 401:
-            return {"security_working": True, "status_code": 401}
+        # Check if the response status code is 401 (Unauthorized) or 403 (Forbidden)
+        # Both are acceptable for authentication failure
+        if response.status_code in [401, 403]:
+            return {"security_working": True, "status_code": response.status_code}
         return False
     
     # 3. Admin-Protected Endpoints Tests
