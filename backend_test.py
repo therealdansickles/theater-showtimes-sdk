@@ -452,12 +452,14 @@ class MovieConfigTester:
             # Verify the movie was created successfully
             has_film_assets = "film_assets" in response
             has_empty_badge_images = has_film_assets and "badge_images" in response["film_assets"] and isinstance(response["film_assets"]["badge_images"], list)
+            has_empty_video_gallery = has_film_assets and "video_gallery" in response["film_assets"] and isinstance(response["film_assets"]["video_gallery"], list)
             
             return {
                 "legacy_movie_created": True,
                 "movie_id": legacy_movie_id,
                 "has_film_assets": has_film_assets,
-                "has_empty_badge_images": has_empty_badge_images
+                "has_empty_badge_images": has_empty_badge_images,
+                "has_empty_video_gallery": has_empty_video_gallery
             }
         return False
     
