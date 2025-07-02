@@ -519,6 +519,59 @@ const VisualAssetsStep = ({ filmData, updateFilmData, errors, onImageUpload }) =
           className="w-full px-4 py-3 bg-gray-700 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"
         />
       </div>
+      
+      {/* Badge Images Section */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Badge Graphics <span className="text-gray-400">(Festival Laurels, Logos, Taglines)</span>
+            </label>
+            <p className="text-xs text-gray-400">
+              Upload custom badges to replace "NOW PLAYING", "ONLY IN THEATERS", etc. Max 140px width each.
+            </p>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {filmData.film_assets.badge_images.map((badge, index) => (
+            <div key={index} className="relative group">
+              <img 
+                src={process.env.REACT_APP_BACKEND_URL + badge}
+                alt={`Badge ${index + 1}`}
+                className="w-full h-16 object-contain bg-gray-800 rounded-lg border border-gray-600"
+              />
+              <button
+                onClick={() => {
+                  const newBadges = [...filmData.film_assets.badge_images];
+                  newBadges.splice(index, 1);
+                  updateFilmData('film_assets.badge_images', newBadges);
+                }}
+                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+          
+          {/* Add Badge Button */}
+          <label className="w-full h-16 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-red-500 transition-colors">
+            <span className="text-2xl text-gray-400">+</span>
+            <span className="text-xs text-gray-400">Add Badge</span>
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  onImageUpload('badge_image', file);
+                }
+              }}
+            />
+          </label>
+        </div>
+      </div>
     </div>
   );
 };
