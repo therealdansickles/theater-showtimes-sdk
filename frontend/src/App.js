@@ -7,6 +7,8 @@ import { AdminDashboard } from './admin-components';
 import { AuthProvider } from './AuthContext';
 import LoginPage from './LoginPage';
 import ProtectedRoute from './ProtectedRoute';
+import FilmPage from './FilmPage';
+import FilmSetupWizard from './FilmSetupWizard';
 
 const API_BASE = process.env.REACT_APP_BACKEND_URL + '/api';
 
