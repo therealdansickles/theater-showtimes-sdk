@@ -316,15 +316,18 @@ app.add_middleware(
         "http://localhost:3000",
         "http://localhost:3001", 
         "https://*.emergentagent.com",
+        "https://f89fb794-9619-4452-9198-7d7904651861.preview.emergentagent.com",
         "https://*.litebeem.com"
     ],
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=[
         "Authorization", 
         "Content-Type", 
         "X-API-Key",
         "X-Requested-With",
-        "X-CSRF-Token"
+        "X-CSRF-Token",
+        "Accept",
+        "Origin"
     ],
     expose_headers=[
         "X-RateLimit-Limit",
