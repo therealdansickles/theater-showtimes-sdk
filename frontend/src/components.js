@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
+import { useAuth } from './AuthContext';
 
 // Main Header Component
 export const Header = ({ movieConfig }) => {
   const accentColor = movieConfig?.accent_color || '#ef4444';
+  const { isAuthenticated, isAdmin, user, logout } = useAuth();
+  
+  const handleLogout = () => {
+    logout();
+    // Redirect to home page after logout
+    window.location.href = '/';
+  };
   
   return (
     <header className="bg-black text-white">
@@ -21,7 +29,7 @@ export const Header = ({ movieConfig }) => {
             </div>
           </div>
           <nav className="hidden md:flex space-x-6">
-            <a href="#" className="transition-colors" style={{ color: 'white' }} 
+            <a href="/" className="transition-colors" style={{ color: 'white' }} 
                onMouseEnter={(e) => e.target.style.color = accentColor}
                onMouseLeave={(e) => e.target.style.color = 'white'}>
               Home
@@ -36,14 +44,63 @@ export const Header = ({ movieConfig }) => {
                onMouseLeave={(e) => e.target.style.color = 'white'}>
               Get Tickets
             </a>
+            {/* Admin link - now properly secured */}
             <a href="/admin" className="transition-colors" style={{ color: 'white' }}
                onMouseEnter={(e) => e.target.style.color = accentColor}
                onMouseLeave={(e) => e.target.style.color = 'white'}>
-              Admin
+              {isAuthenticated() && isAdmin() ? (
+                <span className="flex items-center">
+                  <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                  Admin
+                </span>
+              ) : (
+                'Admin'
+              )}
             </a>
           </nav>
         </div>
         <div className="flex items-center space-x-4">
+          {/* Authentication Status */}
+          {isAuthenticated() ? (
+            <div className="flex items-center space-x-3">
+              <div className="text-sm">
+                <span className="text-gray-300">Welcome, </span>
+                <span className="font-semibold" style={{ color: accentColor }}>
+                  {user?.username}
+                </span>
+                {isAdmin() && (
+                  <span className="ml-2 px-2 py-1 bg-red-600 text-white text-xs rounded-full">
+                    ADMIN
+                  </span>
+                )}
+              </div>
+              <button 
+                onClick={handleLogout}
+                className="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 rounded transition-colors"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <a 
+              href="/login"
+              className="px-4 py-2 text-sm font-medium rounded transition-colors"
+              style={{ 
+                backgroundColor: accentColor,
+                color: 'white'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#dc2626';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = accentColor;
+              }}
+            >
+              🔒 Login
+            </a>
+          )}
+          
+          {/* Original buttons */}
           <button className="p-2 transition-colors" style={{ color: 'white' }}
                   onMouseEnter={(e) => e.target.style.color = accentColor}
                   onMouseLeave={(e) => e.target.style.color = 'white'}>
