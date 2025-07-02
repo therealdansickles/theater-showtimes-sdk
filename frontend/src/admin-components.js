@@ -403,9 +403,73 @@ export const PresetSelector = ({ onApplyPreset }) => {
 };
 
 // Admin Dashboard Main Component
-export const AdminDashboard = ({ movieConfig, onUpdateConfig, clientId }) => {
+export const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('general');
   const [saving, setSaving] = useState(false);
+  const [movieConfig, setMovieConfig] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch movie configuration on component mount
+  useEffect(() => {
+    const fetchMovieConfig = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`${API_BASE}/movies/?limit=1`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('auth_token')}`
+          }
+        });
+        
+        if (response.data && response.data.length > 0) {
+          setMovieConfig(response.data[0]);
+        } else {
+          // Create default movie config if none exists
+          setMovieConfig({
+            id: 'default',
+            movie_title: 'Sample Movie',
+            movie_subtitle: '',
+            description: 'A thrilling movie experience',
+            primary_gradient: {
+              type: 'linear',
+              direction: '135deg',
+              colors: ['#ef4444', '#dc2626']
+            },
+            secondary_gradient: {
+              type: 'linear',
+              direction: '135deg',
+              colors: ['#f97316', '#ea580c']
+            },
+            background_color: '#000000',
+            text_color: '#ffffff',
+            accent_color: '#ef4444',
+            typography: {
+              font_family: 'Inter, sans-serif',
+              heading_font_size: '4rem',
+              body_font_size: '1rem'
+            },
+            primary_button: {
+              background_color: '#ef4444',
+              text_color: '#ffffff',
+              border_radius: 8
+            },
+            secondary_button: {
+              background_color: '#374151',
+              text_color: '#ffffff',
+              border_radius: 8
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching movie config:', error);
+        setError('Failed to load movie configuration');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMovieConfig();
+  }, []);
 
   const tabs = [
     { id: 'general', name: 'General', icon: '🎬' },
@@ -418,7 +482,21 @@ export const AdminDashboard = ({ movieConfig, onUpdateConfig, clientId }) => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await onUpdateConfig(movieConfig);
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      await axios.put(
+        `${API_BASE}/movies/${movieConfig.id}`, 
+        movieConfig,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
       alert('Configuration saved successfully!');
     } catch (error) {
       console.error('Save failed:', error);
@@ -429,10 +507,10 @@ export const AdminDashboard = ({ movieConfig, onUpdateConfig, clientId }) => {
   };
 
   const updateConfig = (field, value) => {
-    onUpdateConfig({
-      ...movieConfig,
+    setMovieConfig(prev => ({
+      ...prev,
       [field]: value
-    });
+    }));
   };
 
   const handleImageUpload = (field, uploadData) => {
@@ -440,8 +518,8 @@ export const AdminDashboard = ({ movieConfig, onUpdateConfig, clientId }) => {
   };
 
   const handlePresetApply = (preset) => {
-    onUpdateConfig({
-      ...movieConfig,
+    setMovieConfig(prev => ({
+      ...prev,
       primary_gradient: preset.primary_gradient,
       secondary_gradient: preset.secondary_gradient,
       background_color: preset.background_color,
@@ -450,9 +528,54 @@ export const AdminDashboard = ({ movieConfig, onUpdateConfig, clientId }) => {
       typography: preset.typography,
       primary_button: preset.primary_button,
       secondary_button: preset.secondary_button
-    });
+    }));
     setActiveTab('colors');
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="bg-gray-900 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <h2 className="text-2xl font-bold text-white mb-2">Loading Admin Dashboard</h2>
+          <p className="text-gray-400">Fetching movie configuration...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="bg-gray-900 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-white mb-2">Error Loading Dashboard</h2>
+          <p className="text-red-400 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Null check for movieConfig
+  if (!movieConfig) {
+    return (
+      <div className="bg-gray-900 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">📝</div>
+          <h2 className="text-2xl font-bold text-white mb-2">No Configuration Found</h2>
+          <p className="text-gray-400">Please create a movie configuration first.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-900 min-h-screen">
