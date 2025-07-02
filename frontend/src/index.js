@@ -4,6 +4,11 @@ import "./index.css";
 import App from "./App";
 import ErrorBoundary from "./ErrorBoundary";
 
+// Clear console on load to reduce noise from extensions
+if (process.env.NODE_ENV !== 'development') {
+  console.clear();
+}
+
 // Handle uncaught errors gracefully
 window.addEventListener('error', (event) => {
   // Suppress common browser extension errors
