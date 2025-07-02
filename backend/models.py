@@ -60,6 +60,40 @@ class TimeSlot(BaseModel):
     available_seats: Optional[int] = None
     price_modifier: Optional[float] = 1.0  # Price multiplier for this time slot
 
+class SocialLinks(BaseModel):
+    """Social media links for film promotion"""
+    instagram: Optional[str] = None
+    twitter: Optional[str] = None  
+    tiktok: Optional[str] = None
+    facebook: Optional[str] = None
+    youtube: Optional[str] = None
+    website: Optional[str] = None
+    
+    @validator('instagram', 'twitter', 'tiktok', 'facebook', 'youtube', 'website', pre=True)
+    def validate_urls(cls, v):
+        if v and not v.startswith(('http://', 'https://')):
+            # Auto-add https if missing
+            return f"https://{v}"
+        return v
+
+class FilmAssets(BaseModel):
+    """Film assets for rich landing pages"""
+    poster_image: Optional[str] = None  # Main poster (2:3 aspect ratio recommended)
+    backdrop_image: Optional[str] = None  # Wide background image (16:9)
+    trailer_url: Optional[str] = None  # YouTube or Vimeo URL
+    gallery_images: List[str] = []  # Additional promotional images
+    press_kit_url: Optional[str] = None  # Press kit download link
+    
+class FilmDetails(BaseModel):
+    """Extended film information"""
+    logline: Optional[str] = None  # Short one-sentence description
+    synopsis: str  # Full plot description
+    production_notes: Optional[str] = None  # Behind-the-scenes info
+    festival_selections: List[str] = []  # Festival names/awards
+    content_warnings: List[str] = []  # Content advisory
+    languages: List[str] = ["English"]  # Spoken languages
+    subtitles: List[str] = []  # Available subtitle languages
+
 class ScreeningFormat(BaseModel):
     category_id: str
     category_name: str
