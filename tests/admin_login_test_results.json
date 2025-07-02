@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Admin Login",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_received": true,
+      "token_length": 211,
+      "token": "eyJhbGciOi..."
+    }
+  },
+  {
+    "name": "JWT Token Verification",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_valid": true,
+      "username": "admin",
+      "role": "admin"
+    }
+  },
+  {
+    "name": "User Info",
+    "status": "\u2705 PASSED",
+    "details": {
+      "username": "admin",
+      "role": "admin",
+      "is_admin": true
+    }
+  },
+  {
+    "name": "Admin Access",
+    "status": "\u2705 PASSED",
+    "details": {
+      "admin_access": true
+    }
+  },
+  {
+    "name": "Movies Endpoint",
+    "status": "\u2705 PASSED",
+    "details": {
+      "movies_access": true,
+      "count": 1
+    }
+  }
+]
