@@ -152,7 +152,7 @@ def main():
                     break
     except Exception as e:
         print(f"Error reading backend URL: {e}")
-        backend_url = "https://f89fb794-9619-4452-9198-7d7904651861.preview.emergentagent.com"
+        backend_url = "https://8e9107a9-01e3-4da8-a758-3c9227c9c896.preview.emergentagent.com"
     
     print(f"Using backend URL: {backend_url}")
     

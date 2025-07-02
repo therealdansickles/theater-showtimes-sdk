@@ -10,7 +10,7 @@ import sys
 import time
 
 # Configuration
-API_BASE_URL = "https://f89fb794-9619-4452-9198-7d7904651861.preview.emergentagent.com/api"
+API_BASE_URL = "https://8e9107a9-01e3-4da8-a758-3c9227c9c896.preview.emergentagent.com/api"
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "SecurePassword123!"
 

@@ -21,7 +21,7 @@ The error occurs in the TheaterCard component when trying to access `theater.cha
 
 ```
 TypeError: Cannot read properties of undefined (reading 'charAt')
-at TheaterCard (https://f89fb794-9619-4452-9198-7d7904651861.preview.emergentagent.com/static/js/bundle.js:2843:37)
+at TheaterCard (https://8e9107a9-01e3-4da8-a758-3c9227c9c896.preview.emergentagent.com/static/js/bundle.js:2843:37)
 ```
 
 ### API Response vs. Frontend Expectations

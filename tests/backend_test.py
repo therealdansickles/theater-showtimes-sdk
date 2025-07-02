@@ -19,7 +19,7 @@ import random
 import string
 
 # Configuration
-API_BASE_URL = "https://f89fb794-9619-4452-9198-7d7904651861.preview.emergentagent.com/api"
+API_BASE_URL = "https://8e9107a9-01e3-4da8-a758-3c9227c9c896.preview.emergentagent.com/api"
 ADMIN_USERNAME = f"admin_{int(time.time())}"
 ADMIN_PASSWORD = "SecurePassword123!"
 ADMIN_EMAIL = f"admin_{int(time.time())}@example.com"
