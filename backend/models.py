@@ -149,7 +149,12 @@ class MovieConfiguration(BaseModel):
     client_id: str
     movie_title: str
     movie_subtitle: Optional[str] = None
-    description: str
+    description: str  # Short description for listings
+    
+    # Enhanced Film Information
+    film_details: FilmDetails = FilmDetails(synopsis="")
+    social_links: SocialLinks = SocialLinks()
+    film_assets: FilmAssets = FilmAssets()
     
     # Visual Customization
     primary_gradient: GradientConfig = GradientConfig()
@@ -165,7 +170,7 @@ class MovieConfiguration(BaseModel):
     primary_button: ButtonStyle = ButtonStyle()
     secondary_button: ButtonStyle = ButtonStyle(background_color="#374151")
     
-    # Images
+    # Legacy Images (keeping for backward compatibility)
     hero_image: Optional[str] = None
     poster_image: Optional[str] = None
     logo_image: Optional[str] = None
@@ -183,6 +188,15 @@ class MovieConfiguration(BaseModel):
     available_formats: List[str] = ["2D", "IMAX", "DOLBY", "4DX"]  # Legacy field
     screening_categories: List[ScreeningCategory] = []  # New dynamic categories
     theaters: List[TheaterLocation] = []
+    
+    # Pricing Configuration
+    base_ticket_price: float = 15.00
+    format_pricing: Dict[str, float] = {
+        "IMAX": 5.00,  # Additional cost for IMAX
+        "4DX": 8.00,   # Additional cost for 4DX
+        "DOLBY": 3.00, # Additional cost for Dolby
+        "VIP": 10.00   # Additional cost for VIP
+    }
     
     # Status
     is_active: bool = True
