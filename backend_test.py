@@ -388,6 +388,40 @@ class MovieConfigTester:
                                         update_badge in response["film_assets"]["badge_images"]) if has_badge_images else False
             }
         return False
+        
+    def test_update_movie_video_gallery(self):
+        """Test updating a movie's video_gallery"""
+        if not self.movie_id:
+            return {"error": "No movie ID available for testing"}
+        
+        # Update with multiple video URLs
+        update_data = {
+            "film_assets": {
+                "video_gallery": self.video_urls  # Add all test videos
+            }
+        }
+        
+        success, response = self.make_request(
+            "PUT",
+            f"movies/{self.movie_id}",
+            data=update_data,
+            auth_type="jwt",
+            expected_status=200
+        )
+        
+        if success and "id" in response:
+            # Verify video_gallery was updated
+            has_video_gallery = "film_assets" in response and "video_gallery" in response["film_assets"]
+            video_count = len(response["film_assets"]["video_gallery"]) if has_video_gallery else 0
+            
+            return {
+                "movie_updated": True,
+                "has_video_gallery": has_video_gallery,
+                "video_count": video_count,
+                "video_gallery_updated": (video_count == len(self.video_urls) and 
+                                        set(response["film_assets"]["video_gallery"]) == set(self.video_urls)) if has_video_gallery else False
+            }
+        return False
     
     # 3. Data Model Integrity
     def test_backward_compatibility(self):
