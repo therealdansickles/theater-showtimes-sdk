@@ -269,7 +269,8 @@ class MovieConfigTester:
             },
             "film_assets": {
                 "poster_image": "/uploads/test_poster.jpg",
-                "badge_images": self.badge_image_ids
+                "badge_images": self.badge_image_ids,
+                "video_gallery": self.video_urls[:1]  # Add one video URL
             },
             "social_links": {
                 "instagram": "test_movie",
@@ -292,12 +293,19 @@ class MovieConfigTester:
             has_badge_images = "film_assets" in response and "badge_images" in response["film_assets"]
             badge_count = len(response["film_assets"]["badge_images"]) if has_badge_images else 0
             
+            # Verify video_gallery is in the response
+            has_video_gallery = "film_assets" in response and "video_gallery" in response["film_assets"]
+            video_count = len(response["film_assets"]["video_gallery"]) if has_video_gallery else 0
+            
             return {
                 "movie_created": True, 
                 "movie_id": self.movie_id,
                 "has_badge_images": has_badge_images,
                 "badge_count": badge_count,
-                "badge_images_match": set(response["film_assets"]["badge_images"]) == set(self.badge_image_ids) if has_badge_images else False
+                "badge_images_match": set(response["film_assets"]["badge_images"]) == set(self.badge_image_ids) if has_badge_images else False,
+                "has_video_gallery": has_video_gallery,
+                "video_count": video_count,
+                "video_gallery_match": set(response["film_assets"]["video_gallery"]) == set(self.video_urls[:1]) if has_video_gallery else False
             }
         return False
     
