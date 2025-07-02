@@ -43,8 +43,11 @@
   },
   {
     "name": "Missing Token",
-    "status": "\u274c FAILED",
-    "details": null
+    "status": "\u2705 PASSED",
+    "details": {
+      "security_working": true,
+      "status_code": 403
+    }
   },
   {
     "name": "Admin Endpoint Access",
