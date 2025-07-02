@@ -662,3 +662,4 @@ export const Footer = ({ movieConfig }) => {
       </div>
     </footer>
   );
+};
