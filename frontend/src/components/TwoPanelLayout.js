@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const API_BASE = process.env.REACT_APP_BACKEND_URL + '/api';
+import { mockTheaterData, mockCategories } from '../mockData';
 
 // Two-Panel Layout: Left (Showtimes & Filters) + Right (Hero Panel)
 const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => {
-  const [filteredTheaters, setFilteredTheaters] = useState(theaters || []);
+  // Use mock data for layout testing
+  const [filteredTheaters, setFilteredTheaters] = useState(mockTheaterData);
   const [filters, setFilters] = useState({
     location: '',
     selectedFormats: [],
     selectedDate: null,
     selectedTimes: ['Morning', 'Afternoon', 'Evening', 'Late Night'] // All selected by default
   });
-  const [categories, setCategories] = useState([]);
+  const [categories] = useState(mockCategories);
   const [expandedTheaters, setExpandedTheaters] = useState({});
 
   const accentColor = movieConfig?.accent_color || '#ef4444';
   const textColor = movieConfig?.text_color || '#ffffff';
-  const backgroundColor = movieConfig?.background_color || '#000000';
+  const backgroundColor = movieConfig?.background_color || '#0a0a0a';
+  
+  // Extract gradient colors for background
+  const primaryColors = movieConfig?.primary_gradient?.colors || ['#ef4444', '#dc2626', '#991b1b'];
+  const secondaryColors = movieConfig?.secondary_gradient?.colors || ['#f97316', '#ea580c', '#c2410c'];
 
   // Generate 7-day rolling window
   const generateDateOptions = () => {
@@ -40,19 +43,6 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
 
   const dateOptions = generateDateOptions();
 
-  // Fetch categories on mount
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(`${API_BASE}/categories/`);
-        setCategories(response.data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-    fetchCategories();
-  }, []);
-
   // Set default date to today
   useEffect(() => {
     if (!filters.selectedDate && dateOptions.length > 0) {
@@ -62,7 +52,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
 
   // Apply filters to theaters
   useEffect(() => {
-    let filtered = theaters || [];
+    let filtered = mockTheaterData; // Use mock data
 
     // Location filter (fuzzy matching)
     if (filters.location.trim()) {
@@ -122,7 +112,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
     filtered.sort((a, b) => (a.distance || 0) - (b.distance || 0));
 
     setFilteredTheaters(filtered);
-  }, [theaters, filters]);
+  }, [filters]);
 
   const toggleTheater = (theaterId) => {
     setExpandedTheaters(prev => ({
@@ -149,19 +139,32 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
     });
   };
 
+  // Dynamic background with subtle gradient
+  const backgroundStyle = {
+    background: `
+      radial-gradient(circle at 20% 80%, ${primaryColors[0]}15 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, ${secondaryColors[0]}10 0%, transparent 50%),
+      linear-gradient(135deg, ${backgroundColor} 0%, ${backgroundColor}dd 100%)
+    `,
+    minHeight: '100vh'
+  };
+
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen" style={{ backgroundColor }}>
+    <div className="flex flex-col lg:flex-row" style={backgroundStyle}>
       
       {/* Left Panel - Showtimes & Filters */}
-      <div className="lg:w-2/3 xl:w-3/5 p-6 overflow-y-auto">
-        <div className="max-w-4xl">
+      <div className="lg:w-2/3 xl:w-3/5 overflow-y-auto">
+        <div className="pl-8 pr-6 py-8 max-w-5xl">
           
-          {/* Filters Section */}
-          <div className="mb-8 space-y-6">
+          {/* Filters Section with improved spacing */}
+          <div className="mb-12 space-y-8">
             
             {/* Location Search */}
             <div>
-              <label className="block text-sm font-medium mb-3" style={{ color: textColor }}>
+              <label 
+                className="block text-sm font-semibold mb-4 tracking-wider uppercase"
+                style={{ color: textColor, opacity: 0.9 }}
+              >
                 📍 Location Search
               </label>
               <input
@@ -169,57 +172,74 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                 placeholder="Enter city or zip code..."
                 value={filters.location}
                 onChange={(e) => handleFilterChange('location', e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border-2 bg-white bg-opacity-10 backdrop-blur-sm text-white placeholder-gray-300 focus:outline-none focus:border-opacity-50 transition-all"
-                style={{ borderColor: accentColor, borderOpacity: 0.3 }}
+                className="w-full px-6 py-4 rounded-xl border-2 bg-white bg-opacity-5 backdrop-blur-sm text-white placeholder-gray-300 focus:outline-none focus:border-opacity-60 focus:bg-opacity-10 transition-all text-lg"
+                style={{ 
+                  borderColor: accentColor, 
+                  borderOpacity: 0.2,
+                  fontFamily: movieConfig?.typography?.body_font || 'Inter'
+                }}
               />
             </div>
 
-            {/* Date Picker */}
+            {/* Date Picker with improved styling */}
             <div>
-              <label className="block text-sm font-medium mb-3" style={{ color: textColor }}>
+              <label 
+                className="block text-sm font-semibold mb-4 tracking-wider uppercase"
+                style={{ color: textColor, opacity: 0.9 }}
+              >
                 📅 Select Date
               </label>
-              <div className="flex space-x-2 overflow-x-auto pb-2">
+              <div className="flex space-x-3 overflow-x-auto pb-3">
                 {dateOptions.map((date) => (
                   <button
                     key={date.value}
                     onClick={() => handleFilterChange('selectedDate', date.value)}
-                    className={`flex-shrink-0 px-4 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
+                    className={`flex-shrink-0 px-6 py-4 rounded-xl font-semibold transition-all duration-200 whitespace-nowrap transform hover:scale-105 ${
                       filters.selectedDate === date.value
-                        ? 'text-white shadow-lg'
-                        : 'bg-white bg-opacity-10 hover:bg-opacity-20'
+                        ? 'text-white shadow-2xl scale-105'
+                        : 'bg-white bg-opacity-5 hover:bg-opacity-15 backdrop-blur-sm'
                     }`}
                     style={{
                       backgroundColor: filters.selectedDate === date.value ? accentColor : undefined,
-                      color: filters.selectedDate === date.value ? 'white' : textColor
+                      color: filters.selectedDate === date.value ? 'white' : textColor,
+                      fontFamily: movieConfig?.typography?.body_font || 'Inter'
                     }}
                   >
-                    {date.label}
-                    {date.isToday && <div className="text-xs opacity-75">Today</div>}
+                    <div className="text-base font-bold">{date.label}</div>
+                    {date.isToday && (
+                      <div className="text-xs opacity-80 uppercase tracking-wide">Today</div>
+                    )}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Format Filters */}
+            {/* Format Filters with improved layout */}
             <div>
-              <label className="block text-sm font-medium mb-3" style={{ color: textColor }}>
+              <label 
+                className="block text-sm font-semibold mb-4 tracking-wider uppercase"
+                style={{ color: textColor, opacity: 0.9 }}
+              >
                 🎬 Formats
               </label>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
                 {categories.map((category) => (
-                  <label key={category.id} className="flex items-center space-x-2 cursor-pointer">
+                  <label key={category.id} className="flex items-center space-x-3 cursor-pointer group">
                     <input
                       type="checkbox"
                       checked={filters.selectedFormats.includes(category.name)}
                       onChange={() => handleFilterChange('selectedFormats', category.name)}
-                      className="rounded border-2 bg-transparent focus:ring-2 focus:ring-opacity-50"
+                      className="w-5 h-5 rounded-lg border-2 bg-transparent focus:ring-2 focus:ring-opacity-50 transition-all"
                       style={{ 
                         accentColor: accentColor,
-                        borderColor: accentColor 
+                        borderColor: accentColor,
+                        borderOpacity: 0.4
                       }}
                     />
-                    <span className="text-sm" style={{ color: textColor }}>
+                    <span 
+                      className="text-base font-medium group-hover:opacity-100 transition-opacity"
+                      style={{ color: textColor, opacity: 0.85 }}
+                    >
                       {category.name}
                     </span>
                   </label>
@@ -227,34 +247,44 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
               </div>
             </div>
 
-            {/* Time of Day Filters */}
+            {/* Time of Day Filters with reduced spacing */}
             <div>
-              <label className="block text-sm font-medium mb-3" style={{ color: textColor }}>
+              <label 
+                className="block text-sm font-semibold mb-4 tracking-wider uppercase"
+                style={{ color: textColor, opacity: 0.9 }}
+              >
                 🕐 Time of Day
               </label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { value: 'Morning', label: 'Morning', desc: 'Before 12 PM' },
-                  { value: 'Afternoon', label: 'Afternoon', desc: '12 PM - 6 PM' },
-                  { value: 'Evening', label: 'Evening', desc: '6 PM - 10 PM' },
-                  { value: 'Late Night', label: 'Late Night', desc: 'After 10 PM' }
+                  { value: 'Morning', label: 'Morning', desc: 'Before 12 PM', icon: '🌅' },
+                  { value: 'Afternoon', label: 'Afternoon', desc: '12 PM - 6 PM', icon: '☀️' },
+                  { value: 'Evening', label: 'Evening', desc: '6 PM - 10 PM', icon: '🌆' },
+                  { value: 'Late Night', label: 'Late Night', desc: 'After 10 PM', icon: '🌙' }
                 ].map((timeOption) => (
-                  <label key={timeOption.value} className="flex items-center space-x-2 cursor-pointer">
+                  <label key={timeOption.value} className="flex items-center space-x-3 cursor-pointer group">
                     <input
                       type="checkbox"
                       checked={filters.selectedTimes.includes(timeOption.value)}
                       onChange={() => handleFilterChange('selectedTimes', timeOption.value)}
-                      className="rounded border-2 bg-transparent focus:ring-2 focus:ring-opacity-50"
+                      className="w-5 h-5 rounded-lg border-2 bg-transparent focus:ring-2 focus:ring-opacity-50 transition-all"
                       style={{ 
                         accentColor: accentColor,
-                        borderColor: accentColor 
+                        borderColor: accentColor,
+                        borderOpacity: 0.4
                       }}
                     />
                     <div>
-                      <div className="text-sm font-medium" style={{ color: textColor }}>
-                        {timeOption.label}
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm">{timeOption.icon}</span>
+                        <span 
+                          className="text-base font-medium group-hover:opacity-100 transition-opacity"
+                          style={{ color: textColor, opacity: 0.85 }}
+                        >
+                          {timeOption.label}
+                        </span>
                       </div>
-                      <div className="text-xs opacity-70" style={{ color: textColor }}>
+                      <div className="text-xs opacity-60 ml-6" style={{ color: textColor }}>
                         {timeOption.desc}
                       </div>
                     </div>
@@ -264,12 +294,20 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
             </div>
           </div>
 
-          {/* Theater Listings */}
+          {/* Theater Listings with improved typography */}
           <div>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold" style={{ color: textColor }}>
-                Showtimes {filteredTheaters.length > 0 && (
-                  <span className="text-lg font-normal opacity-70">
+            <div className="flex items-center justify-between mb-8">
+              <h2 
+                className="text-3xl font-bold tracking-tight"
+                style={{ 
+                  color: textColor,
+                  fontFamily: movieConfig?.typography?.title_font || 'Inter',
+                  fontWeight: movieConfig?.typography?.title_weight || '800'
+                }}
+              >
+                Showtimes
+                {filteredTheaters.length > 0 && (
+                  <span className="text-xl font-normal opacity-60 ml-4">
                     ({filteredTheaters.length} theater{filteredTheaters.length !== 1 ? 's' : ''})
                   </span>
                 )}
@@ -277,54 +315,65 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
             </div>
 
             {loading ? (
-              <div className="text-center py-12">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-                <p className="mt-4" style={{ color: textColor }}>Loading theaters...</p>
+              <div className="text-center py-16">
+                <div 
+                  className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-transparent border-t-current"
+                  style={{ borderTopColor: accentColor }}
+                ></div>
+                <p className="mt-6 text-lg" style={{ color: textColor }}>Loading theaters...</p>
               </div>
             ) : filteredTheaters.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-lg" style={{ color: textColor, opacity: 0.7 }}>
+              <div className="text-center py-16">
+                <p className="text-xl" style={{ color: textColor, opacity: 0.7 }}>
                   No theaters found matching your criteria.
                 </p>
-                <p className="text-sm mt-2" style={{ color: textColor, opacity: 0.5 }}>
+                <p className="text-base mt-3" style={{ color: textColor, opacity: 0.5 }}>
                   Try adjusting your filters or search location.
                 </p>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {filteredTheaters.map((theater, index) => (
                   <div
                     key={index}
-                    className="bg-white bg-opacity-5 backdrop-blur-sm rounded-lg border border-white border-opacity-10 overflow-hidden"
+                    className="bg-white bg-opacity-5 backdrop-blur-sm rounded-2xl border border-white border-opacity-10 overflow-hidden hover:bg-opacity-10 transition-all duration-200"
                   >
                     <button
                       onClick={() => toggleTheater(index)}
-                      className="w-full p-6 text-left hover:bg-white hover:bg-opacity-5 transition-colors"
+                      className="w-full p-8 text-left hover:bg-white hover:bg-opacity-5 transition-colors"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
-                          <div className="flex items-center space-x-3 mb-2">
+                          <div className="flex items-center space-x-4 mb-3">
                             <div 
-                              className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm"
+                              className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg"
                               style={{ backgroundColor: accentColor }}
                             >
                               {theater.chain?.charAt(0) || 'T'}
                             </div>
-                            <h3 className="font-bold text-lg" style={{ color: textColor }}>
-                              {theater.name}
-                            </h3>
-                            {theater.distance && (
-                              <span className="text-sm opacity-70" style={{ color: textColor }}>
-                                {theater.distance} miles
-                              </span>
-                            )}
+                            <div>
+                              <h3 
+                                className="font-bold text-xl tracking-tight"
+                                style={{ 
+                                  color: textColor,
+                                  fontFamily: movieConfig?.typography?.title_font || 'Inter'
+                                }}
+                              >
+                                {theater.name}
+                              </h3>
+                              {theater.distance && (
+                                <span className="text-sm opacity-70 font-medium" style={{ color: textColor }}>
+                                  {theater.distance} miles away
+                                </span>
+                              )}
+                            </div>
                           </div>
-                          <p className="text-sm opacity-80" style={{ color: textColor }}>
+                          <p className="text-base opacity-80 ml-16" style={{ color: textColor }}>
                             {theater.address}
                           </p>
                         </div>
                         <span 
-                          className={`transform transition-transform ${expandedTheaters[index] ? 'rotate-180' : ''}`}
+                          className={`transform transition-transform duration-200 text-2xl ${expandedTheaters[index] ? 'rotate-180' : ''}`}
                           style={{ color: accentColor }}
                         >
                           ▼
@@ -334,20 +383,21 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
 
                     {/* Expanded Showtimes */}
                     {expandedTheaters[index] && (
-                      <div className="px-6 pb-6 border-t border-white border-opacity-10">
-                        <div className="space-y-4 mt-4">
+                      <div className="px-8 pb-8 border-t border-white border-opacity-10">
+                        <div className="space-y-6 mt-6">
                           {theater.formats?.map((format, formatIndex) => (
                             <div key={formatIndex}>
                               <h4 
-                                className="font-semibold mb-3 px-3 py-1 rounded inline-block"
+                                className="font-bold text-sm mb-4 px-4 py-2 rounded-lg inline-block uppercase tracking-widest"
                                 style={{ 
-                                  backgroundColor: `${accentColor}20`,
-                                  color: accentColor
+                                  backgroundColor: `${accentColor}25`,
+                                  color: accentColor,
+                                  fontFamily: movieConfig?.typography?.title_font || 'Inter'
                                 }}
                               >
                                 {format.type || format.category_name}
                               </h4>
-                              <div className="flex flex-wrap gap-2">
+                              <div className="flex flex-wrap gap-3">
                                 {format.times?.map((time, timeIndex) => {
                                   const timeStr = typeof time === 'string' ? time : time.time;
                                   const timeCategory = typeof time === 'object' && time.category ? time.category : null;
@@ -356,23 +406,24 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                                     <button
                                       key={timeIndex}
                                       onClick={() => onSelectTheater && onSelectTheater(theater)}
-                                      className="px-4 py-2 rounded-lg font-medium transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+                                      className="px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-opacity-30 transform"
                                       style={{ 
                                         backgroundColor: accentColor,
                                         color: 'white',
-                                        boxShadow: `0 4px 10px rgba(${parseInt(accentColor.slice(1, 3), 16)}, ${parseInt(accentColor.slice(3, 5), 16)}, ${parseInt(accentColor.slice(5, 7), 16)}, 0.3)`
+                                        boxShadow: `0 8px 20px rgba(${parseInt(accentColor.slice(1, 3), 16)}, ${parseInt(accentColor.slice(3, 5), 16)}, ${parseInt(accentColor.slice(5, 7), 16)}, 0.25)`,
+                                        fontFamily: movieConfig?.typography?.body_font || 'Inter'
                                       }}
                                       title={timeCategory ? `${timeStr} (${timeCategory})` : timeStr}
                                     >
                                       {timeCategory && (
-                                        <span className="mr-1 text-xs">
+                                        <span className="mr-2 text-sm">
                                           {timeCategory === 'morning' ? '🌅' : 
                                            timeCategory === 'afternoon' ? '☀️' : 
                                            timeCategory === 'evening' ? '🌆' : 
                                            timeCategory === 'late_night' ? '🌙' : '🕐'}
                                         </span>
                                       )}
-                                      {timeStr}
+                                      <span className="text-base font-bold">{timeStr}</span>
                                     </button>
                                   );
                                 })}
@@ -390,12 +441,12 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
         </div>
       </div>
 
-      {/* Right Panel - Hero Film Display */}
-      <div className="lg:w-1/3 xl:w-2/5 bg-black bg-opacity-30 backdrop-blur-sm">
-        <div className="sticky top-0 p-6 h-screen flex flex-col">
+      {/* Right Panel - Hero Film Display with enhanced styling */}
+      <div className="lg:w-1/3 xl:w-2/5 bg-black bg-opacity-20 backdrop-blur-sm">
+        <div className="sticky top-0 p-8 h-screen flex flex-col">
           
-          {/* Poster */}
-          <div className="flex-shrink-0 mb-6">
+          {/* Poster with exact 2:3 ratio and enhanced shadow */}
+          <div className="flex-shrink-0 mb-8">
             <div className="aspect-[2/3] max-w-sm mx-auto">
               <img
                 src={movieConfig?.film_assets?.poster_image ? 
@@ -403,81 +454,159 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                   'https://images.pexels.com/photos/30619403/pexels-photo-30619403.jpeg'
                 }
                 alt="Movie Poster"
-                className="w-full h-full object-cover rounded-lg shadow-2xl"
+                className="w-full h-full object-cover rounded-2xl"
                 style={{
-                  filter: 'drop-shadow(0 20px 25px rgba(0, 0, 0, 0.4))'
+                  filter: `
+                    drop-shadow(0 25px 50px rgba(0, 0, 0, 0.5))
+                    drop-shadow(0 10px 20px rgba(${parseInt(accentColor.slice(1, 3), 16)}, ${parseInt(accentColor.slice(3, 5), 16)}, ${parseInt(accentColor.slice(5, 7), 16)}, 0.2))
+                  `,
+                  boxShadow: `
+                    0 25px 50px -12px rgba(0, 0, 0, 0.6),
+                    0 0 0 1px rgba(255, 255, 255, 0.05)
+                  `
                 }}
               />
             </div>
           </div>
 
-          {/* Film Metadata */}
-          <div className="flex-grow space-y-4">
+          {/* Film Metadata with improved typography */}
+          <div className="flex-grow space-y-6">
             <div>
-              <h1 className="text-3xl lg:text-4xl font-bold mb-2" style={{ color: textColor }}>
+              <h1 
+                className="text-4xl lg:text-5xl font-black mb-3 tracking-tight leading-tight"
+                style={{ 
+                  color: textColor,
+                  fontFamily: movieConfig?.typography?.title_font || 'Inter',
+                  fontWeight: movieConfig?.typography?.title_weight || '900',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                }}
+              >
                 <span style={{ color: accentColor }}>
                   {movieConfig?.movie_title || 'Film Title'}
                 </span>
               </h1>
               {movieConfig?.movie_subtitle && (
-                <h2 className="text-xl opacity-80 mb-4" style={{ color: textColor }}>
+                <h2 
+                  className="text-2xl font-bold opacity-90 mb-6 tracking-wide"
+                  style={{ 
+                    color: textColor,
+                    fontFamily: movieConfig?.typography?.title_font || 'Inter'
+                  }}
+                >
                   {movieConfig.movie_subtitle}
                 </h2>
               )}
             </div>
 
             {movieConfig?.film_details?.logline && (
-              <p className="text-lg italic opacity-90 leading-relaxed" style={{ color: textColor }}>
+              <p 
+                className="text-lg italic opacity-90 leading-relaxed font-medium"
+                style={{ 
+                  color: textColor,
+                  fontFamily: movieConfig?.typography?.body_font || 'Inter',
+                  lineHeight: '1.6'
+                }}
+              >
                 "{movieConfig.film_details.logline}"
               </p>
             )}
 
-            {/* Promotional Badges */}
+            {/* Promotional Badges with better spacing */}
             <div className="space-y-3">
               {movieConfig?.film_assets?.badge_images?.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   {movieConfig.film_assets.badge_images.map((badgeUrl, index) => (
                     <img
                       key={index}
                       src={process.env.REACT_APP_BACKEND_URL + badgeUrl}
                       alt={`Badge ${index + 1}`}
-                      className="h-12 w-auto object-contain"
+                      className="h-14 w-auto object-contain"
                       style={{ maxWidth: '140px' }}
                     />
                   ))}
                 </div>
               ) : (
-                /* Fallback badges */
-                <div className="space-y-2">
-                  <div className="inline-block">
+                /* Fallback badges with improved styling */
+                <div className="flex flex-col space-y-3">
+                  <div className="flex flex-wrap gap-3">
                     <span 
-                      className="px-4 py-2 rounded font-bold text-white"
-                      style={{ backgroundColor: accentColor }}
+                      className="px-6 py-3 rounded-lg font-black text-white text-base tracking-wider uppercase shadow-lg"
+                      style={{ 
+                        backgroundColor: accentColor,
+                        fontFamily: movieConfig?.typography?.title_font || 'Inter'
+                      }}
                     >
-                      🎬 NOW PLAYING
+                      🎬 Now Playing
+                    </span>
+                    <span 
+                      className="px-6 py-3 rounded-lg font-bold text-white text-base tracking-wider uppercase"
+                      style={{ 
+                        backgroundColor: 'rgba(255,255,255,0.1)',
+                        fontFamily: movieConfig?.typography?.title_font || 'Inter'
+                      }}
+                    >
+                      Only In Theaters
                     </span>
                   </div>
-                  <div className="block">
-                    <span className="bg-gray-800 px-4 py-2 rounded text-white">
-                      ONLY IN THEATERS
+                  <div>
+                    <span 
+                      className="px-6 py-3 rounded-lg font-black text-black text-base tracking-wider uppercase shadow-lg"
+                      style={{ 
+                        background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                        fontFamily: movieConfig?.typography?.title_font || 'Inter'
+                      }}
+                    >
+                      Filmed For IMAX
                     </span>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Film Details */}
+            {/* Film Details with improved typography */}
             {(movieConfig?.director || movieConfig?.cast?.length > 0) && (
-              <div className="space-y-2 text-sm">
+              <div className="space-y-4 text-base">
                 {movieConfig.director && (
-                  <p style={{ color: textColor, opacity: 0.8 }}>
-                    <span className="font-medium">Director:</span> {movieConfig.director}
+                  <p style={{ color: textColor, opacity: 0.9 }}>
+                    <span 
+                      className="font-bold uppercase tracking-wider text-sm"
+                      style={{ 
+                        color: accentColor,
+                        fontFamily: movieConfig?.typography?.title_font || 'Inter'
+                      }}
+                    >
+                      Director:
+                    </span>
+                    <br />
+                    <span 
+                      className="text-lg font-semibold mt-1 block"
+                      style={{ fontFamily: movieConfig?.typography?.body_font || 'Inter' }}
+                    >
+                      {movieConfig.director}
+                    </span>
                   </p>
                 )}
                 {movieConfig.cast?.length > 0 && (
-                  <p style={{ color: textColor, opacity: 0.8 }}>
-                    <span className="font-medium">Starring:</span> {movieConfig.cast.slice(0, 3).join(', ')}
-                    {movieConfig.cast.length > 3 && ' & more'}
+                  <p style={{ color: textColor, opacity: 0.9 }}>
+                    <span 
+                      className="font-bold uppercase tracking-wider text-sm"
+                      style={{ 
+                        color: accentColor,
+                        fontFamily: movieConfig?.typography?.title_font || 'Inter'
+                      }}
+                    >
+                      Starring:
+                    </span>
+                    <br />
+                    <span 
+                      className="text-lg font-semibold mt-1 block leading-relaxed"
+                      style={{ fontFamily: movieConfig?.typography?.body_font || 'Inter' }}
+                    >
+                      {movieConfig.cast.slice(0, 3).join(', ')}
+                      {movieConfig.cast.length > 3 && (
+                        <span className="opacity-75"> & more</span>
+                      )}
+                    </span>
                   </p>
                 )}
               </div>
