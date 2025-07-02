@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import axios from 'axios';
 import { AuthProvider } from './AuthContext';
 import LoginPage from './LoginPage';
 import ProtectedRoute from './ProtectedRoute';
@@ -15,86 +14,16 @@ import VideosPage from './pages/VideosPage';
 import SynopsisPage from './pages/SynopsisPage';
 import GroupSalesPage from './pages/GroupSalesPage';
 
-const API_BASE = process.env.REACT_APP_BACKEND_URL + '/api';
+// Mock data for layout testing
+import { mockMovieConfig } from './mockData';
 
 // Main Showtimes Page with Two-Panel Layout
 const ShowtimesPage = ({ movieConfig }) => {
-  const [theaters, setTheaters] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState('showtimes');
 
   const handleSelectTheater = (theater) => {
     alert(`Selected ${theater.name}. Proceeding to seat selection...`);
   };
-
-  // Fetch theaters based on movie configuration
-  useEffect(() => {
-    const fetchTheaters = async () => {
-      if (!movieConfig?.id) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `${API_BASE}/movies/${movieConfig.id}/showtimes/categorized`
-        );
-        
-        // Transform API response to match component expectations
-        const apiTheaters = response.data.theaters || [];
-        const transformedTheaters = apiTheaters.map(theater => ({
-          name: theater.theater_name,
-          chain: theater.theater_chain || 'THEATER',
-          address: theater.theater_address,
-          distance: theater.distance || 0,
-          formats: theater.screening_formats?.map(format => ({
-            type: format.category_name,
-            times: format.times_by_category ? 
-              Object.values(format.times_by_category).flat().map(timeObj => ({
-                time: timeObj.time,
-                category: timeObj.category
-              })) :
-              format.showtimes?.map(showtime => ({
-                time: showtime.time,
-                category: showtime.time_category
-              })) || []
-          })) || []
-        }));
-        
-        setTheaters(transformedTheaters);
-      } catch (error) {
-        console.error('Error fetching theaters:', error);
-        // Fall back to mock data if API fails
-        setTheaters([
-          {
-            name: "AMC COUNCIL BLUFFS 17",
-            chain: "AMC",
-            address: "2025 KENT AVENUE, COUNCIL BLUFFS, IA, 51503",
-            distance: 4,
-            formats: [
-              { type: "IMAX 2D", times: [{ time: "10:30PM", category: "evening" }] },
-              { type: "AMC PRIME", times: [{ time: "9:30PM", category: "evening" }] }
-            ]
-          },
-          {
-            name: "ACX AKSARBEN CINEMA",
-            chain: "ACX", 
-            address: "2110 SOUTH 67TH STREET, OMAHA, NE, 68106",
-            distance: 11,
-            formats: [
-              { type: "2D", times: [{ time: "9:15PM", category: "evening" }] },
-              { type: "DOLBY", times: [{ time: "10:00PM", category: "evening" }] }
-            ]
-          }
-        ]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTheaters();
-  }, [movieConfig?.id]);
 
   const handleNavigation = (page) => {
     setCurrentPage(page);
@@ -117,9 +46,9 @@ const ShowtimesPage = ({ movieConfig }) => {
           <div className="pt-20 showtimes-section" data-section="showtimes">
             <TwoPanelLayout
               movieConfig={movieConfig}
-              theaters={theaters}
+              theaters={[]} // Using mock data inside component
               onSelectTheater={handleSelectTheater}
-              loading={loading}
+              loading={false}
             />
           </div>
         );
@@ -127,7 +56,7 @@ const ShowtimesPage = ({ movieConfig }) => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: movieConfig?.background_color || '#000000' }}>
+    <div className="min-h-screen" style={{ backgroundColor: movieConfig?.background_color || '#0a0a0a' }}>
       <HamburgerNavigation movieConfig={movieConfig} onNavigate={handleNavigation} />
       {renderCurrentPage()}
     </div>
@@ -139,51 +68,11 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchMovieConfig = async () => {
-      try {
-        const response = await axios.get(`${API_BASE}/movies/?limit=1`);
-        if (response.data && response.data.length > 0) {
-          setMovieConfig(response.data[0]);
-        }
-      } catch (error) {
-        console.error('Error fetching movie config:', error);
-        // Use default config if API fails
-        setMovieConfig({
-          id: 'default',
-          movie_title: 'Sample Movie',
-          movie_subtitle: 'A Cinematic Experience',
-          description: 'A thrilling movie experience awaits you.',
-          film_details: {
-            logline: 'An unforgettable journey that will captivate audiences worldwide.'
-          },
-          film_assets: {
-            poster_image: null,
-            trailer_url: null,
-            badge_images: [],
-            video_gallery: []
-          },
-          social_links: {
-            instagram: '',
-            twitter: '',
-            facebook: '',
-            tiktok: '',
-            website: 'https://litebeem.com'
-          },
-          primary_gradient: {
-            type: 'linear',
-            direction: '135deg',
-            colors: ['#ef4444', '#dc2626']
-          },
-          background_color: '#000000',
-          text_color: '#ffffff',
-          accent_color: '#ef4444'
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMovieConfig();
+    // Use mock data for testing layout and styling
+    setTimeout(() => {
+      setMovieConfig(mockMovieConfig);
+      setLoading(false);
+    }, 500); // Simulate loading
   }, []);
 
   if (loading) {
