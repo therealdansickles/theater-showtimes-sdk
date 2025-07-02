@@ -80,10 +80,11 @@ class FilmAssets(BaseModel):
     """Film assets for rich landing pages"""
     poster_image: Optional[str] = None  # Main poster (2:3 aspect ratio recommended)
     backdrop_image: Optional[str] = None  # Wide background image (16:9)
-    trailer_url: Optional[str] = None  # YouTube or Vimeo URL
+    trailer_url: Optional[str] = None  # Main trailer video URL (hosted on Litebeem)
     gallery_images: List[str] = []  # Additional promotional images
     press_kit_url: Optional[str] = None  # Press kit download link
     badge_images: List[str] = []  # URLs of uploaded badge graphics (SVG/PNG) - festival laurels, logos, taglines
+    video_gallery: List[str] = []  # Additional video URLs for video gallery switcher
     
 class FilmDetails(BaseModel):
     """Extended film information"""
