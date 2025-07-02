@@ -180,8 +180,13 @@ class AuthTester:
     
     def test_missing_token(self):
         """Test accessing protected endpoint without token"""
-        response = requests.get(f"{self.base_url}/auth/me")
+        url = f"{self.base_url}/auth/me"
+        response = requests.get(url)
         
+        print(f"Status code: {response.status_code}")
+        print(f"Response: {response.text}")
+        
+        # Check if the response status code is 401 (Unauthorized)
         if response.status_code == 401:
             return {"security_working": True, "status_code": 401}
         return False
