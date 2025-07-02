@@ -365,11 +365,7 @@ metadata:
   run_ui: true
 
 test_plan:
-  current_focus:
-    - "Frontend Filter Integration Fix"
-    - "Enhanced TheaterListings Component"
-    - "Enhanced TheaterListings React Native Component"
-    - "SDK Types Updated"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
