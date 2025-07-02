@@ -524,7 +524,7 @@ class MovieConfigTester:
     
     def run_all_tests(self):
         """Run all movie configuration tests"""
-        print("🎬 Starting Movie Configuration System Testing with Badge Images Support")
+        print("🎬 Starting Movie Configuration System Testing with Badge Images and Video Gallery Support")
         
         # Authentication
         print("\n== Authentication ==")
@@ -538,17 +538,19 @@ class MovieConfigTester:
         print("\n== Enhanced FilmAssets Model Testing ==")
         self.run_test("Upload Badge Image", self.test_create_badge_image)
         self.run_test("Upload Multiple Badge Images", self.test_create_multiple_badge_images)
-        self.run_test("Create Movie with Badge Images", self.test_create_movie_with_badge_images)
+        self.run_test("Create Movie with Badge Images and Video Gallery", self.test_create_movie_with_badge_images)
         
         # 2. API Endpoint Validation
         print("\n== API Endpoint Validation ==")
-        self.run_test("Get Movie with Badge Images", self.test_get_movie_with_badge_images)
+        self.run_test("Get Movie with Badge Images and Video Gallery", self.test_get_movie_with_badge_images)
         self.run_test("Update Movie Badge Images", self.test_update_movie_badge_images)
+        self.run_test("Update Movie Video Gallery", self.test_update_movie_video_gallery)
         
         # 3. Data Model Integrity
         print("\n== Data Model Integrity ==")
         self.run_test("Backward Compatibility", self.test_backward_compatibility)
         self.run_test("Public Movie Endpoint", self.test_public_movie_endpoint)
+        self.run_test("Video Gallery JSON Serialization", self.test_video_gallery_json_serialization)
         
         # Print summary
         print(f"\n📊 Tests passed: {self.tests_passed}/{self.tests_run} ({self.tests_passed/self.tests_run*100:.1f}%)")
