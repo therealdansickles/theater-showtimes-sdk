@@ -150,11 +150,11 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
   };
 
   return (
-    <div className="flex flex-col lg:flex-row" style={backgroundStyle}>
+    <div className="flex flex-col lg:flex-row two-panel-layout" style={backgroundStyle}>
       
       {/* Left Panel - Showtimes & Filters */}
-      <div className="lg:w-2/3 xl:w-3/5 overflow-y-auto">
-        <div className="pl-8 pr-6 py-8 max-w-5xl">
+      <div className="lg:w-2/3 xl:w-3/5 overflow-y-auto left-panel">
+        <div className="pl-8 pr-6 py-8 max-w-5xl filter-section">
           
           {/* Filters Section with improved spacing */}
           <div className="mb-12 space-y-8">
@@ -162,7 +162,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
             {/* Location Search */}
             <div>
               <label 
-                className="block text-sm font-semibold mb-4 tracking-wider uppercase"
+                className="block text-sm font-semibold mb-4 tracking-wider uppercase label-text"
                 style={{ color: textColor, opacity: 0.9 }}
               >
                 📍 Location Search
@@ -172,7 +172,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                 placeholder="Enter city or zip code..."
                 value={filters.location}
                 onChange={(e) => handleFilterChange('location', e.target.value)}
-                className="w-full px-6 py-4 rounded-xl border-2 bg-white bg-opacity-5 backdrop-blur-sm text-white placeholder-gray-300 focus:outline-none focus:border-opacity-60 focus:bg-opacity-10 transition-all text-lg"
+                className="w-full px-6 py-4 rounded-xl border-2 bg-white bg-opacity-5 backdrop-blur-sm text-white placeholder-gray-300 focus:outline-none focus:border-opacity-60 focus:bg-opacity-10 transition-all text-lg body-text focus-ring"
                 style={{ 
                   borderColor: accentColor, 
                   borderOpacity: 0.2,
@@ -184,7 +184,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
             {/* Date Picker with improved styling */}
             <div>
               <label 
-                className="block text-sm font-semibold mb-4 tracking-wider uppercase"
+                className="block text-sm font-semibold mb-4 tracking-wider uppercase label-text"
                 style={{ color: textColor, opacity: 0.9 }}
               >
                 📅 Select Date
@@ -194,7 +194,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                   <button
                     key={date.value}
                     onClick={() => handleFilterChange('selectedDate', date.value)}
-                    className={`flex-shrink-0 px-6 py-4 rounded-xl font-semibold transition-all duration-200 whitespace-nowrap transform hover:scale-105 ${
+                    className={`flex-shrink-0 px-6 py-4 rounded-xl font-semibold transition-all duration-200 whitespace-nowrap transform hover:scale-105 focus-ring mobile-touch-target ${
                       filters.selectedDate === date.value
                         ? 'text-white shadow-2xl scale-105'
                         : 'bg-white bg-opacity-5 hover:bg-opacity-15 backdrop-blur-sm'
@@ -217,19 +217,19 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
             {/* Format Filters with improved layout */}
             <div>
               <label 
-                className="block text-sm font-semibold mb-4 tracking-wider uppercase"
+                className="block text-sm font-semibold mb-4 tracking-wider uppercase label-text"
                 style={{ color: textColor, opacity: 0.9 }}
               >
                 🎬 Formats
               </label>
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mobile-grid-2">
                 {categories.map((category) => (
-                  <label key={category.id} className="flex items-center space-x-3 cursor-pointer group">
+                  <label key={category.id} className="flex items-center space-x-3 cursor-pointer group mobile-touch-target">
                     <input
                       type="checkbox"
                       checked={filters.selectedFormats.includes(category.name)}
                       onChange={() => handleFilterChange('selectedFormats', category.name)}
-                      className="w-5 h-5 rounded-lg border-2 bg-transparent focus:ring-2 focus:ring-opacity-50 transition-all"
+                      className="w-5 h-5 rounded-lg border-2 bg-transparent focus:ring-2 focus:ring-opacity-50 transition-all focus-ring"
                       style={{ 
                         accentColor: accentColor,
                         borderColor: accentColor,
@@ -237,7 +237,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                       }}
                     />
                     <span 
-                      className="text-base font-medium group-hover:opacity-100 transition-opacity"
+                      className="text-base font-medium group-hover:opacity-100 transition-opacity body-text"
                       style={{ color: textColor, opacity: 0.85 }}
                     >
                       {category.name}
@@ -250,24 +250,24 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
             {/* Time of Day Filters with reduced spacing */}
             <div>
               <label 
-                className="block text-sm font-semibold mb-4 tracking-wider uppercase"
+                className="block text-sm font-semibold mb-4 tracking-wider uppercase label-text"
                 style={{ color: textColor, opacity: 0.9 }}
               >
                 🕐 Time of Day
               </label>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mobile-grid-1">
                 {[
                   { value: 'Morning', label: 'Morning', desc: 'Before 12 PM', icon: '🌅' },
                   { value: 'Afternoon', label: 'Afternoon', desc: '12 PM - 6 PM', icon: '☀️' },
                   { value: 'Evening', label: 'Evening', desc: '6 PM - 10 PM', icon: '🌆' },
                   { value: 'Late Night', label: 'Late Night', desc: 'After 10 PM', icon: '🌙' }
                 ].map((timeOption) => (
-                  <label key={timeOption.value} className="flex items-center space-x-3 cursor-pointer group">
+                  <label key={timeOption.value} className="flex items-center space-x-3 cursor-pointer group mobile-touch-target">
                     <input
                       type="checkbox"
                       checked={filters.selectedTimes.includes(timeOption.value)}
                       onChange={() => handleFilterChange('selectedTimes', timeOption.value)}
-                      className="w-5 h-5 rounded-lg border-2 bg-transparent focus:ring-2 focus:ring-opacity-50 transition-all"
+                      className="w-5 h-5 rounded-lg border-2 bg-transparent focus:ring-2 focus:ring-opacity-50 transition-all focus-ring"
                       style={{ 
                         accentColor: accentColor,
                         borderColor: accentColor,
@@ -278,13 +278,13 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                       <div className="flex items-center space-x-2">
                         <span className="text-sm">{timeOption.icon}</span>
                         <span 
-                          className="text-base font-medium group-hover:opacity-100 transition-opacity"
+                          className="text-base font-medium group-hover:opacity-100 transition-opacity body-text"
                           style={{ color: textColor, opacity: 0.85 }}
                         >
                           {timeOption.label}
                         </span>
                       </div>
-                      <div className="text-xs opacity-60 ml-6" style={{ color: textColor }}>
+                      <div className="text-xs opacity-60 ml-6 body-text" style={{ color: textColor }}>
                         {timeOption.desc}
                       </div>
                     </div>
@@ -298,7 +298,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
           <div>
             <div className="flex items-center justify-between mb-8">
               <h2 
-                className="text-3xl font-bold tracking-tight"
+                className="text-3xl font-bold tracking-tight title-text mobile-title"
                 style={{ 
                   color: textColor,
                   fontFamily: movieConfig?.typography?.title_font || 'Inter',
@@ -320,27 +320,27 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                   className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-transparent border-t-current"
                   style={{ borderTopColor: accentColor }}
                 ></div>
-                <p className="mt-6 text-lg" style={{ color: textColor }}>Loading theaters...</p>
+                <p className="mt-6 text-lg body-text" style={{ color: textColor }}>Loading theaters...</p>
               </div>
             ) : filteredTheaters.length === 0 ? (
               <div className="text-center py-16">
-                <p className="text-xl" style={{ color: textColor, opacity: 0.7 }}>
+                <p className="text-xl body-text" style={{ color: textColor, opacity: 0.7 }}>
                   No theaters found matching your criteria.
                 </p>
-                <p className="text-base mt-3" style={{ color: textColor, opacity: 0.5 }}>
+                <p className="text-base mt-3 body-text" style={{ color: textColor, opacity: 0.5 }}>
                   Try adjusting your filters or search location.
                 </p>
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-6 fade-in">
                 {filteredTheaters.map((theater, index) => (
                   <div
                     key={index}
-                    className="bg-white bg-opacity-5 backdrop-blur-sm rounded-2xl border border-white border-opacity-10 overflow-hidden hover:bg-opacity-10 transition-all duration-200"
+                    className="theater-card bg-white bg-opacity-5 backdrop-blur-sm rounded-2xl border border-white border-opacity-10 overflow-hidden hover:bg-opacity-10 transition-all duration-200"
                   >
                     <button
                       onClick={() => toggleTheater(index)}
-                      className="w-full p-8 text-left hover:bg-white hover:bg-opacity-5 transition-colors"
+                      className="w-full p-8 text-left hover:bg-white hover:bg-opacity-5 transition-colors mobile-touch-target focus-ring"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
@@ -353,7 +353,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                             </div>
                             <div>
                               <h3 
-                                className="font-bold text-xl tracking-tight"
+                                className="font-bold text-xl tracking-tight subtitle-text"
                                 style={{ 
                                   color: textColor,
                                   fontFamily: movieConfig?.typography?.title_font || 'Inter'
@@ -362,13 +362,13 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                                 {theater.name}
                               </h3>
                               {theater.distance && (
-                                <span className="text-sm opacity-70 font-medium" style={{ color: textColor }}>
+                                <span className="text-sm opacity-70 font-medium body-text" style={{ color: textColor }}>
                                   {theater.distance} miles away
                                 </span>
                               )}
                             </div>
                           </div>
-                          <p className="text-base opacity-80 ml-16" style={{ color: textColor }}>
+                          <p className="text-base opacity-80 ml-16 body-text" style={{ color: textColor }}>
                             {theater.address}
                           </p>
                         </div>
@@ -383,12 +383,12 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
 
                     {/* Expanded Showtimes */}
                     {expandedTheaters[index] && (
-                      <div className="px-8 pb-8 border-t border-white border-opacity-10">
+                      <div className="px-8 pb-8 border-t border-white border-opacity-10 slide-up">
                         <div className="space-y-6 mt-6">
                           {theater.formats?.map((format, formatIndex) => (
                             <div key={formatIndex}>
                               <h4 
-                                className="font-bold text-sm mb-4 px-4 py-2 rounded-lg inline-block uppercase tracking-widest"
+                                className="font-bold text-sm mb-4 px-4 py-2 rounded-lg inline-block uppercase tracking-widest label-text"
                                 style={{ 
                                   backgroundColor: `${accentColor}25`,
                                   color: accentColor,
@@ -406,7 +406,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                                     <button
                                       key={timeIndex}
                                       onClick={() => onSelectTheater && onSelectTheater(theater)}
-                                      className="px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-opacity-30 transform"
+                                      className="cta-button showtime-button px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-opacity-30 transform mobile-touch-target"
                                       style={{ 
                                         backgroundColor: accentColor,
                                         color: 'white',
@@ -442,12 +442,12 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
       </div>
 
       {/* Right Panel - Hero Film Display with enhanced styling */}
-      <div className="lg:w-1/3 xl:w-2/5 bg-black bg-opacity-20 backdrop-blur-sm">
+      <div className="lg:w-1/3 xl:w-2/5 bg-black bg-opacity-20 backdrop-blur-sm right-panel">
         <div className="sticky top-0 p-8 h-screen flex flex-col">
           
           {/* Poster with exact 2:3 ratio and enhanced shadow */}
-          <div className="flex-shrink-0 mb-8">
-            <div className="aspect-[2/3] max-w-sm mx-auto">
+          <div className="flex-shrink-0 mb-8 poster-container">
+            <div className="aspect-[2/3] max-w-sm mx-auto poster-enhanced">
               <img
                 src={movieConfig?.film_assets?.poster_image ? 
                   process.env.REACT_APP_BACKEND_URL + movieConfig.film_assets.poster_image :
@@ -455,25 +455,15 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                 }
                 alt="Movie Poster"
                 className="w-full h-full object-cover rounded-2xl"
-                style={{
-                  filter: `
-                    drop-shadow(0 25px 50px rgba(0, 0, 0, 0.5))
-                    drop-shadow(0 10px 20px rgba(${parseInt(accentColor.slice(1, 3), 16)}, ${parseInt(accentColor.slice(3, 5), 16)}, ${parseInt(accentColor.slice(5, 7), 16)}, 0.2))
-                  `,
-                  boxShadow: `
-                    0 25px 50px -12px rgba(0, 0, 0, 0.6),
-                    0 0 0 1px rgba(255, 255, 255, 0.05)
-                  `
-                }}
               />
             </div>
           </div>
 
           {/* Film Metadata with improved typography */}
-          <div className="flex-grow space-y-6">
+          <div className="flex-grow space-y-6 fade-in">
             <div>
               <h1 
-                className="text-4xl lg:text-5xl font-black mb-3 tracking-tight leading-tight"
+                className="text-4xl lg:text-5xl font-black mb-3 tracking-tight leading-tight title-text mobile-title"
                 style={{ 
                   color: textColor,
                   fontFamily: movieConfig?.typography?.title_font || 'Inter',
@@ -487,7 +477,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
               </h1>
               {movieConfig?.movie_subtitle && (
                 <h2 
-                  className="text-2xl font-bold opacity-90 mb-6 tracking-wide"
+                  className="text-2xl font-bold opacity-90 mb-6 tracking-wide subtitle-text mobile-subtitle"
                   style={{ 
                     color: textColor,
                     fontFamily: movieConfig?.typography?.title_font || 'Inter'
@@ -500,7 +490,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
 
             {movieConfig?.film_details?.logline && (
               <p 
-                className="text-lg italic opacity-90 leading-relaxed font-medium"
+                className="text-lg italic opacity-90 leading-relaxed font-medium body-text"
                 style={{ 
                   color: textColor,
                   fontFamily: movieConfig?.typography?.body_font || 'Inter',
@@ -514,7 +504,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
             {/* Promotional Badges with better spacing */}
             <div className="space-y-3">
               {movieConfig?.film_assets?.badge_images?.length > 0 ? (
-                <div className="flex flex-wrap gap-3">
+                <div className="badge-container">
                   {movieConfig.film_assets.badge_images.map((badgeUrl, index) => (
                     <img
                       key={index}
@@ -527,38 +517,16 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                 </div>
               ) : (
                 /* Fallback badges with improved styling */
-                <div className="flex flex-col space-y-3">
-                  <div className="flex flex-wrap gap-3">
-                    <span 
-                      className="px-6 py-3 rounded-lg font-black text-white text-base tracking-wider uppercase shadow-lg"
-                      style={{ 
-                        backgroundColor: accentColor,
-                        fontFamily: movieConfig?.typography?.title_font || 'Inter'
-                      }}
-                    >
-                      🎬 Now Playing
-                    </span>
-                    <span 
-                      className="px-6 py-3 rounded-lg font-bold text-white text-base tracking-wider uppercase"
-                      style={{ 
-                        backgroundColor: 'rgba(255,255,255,0.1)',
-                        fontFamily: movieConfig?.typography?.title_font || 'Inter'
-                      }}
-                    >
-                      Only In Theaters
-                    </span>
-                  </div>
-                  <div>
-                    <span 
-                      className="px-6 py-3 rounded-lg font-black text-black text-base tracking-wider uppercase shadow-lg"
-                      style={{ 
-                        background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
-                        fontFamily: movieConfig?.typography?.title_font || 'Inter'
-                      }}
-                    >
-                      Filmed For IMAX
-                    </span>
-                  </div>
+                <div className="badge-container">
+                  <span className="badge-primary">
+                    🎬 Now Playing
+                  </span>
+                  <span className="badge-secondary">
+                    Only In Theaters
+                  </span>
+                  <span className="badge-accent">
+                    Filmed For IMAX
+                  </span>
                 </div>
               )}
             </div>
@@ -569,7 +537,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                 {movieConfig.director && (
                   <p style={{ color: textColor, opacity: 0.9 }}>
                     <span 
-                      className="font-bold uppercase tracking-wider text-sm"
+                      className="font-bold uppercase tracking-wider text-sm label-text"
                       style={{ 
                         color: accentColor,
                         fontFamily: movieConfig?.typography?.title_font || 'Inter'
@@ -579,7 +547,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                     </span>
                     <br />
                     <span 
-                      className="text-lg font-semibold mt-1 block"
+                      className="text-lg font-semibold mt-1 block subtitle-text"
                       style={{ fontFamily: movieConfig?.typography?.body_font || 'Inter' }}
                     >
                       {movieConfig.director}
@@ -589,7 +557,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                 {movieConfig.cast?.length > 0 && (
                   <p style={{ color: textColor, opacity: 0.9 }}>
                     <span 
-                      className="font-bold uppercase tracking-wider text-sm"
+                      className="font-bold uppercase tracking-wider text-sm label-text"
                       style={{ 
                         color: accentColor,
                         fontFamily: movieConfig?.typography?.title_font || 'Inter'
@@ -599,7 +567,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                     </span>
                     <br />
                     <span 
-                      className="text-lg font-semibold mt-1 block leading-relaxed"
+                      className="text-lg font-semibold mt-1 block leading-relaxed body-text"
                       style={{ fontFamily: movieConfig?.typography?.body_font || 'Inter' }}
                     >
                       {movieConfig.cast.slice(0, 3).join(', ')}
