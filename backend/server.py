@@ -303,6 +303,10 @@ app.include_router(uploads.router, prefix="/api")
 app.include_router(categories.router, prefix="/api")
 app.include_router(auth.router, prefix="/api")
 
+# Import and include tickets router
+from .routes import tickets
+app.include_router(tickets.router, prefix="/api")
+
 # Mount static files for uploads
 uploads_dir = Path("/app/uploads")
 uploads_dir.mkdir(exist_ok=True)
