@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 import uuid
@@ -8,6 +8,11 @@ class GradientType(str, Enum):
     LINEAR = "linear"
     RADIAL = "radial"
     CONIC = "conic"
+
+class UserRole(str, Enum):
+    ADMIN = "admin"
+    CLIENT = "client"
+    PUBLIC = "public"
 
 class ButtonStyle(BaseModel):
     background_color: str = "#ef4444"
@@ -77,6 +82,34 @@ class TheaterLocation(BaseModel):
     phone: Optional[str] = None
     website: Optional[str] = None
 
+class APIKey(BaseModel):
+    """API Key model for client authentication"""
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    client_id: str
+    key_hash: str  # Hashed version of the API key
+    key_prefix: str  # First 8 characters for identification
+    name: str  # Human-readable name for the key
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    last_used_at: Optional[datetime] = None
+    expires_at: Optional[datetime] = None
+    permissions: List[str] = []  # List of allowed operations
+    rate_limit: int = 200  # Requests per minute
+    usage_count: int = 0
+
+class User(BaseModel):
+    """User model for admin authentication"""
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    username: str
+    email: str
+    password_hash: str
+    role: UserRole = UserRole.CLIENT
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    last_login_at: Optional[datetime] = None
+    failed_login_attempts: int = 0
+    locked_until: Optional[datetime] = None
+
 class MovieConfiguration(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     client_id: str
@@ -135,6 +168,24 @@ class Client(BaseModel):
     max_movies: int = 1
     max_images: int = 10
     max_theaters: int = 50
+    
+    # Security
+    api_keys: List[str] = []  # List of API key IDs
+
+class CustomizationPreset(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    description: str
+    category: str
+    primary_gradient: GradientConfig
+    secondary_gradient: GradientConfig
+    background_color: str
+    text_color: str
+    accent_color: str
+    typography: TypographyConfig
+    primary_button: ButtonStyle
+    secondary_button: ButtonStyle
+    created_at: datetime = Field(default_factory=datetime.utcnow)
 
 # Request/Response Models
 class MovieConfigurationCreate(BaseModel):
@@ -148,6 +199,12 @@ class MovieConfigurationCreate(BaseModel):
     rating: str = "PG-13"
     runtime: str = "120 min"
     genre: List[str] = ["Action", "Drama"]
+    
+    @validator('movie_title', 'director')
+    def validate_required_strings(cls, v):
+        if not v or not v.strip():
+            raise ValueError('Field cannot be empty')
+        return v.strip()
 
 class MovieConfigurationUpdate(BaseModel):
     movie_title: Optional[str] = None
@@ -164,7 +221,16 @@ class MovieConfigurationUpdate(BaseModel):
     hero_image: Optional[str] = None
     poster_image: Optional[str] = None
     logo_image: Optional[str] = None
+    background_images: Optional[List[str]] = None
+    release_date: Optional[datetime] = None
+    rating: Optional[str] = None
+    runtime: Optional[str] = None
+    genre: Optional[List[str]] = None
+    director: Optional[str] = None
+    cast: Optional[List[str]] = None
     available_formats: Optional[List[str]] = None
+    screening_categories: Optional[List[ScreeningCategory]] = None
+    theaters: Optional[List[TheaterLocation]] = None
     is_active: Optional[bool] = None
 
 class ClientCreate(BaseModel):
@@ -172,19 +238,18 @@ class ClientCreate(BaseModel):
     email: str
     company: str
     subscription_tier: str = "basic"
-
-class TimeSlotCreate(BaseModel):
-    time: str
-    category: str = "evening"  # Default to evening
-    available_seats: Optional[int] = None
-    price_modifier: Optional[float] = 1.0
-
-class ScreeningFormatCreate(BaseModel):
-    category_id: str
-    category_name: str
-    times: List[TimeSlotCreate] = []
-    price: Optional[float] = None
-    special_notes: Optional[str] = None
+    
+    @validator('name', 'company')
+    def validate_required_strings(cls, v):
+        if not v or not v.strip():
+            raise ValueError('Field cannot be empty')
+        return v.strip()
+    
+    @validator('email')
+    def validate_email(cls, v):
+        if not v or '@' not in v:
+            raise ValueError('Invalid email format')
+        return v.lower().strip()
 
 class TheaterLocationCreate(BaseModel):
     name: str
@@ -193,39 +258,59 @@ class TheaterLocationCreate(BaseModel):
     city: str
     state: str
     zip_code: str
-    formats: List[ScreeningFormatCreate] = []
+    distance: Optional[float] = None
+    formats: List[ScreeningFormat] = []
     showtimes: List[str] = []
+    amenities: List[str] = []
+    phone: Optional[str] = None
+    website: Optional[str] = None
 
-class ScreeningCategoryCreate(BaseModel):
+class UserCreate(BaseModel):
+    username: str
+    email: str
+    password: str
+    role: UserRole = UserRole.CLIENT
+    
+    @validator('username')
+    def validate_username(cls, v):
+        if len(v) < 3 or len(v) > 50:
+            raise ValueError('Username must be between 3 and 50 characters')
+        return v.strip()
+    
+    @validator('password')
+    def validate_password(cls, v):
+        if len(v) < 8:
+            raise ValueError('Password must be at least 8 characters long')
+        return v
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    expires_in: int = 1800  # 30 minutes
+
+class APIKeyCreate(BaseModel):
     name: str
-    type: str = "format"
-    description: Optional[str] = None
-    is_active: bool = True
+    permissions: List[str] = []
+    expires_days: Optional[int] = 365
+    rate_limit: int = 200
+    
+    @validator('name')
+    def validate_name(cls, v):
+        if not v or len(v.strip()) < 3:
+            raise ValueError('API key name must be at least 3 characters')
+        return v.strip()
 
-class ScreeningCategoryUpdate(BaseModel):
-    name: Optional[str] = None
-    type: Optional[str] = None
-    description: Optional[str] = None
-    is_active: Optional[bool] = None
-
-class ImageUploadResponse(BaseModel):
+class APIKeyResponse(BaseModel):
     id: str
     name: str
-    url: str
-    message: str
-
-class CustomizationPreset(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    name: str
-    description: str
-    primary_gradient: GradientConfig
-    secondary_gradient: GradientConfig
-    background_color: str
-    text_color: str
-    accent_color: str
-    typography: TypographyConfig
-    primary_button: ButtonStyle
-    secondary_button: ButtonStyle
-    category: str = "general"  # action, horror, comedy, drama, sci-fi, etc.
-    is_public: bool = True
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    key: str  # Only returned on creation
+    key_prefix: str
+    is_active: bool
+    created_at: datetime
+    expires_at: Optional[datetime]
+    permissions: List[str]
+    rate_limit: int
