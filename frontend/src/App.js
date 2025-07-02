@@ -279,6 +279,28 @@ const App = () => {
                 </ProtectedRoute>
               } 
             />
+            
+            {/* Protected film setup wizard */}
+            <Route 
+              path="/setup" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <FilmSetupWizard />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Public film pages */}
+            <Route 
+              path="/film/:movieId" 
+              element={<FilmPage />} 
+            />
+            
+            {/* Enhanced movie booking page */}
+            <Route 
+              path="/movie/:movieId" 
+              element={<MovieBookingPage />} 
+            />
           </Routes>
         </div>
       </BrowserRouter>
