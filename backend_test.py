@@ -152,18 +152,20 @@ class AuthTester:
     # 2. Authentication Security Tests
     def test_invalid_credentials(self):
         """Test login with invalid credentials"""
-        success, response = self.make_request(
-            "POST", 
-            "auth/login", 
-            data={
+        url = f"{self.base_url}/auth/login"
+        response = requests.post(
+            url,
+            json={
                 "username": ADMIN_USERNAME,
                 "password": "WrongPassword123!"
-            },
-            expected_status=401
+            }
         )
         
-        # This test should fail with 401, so success is actually a failure
-        if not success:
+        print(f"Status code: {response.status_code}")
+        print(f"Response: {response.text}")
+        
+        # Check if the response status code is 401 (Unauthorized)
+        if response.status_code == 401:
             return {"security_working": True, "status_code": 401}
         return False
     
