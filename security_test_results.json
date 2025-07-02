@@ -1,0 +1,158 @@
+[
+  {
+    "name": "Admin Registration",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_received": true,
+      "token_length": 225
+    }
+  },
+  {
+    "name": "Admin Login",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_received": true,
+      "token_length": 225
+    }
+  },
+  {
+    "name": "JWT Token Verification",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_valid": true,
+      "username": "admin_1751470735"
+    }
+  },
+  {
+    "name": "JWT Token Refresh",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_refreshed": true,
+      "new_token_different": false
+    }
+  },
+  {
+    "name": "Protected Endpoint with JWT",
+    "status": "\u2705 PASSED",
+    "details": {
+      "access_granted": true,
+      "username": "admin_1751470735"
+    }
+  },
+  {
+    "name": "Protected Endpoint without JWT",
+    "status": "\u2705 PASSED",
+    "details": {
+      "access_denied": true
+    }
+  },
+  {
+    "name": "Client Creation",
+    "status": "\u2705 PASSED",
+    "details": {
+      "client_created": true,
+      "client_id": "5e5fc1bf-e580-4516-a475-c5e29b529b10"
+    }
+  },
+  {
+    "name": "API Key Creation",
+    "status": "\u2705 PASSED",
+    "details": {
+      "api_key_created": true,
+      "key_prefix": "sk_live_2cef..."
+    }
+  },
+  {
+    "name": "API Key Listing",
+    "status": "\u2705 PASSED",
+    "details": {
+      "api_keys_listed": true,
+      "count": 1
+    }
+  },
+  {
+    "name": "API Key Authentication",
+    "status": "\u2705 PASSED",
+    "details": {
+      "api_key_authentication": true
+    }
+  },
+  {
+    "name": "API Key Revocation",
+    "status": "\u2705 PASSED",
+    "details": {
+      "key_revoked": true,
+      "key_id": "676da2cc-0c94-497a-9724-6de7e766e710"
+    }
+  },
+  {
+    "name": "Rate Limiting for Public Endpoints",
+    "status": "\u2705 PASSED",
+    "details": {
+      "rate_limit_headers_present": true,
+      "requests_made": 5
+    }
+  },
+  {
+    "name": "Rate Limiting for Authenticated Endpoints",
+    "status": "\u2705 PASSED",
+    "details": {
+      "rate_limit_headers_present": true,
+      "requests_made": 5
+    }
+  },
+  {
+    "name": "Rate Limiting for Admin Endpoints",
+    "status": "\u2705 PASSED",
+    "details": {
+      "rate_limit_headers_present": true,
+      "requests_made": 5
+    }
+  },
+  {
+    "name": "Security Headers",
+    "status": "\u2705 PASSED",
+    "details": {
+      "security_headers_present": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "X-XSS-Protection": "1; mode=block",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:; frame-ancestors 'none';",
+        "Referrer-Policy": "strict-origin-when-cross-origin"
+      }
+    }
+  },
+  {
+    "name": "CORS Configuration",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Input Validation",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Public Endpoints Accessibility",
+    "status": "\u2705 PASSED",
+    "details": {
+      "public_endpoints_accessible": true,
+      "endpoints_tested": 4
+    }
+  },
+  {
+    "name": "Protected Endpoints Security",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Complete Security Workflow",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Error Handling",
+    "status": "\u274c FAILED",
+    "details": null
+  }
+]
