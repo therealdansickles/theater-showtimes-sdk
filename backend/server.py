@@ -1,6 +1,7 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, Request, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.base import BaseHTTPMiddleware
 from dotenv import load_dotenv
 import os
 import logging
@@ -12,8 +13,9 @@ from datetime import datetime
 
 # Import our custom modules
 from .database import connect_to_mongo, close_mongo_connection
-from .routes import movies, clients, uploads, categories
+from .routes import movies, clients, uploads, categories, auth
 from .models import CustomizationPreset, GradientConfig, ButtonStyle, TypographyConfig
+from .security import rate_limit_middleware, add_security_headers
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
