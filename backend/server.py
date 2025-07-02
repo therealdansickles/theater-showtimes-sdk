@@ -312,23 +312,9 @@ app.mount("/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:3001", 
-        "https://*.emergentagent.com",
-        "https://f89fb794-9619-4452-9198-7d7904651861.preview.emergentagent.com",
-        "https://*.litebeem.com"
-    ],
+    allow_origins=["*"],  # Allow all origins for testing - restrict in production
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=[
-        "Authorization", 
-        "Content-Type", 
-        "X-API-Key",
-        "X-Requested-With",
-        "X-CSRF-Token",
-        "Accept",
-        "Origin"
-    ],
+    allow_headers=["*"],
     expose_headers=[
         "X-RateLimit-Limit",
         "X-RateLimit-Remaining", 
