@@ -11,10 +11,15 @@ from ..security import get_admin_user, validate_string_input, validate_email_for
 
 router = APIRouter(prefix="/clients", tags=["clients"])
 
-@router.post("/", response_model=Client)
-async def create_client(client_data: ClientCreate):
-    """Create a new client"""
+@router.post("/", response_model=Client, dependencies=[Depends(get_admin_user)])
+async def create_client(client_data: ClientCreate, current_user: dict = Depends(get_admin_user)):
+    """Create a new client (admin only)"""
     try:
+        # Validate input
+        client_data.name = validate_string_input(client_data.name, 100, 1)
+        client_data.email = validate_email_format(client_data.email)
+        client_data.company = validate_string_input(client_data.company, 100, 1)
+        
         # Check if email already exists
         existing_client = await find_document("clients", {"email": client_data.email})
         if existing_client:
