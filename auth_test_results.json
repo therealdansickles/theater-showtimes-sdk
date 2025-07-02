@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Admin Login",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_received": true,
+      "token_length": 211
+    }
+  },
+  {
+    "name": "JWT Token Verification",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_valid": true,
+      "username": "admin",
+      "role": "admin"
+    }
+  },
+  {
+    "name": "Protected Endpoint Access",
+    "status": "\u2705 PASSED",
+    "details": {
+      "access_granted": true,
+      "username": "admin",
+      "role": "admin"
+    }
+  },
+  {
+    "name": "Invalid Credentials",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Invalid Token",
+    "status": "\u2705 PASSED",
+    "details": {
+      "security_working": true,
+      "status_code": 401
+    }
+  },
+  {
+    "name": "Missing Token",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Admin Endpoint Access",
+    "status": "\u2705 PASSED",
+    "details": {
+      "admin_access_granted": true,
+      "api_keys_count": 1
+    }
+  },
+  {
+    "name": "Rate Limiting",
+    "status": "\u2705 PASSED",
+    "details": {
+      "rate_limiting_working": true,
+      "requests_made": 5
+    }
+  }
+]
