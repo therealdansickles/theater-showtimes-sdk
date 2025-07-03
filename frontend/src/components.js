@@ -43,10 +43,7 @@ export const Header = ({ movieConfig }) => {
               <a href="/setup" className="transition-colors" style={{ color: 'white' }}
                  onMouseEnter={(e) => e.target.style.color = accentColor}
                  onMouseLeave={(e) => e.target.style.color = 'white'}>
-                <span className="flex items-center">
-                  <span className="mr-1">🎬</span>
-                  Setup Film
-                </span>
+                Setup Film
               </a>
             )}
           </nav>
