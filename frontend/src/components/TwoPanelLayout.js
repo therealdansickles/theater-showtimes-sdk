@@ -304,14 +304,14 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                 id="time-content"
                 className={`filter-collapsible-content ${isTimeExpanded ? 'filter-collapsible-expanded' : 'filter-collapsible-collapsed'}`}
               >
-                <div className="filter-grid-tight mobile-grid-2">
+                <div className="time-horizontal-desktop">
                   {[
                     { value: 'Morning', label: 'Morning', desc: 'Before 12 PM' },
                     { value: 'Afternoon', label: 'Afternoon', desc: '12 PM - 6 PM' },
                     { value: 'Evening', label: 'Evening', desc: '6 PM - 10 PM' },
                     { value: 'Late Night', label: 'Late Night', desc: 'After 10 PM' }
                   ].map((timeOption) => (
-                    <label key={timeOption.value} className="flex items-center space-x-3 cursor-pointer group mobile-touch-target filter-touch-target-compact">
+                    <label key={timeOption.value} className="time-option-compact flex items-center space-x-2 cursor-pointer group">
                       <input
                         type="checkbox"
                         checked={filters.selectedTimes.includes(timeOption.value)}
