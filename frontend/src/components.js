@@ -355,19 +355,19 @@ export const SearchFilter = ({
         </div>
 
         {/* Special Screenings */}
-        <div className="mt-6 flex flex-wrap gap-4">
-          <label className="flex items-center space-x-2 cursor-pointer">
-            <input type="checkbox" className="form-checkbox text-red-500"/>
-            <span className="text-sm">FAN FIRST PREMIERES EXCLUSIVELY IN IMAX</span>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <label className="flex items-center space-x-2 cursor-pointer filter-touch-target">
+            <input type="checkbox" className="form-checkbox text-red-500 compact-checkbox"/>
+            <span className="text-xs">FAN FIRST PREMIERES EXCLUSIVELY IN IMAX</span>
           </label>
-          <label className="flex items-center space-x-2 cursor-pointer">
-            <input type="checkbox" className="form-checkbox text-red-500"/>
-            <span className="text-sm">F1® THE MOVIE: EARLY ACCESS</span>
+          <label className="flex items-center space-x-2 cursor-pointer filter-touch-target">
+            <input type="checkbox" className="form-checkbox text-red-500 compact-checkbox"/>
+            <span className="text-xs">F1® THE MOVIE: EARLY ACCESS</span>
           </label>
         </div>
 
-        <div className="mt-6 text-right">
-          <button className="text-orange-500 hover:text-orange-400 transition-colors">
+        <div className="mt-4 text-right">
+          <button className="text-orange-500 hover:text-orange-400 transition-colors text-sm">
             COLLAPSE ALL
           </button>
         </div>
