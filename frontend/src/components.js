@@ -310,13 +310,13 @@ export const SearchFilter = ({
 
           {/* Day Selection */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">SELECT A DAY</h3>
-            <div className="flex space-x-2">
+            <h3 className="text-lg font-semibold mb-3">📅 SELECT A DAY</h3>
+            <div className="flex space-x-2 overflow-x-auto">
               {days.map((dayObj, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedDay(dayObj)}
-                  className={`flex flex-col items-center p-3 rounded border ${
+                  className={`flex flex-col items-center p-3 rounded border min-w-[60px] ${
                     selectedDay?.num === dayObj.num 
                       ? 'bg-orange-500 border-orange-500' 
                       : 'bg-gray-800 border-gray-700 hover:bg-gray-700'
