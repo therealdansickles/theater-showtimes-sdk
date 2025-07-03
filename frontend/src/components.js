@@ -332,21 +332,21 @@ export const SearchFilter = ({
 
           {/* Time Selection */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">SELECT TIME OF DAY</h3>
-            <div className="space-y-2">
+            <h3 className="text-lg font-semibold mb-3">⏰ TIME OF DAY</h3>
+            <div className="grid grid-cols-2 gap-2">
               {timeOptions.map((timeOption) => (
-                <label key={timeOption.value} className="flex items-center space-x-2 cursor-pointer">
+                <label key={timeOption.value} className="flex items-start space-x-2 cursor-pointer text-sm hover:bg-gray-800 p-2 rounded transition-colors">
                   <input 
                     type="radio" 
                     name="timeSelection"
                     checked={selectedTime === timeOption.value}
                     onChange={() => handleTimeChange(timeOption.value)}
-                    className="form-radio text-red-500"
+                    className="form-radio text-red-500 mt-1 flex-shrink-0"
                     style={{ accentColor }}
                   />
                   <div className="flex flex-col">
                     <span className="text-sm font-medium">{timeOption.label}</span>
-                    <span className="text-xs text-gray-400">{timeOption.description}</span>
+                    <span className="text-xs text-gray-400 leading-tight">{timeOption.description}</span>
                   </div>
                 </label>
               ))}
