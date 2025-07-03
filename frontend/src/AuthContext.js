@@ -64,11 +64,21 @@ export const AuthProvider = ({ children }) => {
 
       const { access_token } = response.data;
       
-      setToken(access_token);
+      // Store token in localStorage first
       localStorage.setItem('auth_token', access_token);
       
-      // Verify the token to get user info
-      await verifyToken();
+      // Then update state
+      setToken(access_token);
+      
+      // Wait a moment to ensure token is set before verification
+      setTimeout(async () => {
+        try {
+          // Verify the token to get user info
+          await verifyToken();
+        } catch (verifyError) {
+          console.error('Token verification failed:', verifyError);
+        }
+      }, 500);
       
       return { success: true };
     } catch (error) {
