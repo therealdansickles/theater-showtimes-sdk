@@ -257,6 +257,10 @@ export const SearchFilter = ({
 
   const accentColor = movieConfig?.accent_color || '#ef4444';
 
+  // State for collapsible sections
+  const [isFormatsExpanded, setIsFormatsExpanded] = useState(false);
+  const [isTimeExpanded, setIsTimeExpanded] = useState(false);
+
   const handleFormatChange = (format) => {
     setSelectedFormats(prev => 
       prev.includes(format) 
@@ -274,7 +278,7 @@ export const SearchFilter = ({
       <div className="max-w-7xl mx-auto">
         {/* Search Location */}
         <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-3">🔍 SEARCH</h3>
+          <h3 className="text-lg font-semibold mb-3">SEARCH</h3>
           <div className="flex items-center space-x-2">
             <input 
               type="text" 
@@ -290,22 +294,32 @@ export const SearchFilter = ({
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* Format Selection */}
+          {/* Format Selection - Collapsible */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">🎬 FORMATS</h3>
-            <div className="grid filter-grid-mobile gap-2">
-              {formats.map((format) => (
-                <label key={format} className="flex items-center space-x-2 cursor-pointer text-sm filter-touch-target">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedFormats.includes(format)}
-                    onChange={() => handleFormatChange(format)}
-                    className="form-checkbox text-red-500 flex-shrink-0 compact-checkbox"
-                  />
-                  <span className="text-xs leading-tight">{format}</span>
-                </label>
-              ))}
-            </div>
+            <button
+              onClick={() => setIsFormatsExpanded(!isFormatsExpanded)}
+              className="flex items-center justify-between w-full text-lg font-semibold mb-3 hover:opacity-80 transition-opacity"
+            >
+              <span>FORMATS</span>
+              <span className="text-sm">
+                {isFormatsExpanded ? '▼' : '▶'}
+              </span>
+            </button>
+            {isFormatsExpanded && (
+              <div className="grid grid-cols-2 gap-1 max-h-48 overflow-y-auto">
+                {formats.map((format) => (
+                  <label key={format} className="flex items-center space-x-2 cursor-pointer text-sm filter-touch-target">
+                    <input 
+                      type="checkbox" 
+                      checked={selectedFormats.includes(format)}
+                      onChange={() => handleFormatChange(format)}
+                      className="form-checkbox text-red-500 flex-shrink-0 compact-checkbox"
+                    />
+                    <span className="text-xs leading-tight truncate">{format}</span>
+                  </label>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Day Selection */}
