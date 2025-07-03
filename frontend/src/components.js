@@ -324,7 +324,7 @@ export const SearchFilter = ({
 
           {/* Day Selection */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">📅 SELECT A DAY</h3>
+            <h3 className="text-lg font-semibold mb-3">SELECT A DAY</h3>
             <div className="flex space-x-2 overflow-x-auto">
               {days.map((dayObj, index) => (
                 <button
@@ -344,24 +344,33 @@ export const SearchFilter = ({
             </div>
           </div>
 
-          {/* Time Selection */}
+          {/* Time Selection - Collapsible */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">⏰ TIME OF DAY</h3>
-            <div className="grid filter-time-mobile gap-2">
-              {timeOptions.map((timeOption) => (
-                <label key={timeOption.value} className="flex items-start space-x-2 cursor-pointer text-sm filter-touch-target">
-                  <input 
-                    type="radio" 
-                    name="timeSelection"
-                    checked={selectedTime === timeOption.value}
-                    onChange={() => handleTimeChange(timeOption.value)}
-                    className="form-radio text-red-500 compact-radio flex-shrink-0"
-                    style={{ accentColor }}
-                  />
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">{timeOption.label}</span>
-                    <span className="text-xs text-gray-400 leading-tight">{timeOption.description}</span>
-                  </div>
+            <button
+              onClick={() => setIsTimeExpanded(!isTimeExpanded)}
+              className="flex items-center justify-between w-full text-lg font-semibold mb-3 hover:opacity-80 transition-opacity"
+            >
+              <span>TIME OF DAY</span>
+              <span className="text-sm">
+                {isTimeExpanded ? '▼' : '▶'}
+              </span>
+            </button>
+            {isTimeExpanded && (
+              <div className="grid grid-cols-2 gap-1">
+                {timeOptions.map((timeOption) => (
+                  <label key={timeOption.value} className="flex items-start space-x-2 cursor-pointer text-sm filter-touch-target">
+                    <input 
+                      type="radio" 
+                      name="timeSelection"
+                      checked={selectedTime === timeOption.value}
+                      onChange={() => handleTimeChange(timeOption.value)}
+                      className="form-radio text-red-500 compact-radio flex-shrink-0"
+                      style={{ accentColor }}
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium">{timeOption.label}</span>
+                      <span className="text-xs text-gray-400 leading-tight">{timeOption.description}</span>
+                    </div>
                 </label>
               ))}
             </div>
