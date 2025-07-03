@@ -385,7 +385,7 @@ export const SearchFilter = ({
           </label>
           <label className="flex items-center space-x-2 cursor-pointer filter-touch-target">
             <input type="checkbox" className="form-checkbox text-red-500 compact-checkbox"/>
-            <span className="text-xs">F1® THE MOVIE: EARLY ACCESS</span>
+            <span className="text-xs">F1 THE MOVIE: EARLY ACCESS</span>
           </label>
         </div>
 
