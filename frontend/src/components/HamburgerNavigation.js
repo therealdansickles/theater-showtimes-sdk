@@ -243,7 +243,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                       style={{ color: textColor }}
                       onClick={() => setIsOpen(false)}
                     >
-                      🎬 Setup Film
+                      Setup Film
                     </a>
                   </li>
                 </ul>
