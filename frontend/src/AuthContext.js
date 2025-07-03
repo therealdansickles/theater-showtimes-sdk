@@ -19,13 +19,21 @@ export const AuthProvider = ({ children }) => {
   const API_BASE = process.env.REACT_APP_BACKEND_URL + '/api';
 
   useEffect(() => {
-    // Check if stored token is valid
-    if (token) {
-      verifyToken();
-    } else {
+    // Only verify token on initial load if we have a stored token
+    const storedToken = localStorage.getItem('auth_token');
+    if (storedToken && !token) {
+      setToken(storedToken);
+    } else if (!storedToken) {
       setLoading(false);
     }
-  }, [token]); // Add token as a dependency so this effect runs when token changes
+  }, []); // Remove token dependency to avoid infinite loops
+
+  useEffect(() => {
+    // Verify token when it changes (but not on initial empty state)
+    if (token) {
+      verifyToken();
+    }
+  }, [token]); // Separate effect for token verification
 
   const verifyToken = async () => {
     try {
