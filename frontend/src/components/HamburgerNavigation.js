@@ -102,26 +102,26 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
   return (
     <>
       {/* Header with Hamburger */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-80 backdrop-blur-sm border-b border-white border-opacity-10">
-        <div className="flex items-center justify-between px-6 py-4">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-90 backdrop-blur-sm border-b border-white border-opacity-10">
+        <div className="flex items-center justify-between px-4 py-3">
           {/* Logo/Title */}
           <div className="flex items-center space-x-2">
             {movieConfig?.logo_image && (
               <img 
                 src={process.env.REACT_APP_BACKEND_URL + movieConfig.logo_image} 
                 alt="Logo" 
-                className="h-8 w-auto"
+                className="h-6 w-auto"
               />
             )}
-            <div className="text-xl font-bold" style={{ color: accentColor }}>
+            <div className="text-lg md:text-xl font-bold" style={{ color: accentColor }}>
               {movieConfig?.movie_title || 'Litebeem'}
             </div>
           </div>
 
-          {/* Hamburger Button */}
+          {/* Hamburger Button - Mobile Optimized */}
           <button
             onClick={toggleMenu}
-            className="p-2 rounded-lg transition-colors hover:bg-white hover:bg-opacity-10 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+            className="hamburger-button p-3 rounded-lg transition-colors hover:bg-white hover:bg-opacity-10 focus:outline-none focus:ring-2 focus:ring-opacity-50"
             style={{ color: textColor }}
             aria-label="Menu"
           >
@@ -139,15 +139,15 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
         <div className="fixed inset-0 z-40 bg-black bg-opacity-50 backdrop-blur-sm" onClick={toggleMenu} />
       )}
 
-      {/* Slide-out Menu */}
-      <div className={`fixed top-0 right-0 h-full w-80 bg-black bg-opacity-95 backdrop-blur-lg border-l border-white border-opacity-10 transform transition-transform duration-300 ease-in-out z-50 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      {/* Slide-out Menu - Mobile Optimized */}
+      <div className={`fixed top-0 right-0 h-full w-80 max-w-screen bg-black bg-opacity-95 backdrop-blur-lg border-l border-white border-opacity-10 transform transition-transform duration-300 ease-in-out z-50 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="p-6 h-full flex flex-col">
           
           {/* Close Button */}
           <div className="flex justify-end mb-8">
             <button
               onClick={toggleMenu}
-              className="p-2 rounded-lg transition-colors hover:bg-white hover:bg-opacity-10"
+              className="p-2 rounded-lg transition-colors hover:bg-white hover:bg-opacity-10 mobile-touch-target"
               style={{ color: textColor }}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -156,11 +156,11 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
             </button>
           </div>
 
-          {/* Navigation Links */}
+          {/* Navigation Links - Mobile Optimized */}
           <nav className="flex-grow space-y-6">
             <div>
-              <h3 className="text-sm font-medium opacity-60 mb-4" style={{ color: textColor }}>
-                NAVIGATION
+              <h3 className="text-sm font-medium opacity-60 mb-4 uppercase tracking-wider" style={{ color: textColor }}>
+                Navigation
               </h3>
               <ul className="space-y-4">
                 <li>
@@ -169,7 +169,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                       handleNavClick('home');
                       scrollToTop();
                     }}
-                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80"
+                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
                     style={{ color: textColor }}
                   >
                     Home
@@ -178,7 +178,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                 <li>
                   <button
                     onClick={() => handleNavClick('videos')}
-                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80"
+                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
                     style={{ color: textColor }}
                   >
                     Videos
@@ -187,7 +187,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                 <li>
                   <button
                     onClick={() => handleNavClick('synopsis')}
-                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80"
+                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
                     style={{ color: textColor }}
                   >
                     Synopsis
@@ -196,7 +196,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                 <li>
                   <button
                     onClick={() => handleNavClick('group-sales')}
-                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80"
+                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
                     style={{ color: textColor }}
                   >
                     Group Sales
@@ -208,7 +208,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                       handleNavClick('get-tickets');
                       scrollToShowtimes();
                     }}
-                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80"
+                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
                     style={{ color: accentColor }}
                   >
                     Get Tickets
@@ -220,14 +220,14 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
             {/* Admin Links */}
             {isAuthenticated() && isAdmin() && (
               <div>
-                <h3 className="text-sm font-medium opacity-60 mb-4" style={{ color: textColor }}>
-                  ADMIN
+                <h3 className="text-sm font-medium opacity-60 mb-4 uppercase tracking-wider" style={{ color: textColor }}>
+                  Admin
                 </h3>
                 <ul className="space-y-4">
                   <li>
                     <a
                       href="/admin"
-                      className="block text-lg font-medium transition-colors hover:opacity-80"
+                      className="block text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
                       style={{ color: textColor }}
                       onClick={() => setIsOpen(false)}
                     >
@@ -237,7 +237,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                   <li>
                     <a
                       href="/setup"
-                      className="block text-lg font-medium transition-colors hover:opacity-80"
+                      className="block text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
                       style={{ color: textColor }}
                       onClick={() => setIsOpen(false)}
                     >
@@ -249,19 +249,19 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
             )}
           </nav>
 
-          {/* Social Links */}
+          {/* Social Links - Mobile Optimized */}
           <div className="mt-auto">
-            <h3 className="text-sm font-medium opacity-60 mb-4" style={{ color: textColor }}>
-              CONNECT
+            <h3 className="text-sm font-medium opacity-60 mb-4 uppercase tracking-wider" style={{ color: textColor }}>
+              Connect
             </h3>
-            <div className="flex space-x-4">
+            <div className="grid grid-cols-5 gap-3">
               {socialLinks.map((social) => (
                 <a
                   key={social.name}
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg transition-colors hover:bg-white hover:bg-opacity-10"
+                  className="p-3 rounded-lg transition-colors hover:bg-white hover:bg-opacity-10 mobile-touch-target flex items-center justify-center"
                   style={{ color: textColor }}
                   title={social.tooltip}
                 >
@@ -270,9 +270,9 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
               ))}
             </div>
             
-            {/* Footer Text */}
-            <div className="mt-6 text-xs opacity-50" style={{ color: textColor }}>
-              <p>&copy; 2025 {movieConfig?.movie_title || 'Litebeem'}. All rights reserved.</p>
+            {/* Footer Text - Mobile Optimized */}
+            <div className="mt-6 text-xs opacity-50 text-center" style={{ color: textColor }}>
+              <p>&copy; 2025 {movieConfig?.movie_title || 'Litebeem'}</p>
               <p className="mt-1">Powered by Litebeem SDK</p>
             </div>
           </div>
