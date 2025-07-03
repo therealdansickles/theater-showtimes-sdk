@@ -292,17 +292,17 @@ export const SearchFilter = ({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Format Selection */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">SELECT A PREFERRED FORMAT</h3>
-            <div className="space-y-2">
+            <h3 className="text-lg font-semibold mb-3">🎬 FORMATS</h3>
+            <div className="grid grid-cols-2 gap-2">
               {formats.map((format) => (
-                <label key={format} className="flex items-center space-x-2 cursor-pointer">
+                <label key={format} className="flex items-center space-x-2 cursor-pointer text-sm hover:bg-gray-800 p-2 rounded transition-colors">
                   <input 
                     type="checkbox" 
                     checked={selectedFormats.includes(format)}
                     onChange={() => handleFormatChange(format)}
-                    className="form-checkbox text-red-500"
+                    className="form-checkbox text-red-500 flex-shrink-0"
                   />
-                  <span className="text-sm">{format}</span>
+                  <span className="text-xs leading-tight">{format}</span>
                 </label>
               ))}
             </div>
