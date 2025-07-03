@@ -345,7 +345,7 @@ export const SearchFilter = ({
           <div>
             <button
               onClick={() => setIsTimeExpanded(!isTimeExpanded)}
-              className="flex items-center justify-between w-full text-lg font-semibold mb-3 hover:opacity-80 transition-opacity"
+              className="filter-collapsible-button flex items-center justify-between w-full text-lg font-semibold mb-3"
             >
               <span>TIME OF DAY</span>
               <span className="text-sm">
@@ -353,9 +353,9 @@ export const SearchFilter = ({
               </span>
             </button>
             {isTimeExpanded && (
-              <div className="grid grid-cols-2 gap-1">
+              <div className="grid filter-time-grid-tight">
                 {timeOptions.map((timeOption) => (
-                  <label key={timeOption.value} className="flex items-start space-x-2 cursor-pointer text-sm filter-touch-target">
+                  <label key={timeOption.value} className="flex items-start space-x-1 cursor-pointer text-sm filter-touch-target-compact">
                     <input 
                       type="radio" 
                       name="timeSelection"
