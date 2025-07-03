@@ -206,10 +206,70 @@ body {
   margin: 0 auto 1.5rem;
 }
 
-/* Filter section mobile adjustments */
+/* Mobile filter enhancements for compact layout */
 .filter-section {
   padding: 1rem;
   margin-bottom: 1rem;
+}
+
+.filter-compact {
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.filter-grid-mobile {
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.filter-time-mobile {
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+/* Compact checkbox and radio styles */
+.compact-checkbox {
+  transform: scale(0.9);
+}
+
+.compact-radio {
+  transform: scale(0.9);
+  margin-top: 2px;
+}
+
+/* Enhanced mobile touch targets for filters */
+.filter-touch-target {
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.filter-touch-target:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Responsive filter grid */
+@media (max-width: 767px) {
+  .filter-section {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .filter-grid-mobile {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem;
+  }
+  
+  .filter-time-mobile {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+  
+  .filter-compact h3 {
+    font-size: 1rem !important;
+    margin-bottom: 0.75rem !important;
+  }
 }
 
 /* Mobile grid adjustments */
