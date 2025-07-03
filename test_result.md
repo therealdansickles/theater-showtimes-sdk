@@ -345,21 +345,18 @@ frontend:
         
   - task: "Filter Layout Optimization and Mobile Navigation Fix"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/frontend/src/components.js, /app/frontend/src/components/HamburgerNavigation.js, /app/frontend/src/App.css"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "FILTER LAYOUT OPTIMIZATION IMPLEMENTED: 1) Updated SearchFilter component to use multi-column grid layout for format options (2 columns on mobile, reducing vertical space significantly), 2) Added emoji icons to section headers for better visual hierarchy (🎬 FORMATS, ⏰ TIME OF DAY, 📅 SELECT A DAY, 🔍 SEARCH), 3) Implemented compact filter styling with reduced padding and spacing, 4) Enhanced mobile touch targets for better interaction. HAMBURGER NAVIGATION MOBILE FIXES: 1) Added iPhone-specific CSS optimizations for latest devices (iPhone 14/15 series), 2) Implemented safe area support for notch/dynamic island, 3) Enhanced touch targets with proper sizing (44px minimum), 4) Added webkit-tap-highlight suppression for better mobile experience, 5) Improved slide-out animation with cubic-bezier easing, 6) Added landscape mode optimizations for mobile devices, 7) Enhanced backdrop blur effects for better visual separation."
+        comment: "COMPREHENSIVE FILTER OPTIMIZATION COMPLETE: 1) Implemented collapsible FORMATS and TIME OF DAY sections with expand/collapse buttons (▶/▼), 2) Updated both sections to use tight 2-column grid layout for maximum space efficiency, 3) Added compact touch targets and micro-interactions for mobile, 4) Removed all emojis from the interface for professional appearance (🎬, 🔍, ⏰, 📅 removed from headers and buttons), 5) Enhanced CSS with filter-grid-tight and filter-touch-target-compact classes for optimal spacing, 6) Fixed JSX structure issues and added proper closing tags, 7) Updated hamburger navigation to remove emoji from Setup Film link. MOBILE NAVIGATION ENHANCEMENTS: iPhone-specific optimizations, safe area support, enhanced touch targets, webkit optimizations for smooth mobile experience."
       - working: false
         agent: "user"
-        comment: "User reported: Filter options take up too much vertical space with negative space before showtimes. Hamburger navigation has mobile issues. Need to test for latest iPhone screens."
-      - working: true
-        agent: "testing"
-        comment: "BACKEND API VERIFICATION COMPLETED: All backend APIs are working correctly after frontend filter layout optimizations. Tested core API health endpoints, movie configuration API, categories API, and theater listings API. All endpoints returned 200 status codes with correct data structures. The time categorization system is working properly with morning/afternoon/evening/late_night categories. Screening categories API returns all expected format types. Theater listings API correctly returns theater data with proper filtering by time category and screening category. No backend issues were found related to the frontend filter layout optimizations."
+        comment: "User reported: Filter options take up too much vertical space with negative space before showtimes. Hamburger navigation has mobile issues. Need to test for latest iPhone screens. Request: Make Formats and Time of Day collapsible, use 2-column layout for both, remove all emojis for professional look."
 
 metadata:
   created_by: "main_agent"
