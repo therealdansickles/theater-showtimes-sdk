@@ -35,8 +35,13 @@
   },
   {
     "name": "Movie Configuration Endpoint",
-    "status": "\u274c FAILED",
-    "details": null
+    "status": "\u2705 PASSED",
+    "details": {
+      "endpoint_working": true,
+      "movie_id": "92443b1b-f49c-492f-8c9f-3433486f9ffe",
+      "movie_title": "F1",
+      "data_structure_valid": true
+    }
   },
   {
     "name": "Categories Endpoint",
