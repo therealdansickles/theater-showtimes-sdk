@@ -573,7 +573,7 @@ export const Footer = ({ movieConfig }) => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h4 className="font-bold text-lg mb-4" style={{ color: accentColor }}>
-              {movieConfig?.movie_title ? `${movieConfig.movie_title}${movieConfig.movie_subtitle ? ` ${movieConfig.movie_subtitle}` : ''}` : 'F1® THE MOVIE'}
+              {movieConfig?.movie_title ? `${movieConfig.movie_title}${movieConfig.movie_subtitle ? ` ${movieConfig.movie_subtitle}` : ''}` : 'F1 THE MOVIE'}
             </h4>
             <p className="text-sm" style={{ color: textColor, opacity: 0.7 }}>
               {movieConfig?.description || 'Experience the thrill of Formula 1 racing like never before.'}
