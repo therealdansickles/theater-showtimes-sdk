@@ -170,18 +170,33 @@ class BackendAPITester:
     # 2. Movie Configuration API
     def test_movie_config_endpoint(self):
         """Test the movie configuration endpoint"""
+        # First get a movie ID
         success, response = self.make_request(
             "GET", 
-            "movies/config",
+            "movies",
             auth_type="jwt",
             expected_status=200
         )
         
-        if success:
+        if not success or not isinstance(response, list) or not response:
+            return {"error": "No movies available for testing"}
+        
+        movie_id = response[0]["id"]
+        
+        # Now get the specific movie configuration
+        success, response = self.make_request(
+            "GET", 
+            f"movies/{movie_id}",
+            auth_type="jwt",
+            expected_status=200
+        )
+        
+        if success and "id" in response:
             return {
                 "endpoint_working": True,
-                "response_type": type(response).__name__,
-                "data_structure_valid": isinstance(response, dict)
+                "movie_id": movie_id,
+                "movie_title": response.get("movie_title"),
+                "data_structure_valid": isinstance(response, dict) and "film_assets" in response
             }
         return False
     
