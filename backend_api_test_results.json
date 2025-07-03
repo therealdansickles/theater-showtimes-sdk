@@ -1,0 +1,125 @@
+[
+  {
+    "name": "API Root Endpoint",
+    "status": "\u2705 PASSED",
+    "details": {
+      "status": "healthy",
+      "message": "Movie Ticket Booking SaaS API",
+      "version": "1.0.0",
+      "endpoints": [
+        "clients",
+        "movies",
+        "uploads",
+        "health"
+      ]
+    }
+  },
+  {
+    "name": "Health Check Endpoint",
+    "status": "\u2705 PASSED",
+    "details": {
+      "status": "healthy",
+      "services": {
+        "database": "connected",
+        "file_storage": "available"
+      }
+    }
+  },
+  {
+    "name": "Admin Login",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_received": true,
+      "token_length": 211
+    }
+  },
+  {
+    "name": "Movie Configuration Endpoint",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "Categories Endpoint",
+    "status": "\u2705 PASSED",
+    "details": {
+      "endpoint_working": true,
+      "categories_count": 11,
+      "sample_categories": [
+        "IMAX",
+        "DOLBY ATMOS",
+        "4DX",
+        "2D",
+        "3D"
+      ],
+      "category_types": [
+        "special_event",
+        "format",
+        "experience"
+      ]
+    }
+  },
+  {
+    "name": "Category Types Endpoint",
+    "status": "\u2705 PASSED",
+    "details": {
+      "endpoint_working": true,
+      "types_count": 3,
+      "available_types": [
+        "format",
+        "experience",
+        "special_event"
+      ]
+    }
+  },
+  {
+    "name": "Time Categories Endpoint",
+    "status": "\u2705 PASSED",
+    "details": {
+      "endpoint_working": true,
+      "categories_count": 4,
+      "available_categories": [
+        "morning",
+        "afternoon",
+        "evening",
+        "late_night"
+      ]
+    }
+  },
+  {
+    "name": "Movies Endpoint",
+    "status": "\u2705 PASSED",
+    "details": {
+      "endpoint_working": true,
+      "movies_count": 3,
+      "data_structure_valid": true
+    }
+  },
+  {
+    "name": "Movie Theaters Endpoint",
+    "status": "\u2705 PASSED",
+    "details": {
+      "endpoint_working": true,
+      "theaters_count": 0,
+      "data_structure_valid": true
+    }
+  },
+  {
+    "name": "Categorized Showtimes Endpoint",
+    "status": "\u2705 PASSED",
+    "details": {
+      "endpoint_working": true,
+      "theaters_count": 0,
+      "has_time_categories": false,
+      "movie_title": "F1"
+    }
+  },
+  {
+    "name": "Filtered Showtimes",
+    "status": "\u2705 PASSED",
+    "details": {
+      "time_filter_working": true,
+      "screening_filter_working": true,
+      "combined_filters_working": true
+    }
+  }
+]
