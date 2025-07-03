@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       setLoading(false);
     }
-  }, []);
+  }, [token]); // Add token as a dependency so this effect runs when token changes
 
   const verifyToken = async () => {
     try {
