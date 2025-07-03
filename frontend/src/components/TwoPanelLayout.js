@@ -306,10 +306,10 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
               >
                 <div className="filter-grid-tight mobile-grid-2">
                   {[
-                    { value: 'Morning', label: 'Morning', desc: 'Before 12 PM', icon: '🌅' },
-                    { value: 'Afternoon', label: 'Afternoon', desc: '12 PM - 6 PM', icon: '☀️' },
-                    { value: 'Evening', label: 'Evening', desc: '6 PM - 10 PM', icon: '🌆' },
-                    { value: 'Late Night', label: 'Late Night', desc: 'After 10 PM', icon: '🌙' }
+                    { value: 'Morning', label: 'Morning', desc: 'Before 12 PM' },
+                    { value: 'Afternoon', label: 'Afternoon', desc: '12 PM - 6 PM' },
+                    { value: 'Evening', label: 'Evening', desc: '6 PM - 10 PM' },
+                    { value: 'Late Night', label: 'Late Night', desc: 'After 10 PM' }
                   ].map((timeOption) => (
                     <label key={timeOption.value} className="flex items-center space-x-3 cursor-pointer group mobile-touch-target filter-touch-target-compact">
                       <input
@@ -324,8 +324,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                         }}
                       />
                       <div className="flex-1">
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm">{timeOption.icon}</span>
+                        <div className="flex items-center">
                           <span 
                             className="text-sm font-medium group-hover:opacity-100 transition-opacity body-text"
                             style={{ color: textColor, opacity: 0.85 }}
@@ -333,7 +332,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                             {timeOption.label}
                           </span>
                         </div>
-                        <div className="text-xs opacity-60 ml-6 body-text" style={{ color: textColor }}>
+                        <div className="text-xs opacity-60 body-text" style={{ color: textColor }}>
                           {timeOption.desc}
                         </div>
                       </div>
