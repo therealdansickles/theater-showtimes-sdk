@@ -14,6 +14,10 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
   });
   const [categories] = useState(mockCategories);
   const [expandedTheaters, setExpandedTheaters] = useState({});
+  
+  // State for collapsible filter sections
+  const [isFormatsExpanded, setIsFormatsExpanded] = useState(false);
+  const [isTimeExpanded, setIsTimeExpanded] = useState(false);
 
   const accentColor = movieConfig?.accent_color || '#ef4444';
   const textColor = movieConfig?.text_color || '#ffffff';
@@ -140,6 +144,16 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
     });
   };
 
+  // Toggle formats section
+  const toggleFormatsSection = () => {
+    setIsFormatsExpanded(!isFormatsExpanded);
+  };
+
+  // Toggle time section
+  const toggleTimeSection = () => {
+    setIsTimeExpanded(!isTimeExpanded);
+  };
+
   // Dynamic background with subtle gradient
   const backgroundStyle = {
     background: `
@@ -166,7 +180,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                 className="block text-sm font-semibold mb-3 tracking-wider uppercase label-text"
                 style={{ color: textColor, opacity: 0.9 }}
               >
-                📍 Location Search
+                LOCATION SEARCH
               </label>
               <input
                 type="text"
@@ -189,7 +203,7 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                 className="block text-sm font-semibold mb-3 tracking-wider uppercase label-text"
                 style={{ color: textColor, opacity: 0.9 }}
               >
-                📅 Select Date
+                SELECT DATE
               </label>
               <div className="flex space-x-2 overflow-x-auto pb-3">
                 {dateOptions.map((date) => (
@@ -218,82 +232,114 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
               </div>
             </div>
 
-            {/* Format Filters with mobile grid */}
+            {/* Format Filters with collapsible section */}
             <div>
-              <label 
-                className="block text-sm font-semibold mb-3 tracking-wider uppercase label-text"
-                style={{ color: textColor, opacity: 0.9 }}
+              <div className="flex items-center justify-between">
+                <label 
+                  className="block text-sm font-semibold mb-3 tracking-wider uppercase label-text"
+                  style={{ color: textColor, opacity: 0.9 }}
+                >
+                  FORMATS
+                </label>
+                <button 
+                  onClick={toggleFormatsSection}
+                  className="filter-collapsible-button text-sm mb-3"
+                  style={{ color: textColor }}
+                  aria-expanded={isFormatsExpanded}
+                  aria-controls="formats-content"
+                >
+                  {isFormatsExpanded ? '▼' : '▶'}
+                </button>
+              </div>
+              <div 
+                id="formats-content"
+                className={`filter-collapsible-content ${isFormatsExpanded ? 'filter-collapsible-expanded' : 'filter-collapsible-collapsed'}`}
               >
-                🎬 Formats
-              </label>
-              <div className="mobile-grid-2">
-                {categories.map((category) => (
-                  <label key={category.id} className="flex items-center space-x-2 cursor-pointer group mobile-touch-target">
-                    <input
-                      type="checkbox"
-                      checked={filters.selectedFormats.includes(category.name)}
-                      onChange={() => handleFilterChange('selectedFormats', category.name)}
-                      className="w-4 h-4 rounded border-2 bg-transparent focus:ring-2 focus:ring-opacity-50 transition-all focus-ring"
-                      style={{ 
-                        accentColor: accentColor,
-                        borderColor: accentColor,
-                        borderOpacity: 0.4
-                      }}
-                    />
-                    <span 
-                      className="text-sm font-medium group-hover:opacity-100 transition-opacity body-text"
-                      style={{ color: textColor, opacity: 0.85 }}
-                    >
-                      {category.name}
-                    </span>
-                  </label>
-                ))}
+                <div className="filter-grid-tight mobile-grid-2">
+                  {categories.map((category) => (
+                    <label key={category.id} className="flex items-center space-x-2 cursor-pointer group mobile-touch-target filter-touch-target-compact">
+                      <input
+                        type="checkbox"
+                        checked={filters.selectedFormats.includes(category.name)}
+                        onChange={() => handleFilterChange('selectedFormats', category.name)}
+                        className="w-4 h-4 rounded border-2 bg-transparent focus:ring-2 focus:ring-opacity-50 transition-all focus-ring compact-checkbox"
+                        style={{ 
+                          accentColor: accentColor,
+                          borderColor: accentColor,
+                          borderOpacity: 0.4
+                        }}
+                      />
+                      <span 
+                        className="text-sm font-medium group-hover:opacity-100 transition-opacity body-text"
+                        style={{ color: textColor, opacity: 0.85 }}
+                      >
+                        {category.name}
+                      </span>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Time of Day Filters with mobile grid */}
+            {/* Time of Day Filters with collapsible section */}
             <div>
-              <label 
-                className="block text-sm font-semibold mb-3 tracking-wider uppercase label-text"
-                style={{ color: textColor, opacity: 0.9 }}
+              <div className="flex items-center justify-between">
+                <label 
+                  className="block text-sm font-semibold mb-3 tracking-wider uppercase label-text"
+                  style={{ color: textColor, opacity: 0.9 }}
+                >
+                  TIME OF DAY
+                </label>
+                <button 
+                  onClick={toggleTimeSection}
+                  className="filter-collapsible-button text-sm mb-3"
+                  style={{ color: textColor }}
+                  aria-expanded={isTimeExpanded}
+                  aria-controls="time-content"
+                >
+                  {isTimeExpanded ? '▼' : '▶'}
+                </button>
+              </div>
+              <div 
+                id="time-content"
+                className={`filter-collapsible-content ${isTimeExpanded ? 'filter-collapsible-expanded' : 'filter-collapsible-collapsed'}`}
               >
-                🕐 Time of Day
-              </label>
-              <div className="mobile-grid-1">
-                {[
-                  { value: 'Morning', label: 'Morning', desc: 'Before 12 PM', icon: '🌅' },
-                  { value: 'Afternoon', label: 'Afternoon', desc: '12 PM - 6 PM', icon: '☀️' },
-                  { value: 'Evening', label: 'Evening', desc: '6 PM - 10 PM', icon: '🌆' },
-                  { value: 'Late Night', label: 'Late Night', desc: 'After 10 PM', icon: '🌙' }
-                ].map((timeOption) => (
-                  <label key={timeOption.value} className="flex items-center space-x-3 cursor-pointer group mobile-touch-target">
-                    <input
-                      type="checkbox"
-                      checked={filters.selectedTimes.includes(timeOption.value)}
-                      onChange={() => handleFilterChange('selectedTimes', timeOption.value)}
-                      className="w-4 h-4 rounded border-2 bg-transparent focus:ring-2 focus:ring-opacity-50 transition-all focus-ring"
-                      style={{ 
-                        accentColor: accentColor,
-                        borderColor: accentColor,
-                        borderOpacity: 0.4
-                      }}
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm">{timeOption.icon}</span>
-                        <span 
-                          className="text-sm font-medium group-hover:opacity-100 transition-opacity body-text"
-                          style={{ color: textColor, opacity: 0.85 }}
-                        >
-                          {timeOption.label}
-                        </span>
+                <div className="filter-grid-tight mobile-grid-2">
+                  {[
+                    { value: 'Morning', label: 'Morning', desc: 'Before 12 PM', icon: '🌅' },
+                    { value: 'Afternoon', label: 'Afternoon', desc: '12 PM - 6 PM', icon: '☀️' },
+                    { value: 'Evening', label: 'Evening', desc: '6 PM - 10 PM', icon: '🌆' },
+                    { value: 'Late Night', label: 'Late Night', desc: 'After 10 PM', icon: '🌙' }
+                  ].map((timeOption) => (
+                    <label key={timeOption.value} className="flex items-center space-x-3 cursor-pointer group mobile-touch-target filter-touch-target-compact">
+                      <input
+                        type="checkbox"
+                        checked={filters.selectedTimes.includes(timeOption.value)}
+                        onChange={() => handleFilterChange('selectedTimes', timeOption.value)}
+                        className="w-4 h-4 rounded border-2 bg-transparent focus:ring-2 focus:ring-opacity-50 transition-all focus-ring compact-checkbox"
+                        style={{ 
+                          accentColor: accentColor,
+                          borderColor: accentColor,
+                          borderOpacity: 0.4
+                        }}
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm">{timeOption.icon}</span>
+                          <span 
+                            className="text-sm font-medium group-hover:opacity-100 transition-opacity body-text"
+                            style={{ color: textColor, opacity: 0.85 }}
+                          >
+                            {timeOption.label}
+                          </span>
+                        </div>
+                        <div className="text-xs opacity-60 ml-6 body-text" style={{ color: textColor }}>
+                          {timeOption.desc}
+                        </div>
                       </div>
-                      <div className="text-xs opacity-60 ml-6 body-text" style={{ color: textColor }}>
-                        {timeOption.desc}
-                      </div>
-                    </div>
-                  </label>
-                ))}
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
