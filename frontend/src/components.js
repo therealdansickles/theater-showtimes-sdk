@@ -371,9 +371,10 @@ export const SearchFilter = ({
                       <span className="text-sm font-medium">{timeOption.label}</span>
                       <span className="text-xs text-gray-400 leading-tight">{timeOption.description}</span>
                     </div>
-                </label>
-              ))}
-            </div>
+                  </label>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
