@@ -16,8 +16,8 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
   const [expandedTheaters, setExpandedTheaters] = useState({});
   
   // State for collapsible filter sections
-  const [isFormatsExpanded, setIsFormatsExpanded] = useState(false);
-  const [isTimeExpanded, setIsTimeExpanded] = useState(false);
+  const [isFormatsExpanded, setIsFormatsExpanded] = useState(false); // Keep collapsed
+  const [isTimeExpanded, setIsTimeExpanded] = useState(true); // Keep expanded
 
   const accentColor = movieConfig?.accent_color || '#ef4444';
   const textColor = movieConfig?.text_color || '#ffffff';
