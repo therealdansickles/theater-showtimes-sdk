@@ -466,10 +466,10 @@ const TwoPanelLayout = ({ movieConfig, theaters, onSelectTheater, loading }) => 
                                     >
                                       {timeCategory && (
                                         <span className="mr-1 text-xs">
-                                          {timeCategory === 'morning' ? '🌅' : 
-                                           timeCategory === 'afternoon' ? '☀️' : 
-                                           timeCategory === 'evening' ? '🌆' : 
-                                           timeCategory === 'late_night' ? '🌙' : '🕐'}
+                                          {timeCategory === 'morning' ? 'Morning' : 
+                                           timeCategory === 'afternoon' ? 'Afternoon' : 
+                                           timeCategory === 'evening' ? 'Evening' : 
+                                           timeCategory === 'late_night' ? 'Late Night' : 'Time'}
                                         </span>
                                       )}
                                       <span className="text-sm font-bold">{timeStr}</span>
