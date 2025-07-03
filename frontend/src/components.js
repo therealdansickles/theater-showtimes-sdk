@@ -295,7 +295,7 @@ export const SearchFilter = ({
           <div>
             <button
               onClick={() => setIsFormatsExpanded(!isFormatsExpanded)}
-              className="flex items-center justify-between w-full text-lg font-semibold mb-3 hover:opacity-80 transition-opacity"
+              className="filter-collapsible-button flex items-center justify-between w-full text-lg font-semibold mb-3"
             >
               <span>FORMATS</span>
               <span className="text-sm">
@@ -303,9 +303,9 @@ export const SearchFilter = ({
               </span>
             </button>
             {isFormatsExpanded && (
-              <div className="grid grid-cols-2 gap-1 max-h-48 overflow-y-auto">
+              <div className="grid filter-grid-tight max-h-48 overflow-y-auto">
                 {formats.map((format) => (
-                  <label key={format} className="flex items-center space-x-2 cursor-pointer text-sm filter-touch-target">
+                  <label key={format} className="flex items-center space-x-1 cursor-pointer text-sm filter-touch-target-compact">
                     <input 
                       type="checkbox" 
                       checked={selectedFormats.includes(format)}
