@@ -270,11 +270,11 @@ export const SearchFilter = ({
   };
 
   return (
-    <div className="bg-gray-900 text-white p-6">
+    <div className="bg-gray-900 text-white filter-compact">
       <div className="max-w-7xl mx-auto">
         {/* Search Location */}
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-3">SEARCH</h3>
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-3">🔍 SEARCH</h3>
           <div className="flex items-center space-x-2">
             <input 
               type="text" 
@@ -289,18 +289,18 @@ export const SearchFilter = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Format Selection */}
           <div>
             <h3 className="text-lg font-semibold mb-3">🎬 FORMATS</h3>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid filter-grid-mobile gap-2">
               {formats.map((format) => (
-                <label key={format} className="flex items-center space-x-2 cursor-pointer text-sm hover:bg-gray-800 p-2 rounded transition-colors">
+                <label key={format} className="flex items-center space-x-2 cursor-pointer text-sm filter-touch-target">
                   <input 
                     type="checkbox" 
                     checked={selectedFormats.includes(format)}
                     onChange={() => handleFormatChange(format)}
-                    className="form-checkbox text-red-500 flex-shrink-0"
+                    className="form-checkbox text-red-500 flex-shrink-0 compact-checkbox"
                   />
                   <span className="text-xs leading-tight">{format}</span>
                 </label>
