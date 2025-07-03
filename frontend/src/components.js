@@ -333,15 +333,15 @@ export const SearchFilter = ({
           {/* Time Selection */}
           <div>
             <h3 className="text-lg font-semibold mb-3">⏰ TIME OF DAY</h3>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid filter-time-mobile gap-2">
               {timeOptions.map((timeOption) => (
-                <label key={timeOption.value} className="flex items-start space-x-2 cursor-pointer text-sm hover:bg-gray-800 p-2 rounded transition-colors">
+                <label key={timeOption.value} className="flex items-start space-x-2 cursor-pointer text-sm filter-touch-target">
                   <input 
                     type="radio" 
                     name="timeSelection"
                     checked={selectedTime === timeOption.value}
                     onChange={() => handleTimeChange(timeOption.value)}
-                    className="form-radio text-red-500 mt-1 flex-shrink-0"
+                    className="form-radio text-red-500 compact-radio flex-shrink-0"
                     style={{ accentColor }}
                   />
                   <div className="flex flex-col">
