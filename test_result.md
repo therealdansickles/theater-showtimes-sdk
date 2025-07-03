@@ -345,9 +345,9 @@ frontend:
         
   - task: "Filter Layout Optimization and Mobile Navigation Fix"
     implemented: true
-    working: "NA"
-    file: "/app/frontend/src/components.js, /app/frontend/src/components/HamburgerNavigation.js, /app/frontend/src/App.css"
-    stuck_count: 0
+    working: false
+    file: "/app/frontend/src/components/TwoPanelLayout.js, /app/frontend/src/App.css"
+    stuck_count: 1
     priority: "high"
     needs_retesting: true
     status_history:
@@ -357,6 +357,9 @@ frontend:
       - working: false
         agent: "user"
         comment: "User reported: Filter options take up too much vertical space with negative space before showtimes. Hamburger navigation has mobile issues. Need to test for latest iPhone screens. Request: Make Formats and Time of Day collapsible, use 2-column layout for both, remove all emojis for professional look."
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL ISSUES FOUND: 1) Collapsible filter functionality is completely missing - no expand/collapse buttons found for FORMATS and TIME OF DAY sections. 2) CSS classes for collapsible content exist in App.css (filter-collapsible-button, filter-collapsible-content, etc.) but are not being used in the TwoPanelLayout component. 3) No React state hooks (isFormatsExpanded, isTimeExpanded) found in the page source. 4) The 2-column layout for FORMATS and 1-column layout for TIME OF DAY are working correctly. 5) Emojis are still present in the interface (🎬 for FORMATS, 🕐 for TIME OF DAY). The main issue is that while CSS classes for collapsible sections exist, they haven't been implemented in the component code."
 
 metadata:
   created_by: "main_agent"
