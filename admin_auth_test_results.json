@@ -1,0 +1,77 @@
+[
+  {
+    "name": "Admin Login (Valid Credentials)",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_received": true,
+      "token_length": 211,
+      "token_type": "bearer"
+    }
+  },
+  {
+    "name": "Admin Login (Invalid Credentials)",
+    "status": "\u274c FAILED",
+    "details": null
+  },
+  {
+    "name": "JWT Token Verification",
+    "status": "\u2705 PASSED",
+    "details": {
+      "token_valid": true,
+      "user_info": {
+        "username": "admin",
+        "role": "admin",
+        "user_id": "c11aee49-20bc-4f13-873d-4ce209b3573d"
+      }
+    }
+  },
+  {
+    "name": "Current User Info",
+    "status": "\u2705 PASSED",
+    "details": {
+      "user_info_retrieved": true,
+      "username": "admin",
+      "role": "admin",
+      "email": "admin@litebeem.com"
+    }
+  },
+  {
+    "name": "Movies Endpoint (Authenticated)",
+    "status": "\u2705 PASSED",
+    "details": {
+      "endpoint_working": true,
+      "movies_count": 1,
+      "data_structure_valid": true
+    }
+  },
+  {
+    "name": "Movies Endpoint (Unauthenticated)",
+    "status": "\u274c ERROR",
+    "details": "'NoneType' object has no attribute 'get'"
+  },
+  {
+    "name": "Categories Endpoint",
+    "status": "\u2705 PASSED",
+    "details": {
+      "endpoint_working": true,
+      "categories_count": 11,
+      "sample_categories": [
+        "IMAX",
+        "DOLBY ATMOS",
+        "4DX",
+        "2D",
+        "3D"
+      ],
+      "category_types": [
+        "format",
+        "special_event",
+        "experience"
+      ]
+    }
+  },
+  {
+    "name": "Invalid Token Test",
+    "status": "\u274c ERROR",
+    "details": "argument of type 'NoneType' is not iterable"
+  }
+]
