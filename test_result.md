@@ -343,20 +343,20 @@ frontend:
         agent: "testing"
         comment: "ImageWithFallback component works correctly. Loading state shows proper animation, error handling works by falling back to alternative image when primary image fails to load, and final fallback to styled placeholder works when all images fail. Tested by deliberately triggering image loading errors."
         
-  - task: "Hero Image & Poster Display Enhancements"
+  - task: "Filter Layout Optimization and Mobile Navigation Fix"
     implemented: true
-    working: true
-    file: "/app/frontend/src/components/TwoPanelLayout.js"
+    working: "NA"
+    file: "/app/frontend/src/components.js, /app/frontend/src/components/HamburgerNavigation.js, /app/frontend/src/App.css"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Enhanced poster display with proper 2:3 aspect ratio, drop shadow, and integration with ImageWithFallback component."
-      - working: true
-        agent: "testing"
-        comment: "Poster image displays with correct 2:3 aspect ratio (measured at 0.67). Enhanced styling with drop shadow is applied correctly. Poster container has proper dimensions and responsive behavior. Badge display works with correct styling (height: 56px, maxWidth: 140px)."
+        comment: "FILTER LAYOUT OPTIMIZATION IMPLEMENTED: 1) Updated SearchFilter component to use multi-column grid layout for format options (2 columns on mobile, reducing vertical space significantly), 2) Added emoji icons to section headers for better visual hierarchy (🎬 FORMATS, ⏰ TIME OF DAY, 📅 SELECT A DAY, 🔍 SEARCH), 3) Implemented compact filter styling with reduced padding and spacing, 4) Enhanced mobile touch targets for better interaction. HAMBURGER NAVIGATION MOBILE FIXES: 1) Added iPhone-specific CSS optimizations for latest devices (iPhone 14/15 series), 2) Implemented safe area support for notch/dynamic island, 3) Enhanced touch targets with proper sizing (44px minimum), 4) Added webkit-tap-highlight suppression for better mobile experience, 5) Improved slide-out animation with cubic-bezier easing, 6) Added landscape mode optimizations for mobile devices, 7) Enhanced backdrop blur effects for better visual separation."
+      - working: false
+        agent: "user"
+        comment: "User reported: Filter options take up too much vertical space with negative space before showtimes. Hamburger navigation has mobile issues. Need to test for latest iPhone screens."
 
 metadata:
   created_by: "main_agent"
