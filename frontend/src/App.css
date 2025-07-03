@@ -254,6 +254,19 @@ body {
   opacity: 0;
 }
 
+/* Improved filter grid spacing */
+.filter-grid-tight {
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  row-gap: 0.125rem;
+}
+
+.filter-time-grid-tight {
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  row-gap: 0.125rem;
+}
+
 /* Desktop horizontal layout for TIME OF DAY */
 .time-horizontal-desktop {
   display: grid;
