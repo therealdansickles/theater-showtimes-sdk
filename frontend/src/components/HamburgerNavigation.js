@@ -102,8 +102,8 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
   return (
     <>
       {/* Header with Hamburger */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-90 backdrop-blur-sm border-b border-white border-opacity-10">
-        <div className="flex items-center justify-between px-4 py-3">
+      <header className="hamburger-header">
+        <div className="flex items-center justify-between">
           {/* Logo/Title */}
           <div className="flex items-center space-x-2">
             {movieConfig?.logo_image && (
@@ -124,6 +124,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
             className="hamburger-button p-3 rounded-lg transition-colors hover:bg-white hover:bg-opacity-10 focus:outline-none focus:ring-2 focus:ring-opacity-50"
             style={{ color: textColor }}
             aria-label="Menu"
+            aria-expanded={isOpen}
           >
             <div className="w-6 h-6 flex flex-col justify-center items-center">
               <span className={`bg-current block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'}`}></span>
@@ -140,15 +141,16 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
       )}
 
       {/* Slide-out Menu - Mobile Optimized */}
-      <div className={`fixed top-0 right-0 h-full w-80 max-w-screen bg-black bg-opacity-95 backdrop-blur-lg border-l border-white border-opacity-10 transform transition-transform duration-300 ease-in-out z-50 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="p-6 h-full flex flex-col">
+      <div className={`hamburger-menu-slide ${isOpen ? 'open' : ''}`}>
+        <div className="hamburger-menu-content">
           
           {/* Close Button */}
-          <div className="flex justify-end mb-8">
+          <div className="flex justify-end mb-6">
             <button
               onClick={toggleMenu}
-              className="p-2 rounded-lg transition-colors hover:bg-white hover:bg-opacity-10 mobile-touch-target"
+              className="p-3 rounded-lg transition-colors hover:bg-white hover:bg-opacity-10 mobile-touch-target"
               style={{ color: textColor }}
+              aria-label="Close menu"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -157,19 +159,19 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
           </div>
 
           {/* Navigation Links - Mobile Optimized */}
-          <nav className="flex-grow space-y-6">
+          <nav className="flex-grow space-y-2">
             <div>
-              <h3 className="text-sm font-medium opacity-60 mb-4 uppercase tracking-wider" style={{ color: textColor }}>
+              <h3 className="text-sm font-medium opacity-60 mb-4 uppercase tracking-wider px-4" style={{ color: textColor }}>
                 Navigation
               </h3>
-              <ul className="space-y-4">
+              <ul className="space-y-1">
                 <li>
                   <button
                     onClick={() => {
                       handleNavClick('home');
                       scrollToTop();
                     }}
-                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
+                    className="nav-item-mobile"
                     style={{ color: textColor }}
                   >
                     Home
@@ -178,7 +180,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                 <li>
                   <button
                     onClick={() => handleNavClick('videos')}
-                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
+                    className="nav-item-mobile"
                     style={{ color: textColor }}
                   >
                     Videos
@@ -187,7 +189,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                 <li>
                   <button
                     onClick={() => handleNavClick('synopsis')}
-                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
+                    className="nav-item-mobile"
                     style={{ color: textColor }}
                   >
                     Synopsis
@@ -196,7 +198,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                 <li>
                   <button
                     onClick={() => handleNavClick('group-sales')}
-                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
+                    className="nav-item-mobile"
                     style={{ color: textColor }}
                   >
                     Group Sales
@@ -208,7 +210,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                       handleNavClick('get-tickets');
                       scrollToShowtimes();
                     }}
-                    className="block w-full text-left text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
+                    className="nav-item-mobile"
                     style={{ color: accentColor }}
                   >
                     Get Tickets
@@ -219,15 +221,15 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
 
             {/* Admin Links */}
             {isAuthenticated() && isAdmin() && (
-              <div>
-                <h3 className="text-sm font-medium opacity-60 mb-4 uppercase tracking-wider" style={{ color: textColor }}>
+              <div className="mt-8">
+                <h3 className="text-sm font-medium opacity-60 mb-4 uppercase tracking-wider px-4" style={{ color: textColor }}>
                   Admin
                 </h3>
-                <ul className="space-y-4">
+                <ul className="space-y-1">
                   <li>
                     <a
                       href="/admin"
-                      className="block text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
+                      className="nav-item-mobile"
                       style={{ color: textColor }}
                       onClick={() => setIsOpen(false)}
                     >
@@ -237,7 +239,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
                   <li>
                     <a
                       href="/setup"
-                      className="block text-lg font-medium transition-colors hover:opacity-80 mobile-touch-target py-2"
+                      className="nav-item-mobile"
                       style={{ color: textColor }}
                       onClick={() => setIsOpen(false)}
                     >
@@ -250,18 +252,18 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
           </nav>
 
           {/* Social Links - Mobile Optimized */}
-          <div className="mt-auto">
-            <h3 className="text-sm font-medium opacity-60 mb-4 uppercase tracking-wider" style={{ color: textColor }}>
+          <div className="mt-auto pt-6">
+            <h3 className="text-sm font-medium opacity-60 mb-3 uppercase tracking-wider px-4" style={{ color: textColor }}>
               Connect
             </h3>
-            <div className="grid grid-cols-5 gap-3">
+            <div className="social-grid-mobile">
               {socialLinks.map((social) => (
                 <a
                   key={social.name}
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 rounded-lg transition-colors hover:bg-white hover:bg-opacity-10 mobile-touch-target flex items-center justify-center"
+                  className="social-icon-mobile hover:bg-white hover:bg-opacity-10"
                   style={{ color: textColor }}
                   title={social.tooltip}
                 >
@@ -271,7 +273,7 @@ const HamburgerNavigation = ({ movieConfig, onNavigate }) => {
             </div>
             
             {/* Footer Text - Mobile Optimized */}
-            <div className="mt-6 text-xs opacity-50 text-center" style={{ color: textColor }}>
+            <div className="mt-6 text-xs opacity-50 text-center px-4" style={{ color: textColor }}>
               <p>&copy; 2025 {movieConfig?.movie_title || 'Litebeem'}</p>
               <p className="mt-1">Powered by Litebeem SDK</p>
             </div>
