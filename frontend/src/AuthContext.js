@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post(`${API_BASE}/auth/login`, {
         username,
-        password
+        password,
       });
 
       const { access_token } = response.data;
@@ -75,25 +75,15 @@ export const AuthProvider = ({ children }) => {
       // Store token in localStorage first
       localStorage.setItem('auth_token', access_token);
       
-      // Then update state
+      // Then update state - this will trigger the verification useEffect
       setToken(access_token);
-      
-      // Wait a moment to ensure token is set before verification
-      setTimeout(async () => {
-        try {
-          // Verify the token to get user info
-          await verifyToken();
-        } catch (verifyError) {
-          console.error('Token verification failed:', verifyError);
-        }
-      }, 500);
       
       return { success: true };
     } catch (error) {
       console.error('Login failed:', error);
       return { 
         success: false, 
-        error: error.response?.data?.detail || 'Login failed' 
+        message: error.response?.data?.detail || 'Login failed' 
       };
     }
   };
